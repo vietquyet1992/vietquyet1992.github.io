@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hộp Công Cụ Tiện Ích</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        /* Simple transition for tool container */
+        #tool-modal-content {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        #tool-modal.hidden #tool-modal-content {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Header -->
+    <header class="bg-gray-800 shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-cyan-400 flex items-center">
+                <i data-lucide="blocks" class="w-8 h-8 mr-3"></i>
+                Hộp Công Cụ
+            </h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <h2 class="text-4xl font-bold text-center mb-2">Các Công Cụ Tiện Ích</h2>
+        <p class="text-gray-400 text-center mb-12">Chọn một công cụ bên dưới để bắt đầu.</p>
+
+        <!-- Tool Grid -->
+        <div id="tool-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            
+            <!-- Tool 1: PNG to ICO -->
+            <div data-tool="png-to-ico" class="tool-card bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center text-center cursor-pointer transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="bg-cyan-500/20 p-4 rounded-full mb-4">
+                    <i data-lucide="image-down" class="w-12 h-12 text-cyan-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">PNG sang ICO</h3>
+                <p class="text-gray-400">Chuyển đổi hình ảnh định dạng PNG sang file ICO cho website.</p>
+            </div>
+
+            <!-- Tool 2: Base64 Decode -->
+            <div data-tool="base64-decode" class="tool-card bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center text-center cursor-pointer transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="bg-cyan-500/20 p-4 rounded-full mb-4">
+                    <i data-lucide="binary" class="w-12 h-12 text-cyan-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Giải mã / Mã hoá Base64</h3>
+                <p class="text-gray-400">Mã hoá hoặc giải mã chuỗi văn bản Base64 một cách nhanh chóng.</p>
+            </div>
+
+            <!-- Add more tool cards here -->
+            <div class="bg-gray-800/50 border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center text-center">
+                <i data-lucide="plus-circle" class="w-12 h-12 text-gray-600 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-500">Công cụ tiếp theo</h3>
+                <p class="text-gray-600">Sắp ra mắt...</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal for Tools -->
+    <div id="tool-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div id="tool-modal-content" class="bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl relative transform opacity-100 scale-100">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div id="tool-container" class="p-8">
+                
+                <!-- PNG to ICO Interface -->
+                <div id="png-to-ico" class="tool-interface hidden">
+                    <h2 class="text-3xl font-bold mb-6 text-cyan-400">Chuyển đổi PNG sang ICO</h2>
+                    <div class="space-y-6">
+                        <p class="text-gray-300">Tải lên file PNG của bạn. Công cụ sẽ tự động chuyển đổi sang định dạng ICO.</p>
+                        <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
+                            <i data-lucide="upload-cloud" class="w-16 h-16 mx-auto text-gray-500 mb-4"></i>
+                            <input type="file" id="png-upload" class="hidden" accept="image/png">
+                            <label for="png-upload" class="cursor-pointer bg-cyan-500 text-white font-bold py-2 px-4 rounded-md hover:bg-cyan-600">Chọn File PNG</label>
+                            <p id="file-name" class="text-gray-400 mt-2">Chưa có file nào được chọn</p>
+                        </div>
+                        <button id="convert-button" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed" disabled>Chuyển đổi</button>
+                    </div>
+                </div>
+
+                <!-- Base64 Decode/Encode Interface -->
+                <div id="base64-decode" class="tool-interface hidden">
+                    <h2 class="text-3xl font-bold mb-6 text-cyan-400">Mã hoá / Giải mã Base64</h2>
+                    <div class="space-y-4">
+                        <textarea id="base64-input" rows="6" class="w-full bg-gray-700 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Nhập chuỗi văn bản hoặc Base64 vào đây..."></textarea>
+                        <div class="flex items-center justify-center space-x-4">
+                            <button id="encode-btn" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-md transition-colors">Mã hoá &darr;</button>
+                            <button id="decode-btn" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-md transition-colors">Giải mã &uarr;</button>
+                        </div>
+                        <textarea id="base64-output" rows="6" class="w-full bg-gray-700 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Kết quả sẽ hiển thị ở đây..." readonly></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 mt-12">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-400">
+            <p>&copy; 2025 Hộp Công Cụ. Phát triển bởi [Tên Của Bạn].</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize lucide icons
+        lucide.createIcons();
+
+        const toolModal = document.getElementById('tool-modal');
+        const toolContainer = document.getElementById('tool-container');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const toolCards = document.querySelectorAll('.tool-card');
+        const toolInterfaces = document.querySelectorAll('.tool-interface');
+        
+        // Show modal with the correct tool interface
+        toolCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const toolId = card.dataset.tool;
+                
+                // Hide all interfaces first
+                toolInterfaces.forEach(intf => intf.classList.add('hidden'));
+                
+                // Show the selected one
+                const activeInterface = document.getElementById(toolId);
+                if (activeInterface) {
+                    activeInterface.classList.remove('hidden');
+                    toolModal.classList.remove('hidden');
+                }
+            });
+        });
+
+        // Close modal function
+        function closeModal() {
+            toolModal.classList.add('hidden');
+        }
+        
+        closeModalButton.addEventListener('click', closeModal);
+        
+        // Close modal if clicking outside the content
+        toolModal.addEventListener('click', (event) => {
+            if (event.target === toolModal) {
+                closeModal();
+            }
+        });
+
+        // --- Tool Specific Logic ---
+
+        // 1. PNG to ICO
+        const pngUpload = document.getElementById('png-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+        const convertButton = document.getElementById('convert-button');
+
+        pngUpload.addEventListener('change', () => {
+            if (pngUpload.files.length > 0) {
+                fileNameDisplay.textContent = pngUpload.files[0].name;
+                convertButton.disabled = false;
+            } else {
+                fileNameDisplay.textContent = 'Chưa có file nào được chọn';
+                convertButton.disabled = true;
+            }
+        });
+
+        convertButton.addEventListener('click', () => {
+            // Đây là nơi bạn sẽ thêm logic chuyển đổi file.
+            // For now, it just shows an alert.
+            alert(`Bắt đầu chuyển đổi file: ${fileNameDisplay.textContent}`);
+            // Sau khi chuyển đổi thành công, bạn sẽ tạo ra một link để tải file ICO.
+        });
+
+        // 2. Base64 Decode/Encode
+        const base64Input = document.getElementById('base64-input');
+        const base64Output = document.getElementById('base64-output');
+        const encodeBtn = document.getElementById('encode-btn');
+        const decodeBtn = document.getElementById('decode-btn');
+
+        encodeBtn.addEventListener('click', () => {
+            try {
+                // btoa() encodes a string in Base64
+                base64Output.value = btoa(base64Input.value);
+            } catch (e) {
+                base64Output.value = 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
+            }
+        });
+
+        decodeBtn.addEventListener('click', () => {
+            try {
+                // atob() decodes a Base64 string
+                base64Output.value = atob(base64Input.value);
+            } catch (e) {
+                base64Output.value = 'Lỗi: Chuỗi Base64 không hợp lệ.';
+            }
+        });
+
+    </script>
+</body>
+</html>
+
