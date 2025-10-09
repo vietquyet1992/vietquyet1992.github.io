@@ -1,213 +1,393 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hộp Công Cụ Tiện Ích</title>
+    <title>Hộp công cụ của tôi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal/dist/bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Be Vietnam Pro', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
-        /* Simple transition for tool container */
-        #tool-modal-content {
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        .tool-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        #tool-modal.hidden #tool-modal-content {
-            transform: scale(0.95);
-            opacity: 0;
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .nav-link.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        textarea {
+            resize: vertical;
+        }
+        /* Loader animation */
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #4f46e5; /* Indigo */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-gray-800 shadow-md">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-cyan-400 flex items-center">
-                <i data-lucide="blocks" class="w-8 h-8 mr-3"></i>
-                Hộp Công Cụ
-            </h1>
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Hộp Công Cụ Của Tôi</h1>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-        <h2 class="text-4xl font-bold text-center mb-2">Các Công Cụ Tiện Ích</h2>
-        <p class="text-gray-400 text-center mb-12">Chọn một công cụ bên dưới để bắt đầu.</p>
-
-        <!-- Tool Grid -->
-        <div id="tool-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            
-            <!-- Tool 1: PNG to ICO -->
-            <div data-tool="png-to-ico" class="tool-card bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center text-center cursor-pointer transform hover:-translate-y-2 transition-transform duration-300">
-                <div class="bg-cyan-500/20 p-4 rounded-full mb-4">
-                    <i data-lucide="image-down" class="w-12 h-12 text-cyan-400"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">PNG sang ICO</h3>
-                <p class="text-gray-400">Chuyển đổi hình ảnh định dạng PNG sang file ICO cho website.</p>
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center space-x-2 sm:space-x-4 py-2 overflow-x-auto">
+                <a href="#" class="nav-link active text-sm sm:text-base font-medium px-3 py-2 rounded-md whitespace-nowrap" data-tool="png-to-ico">PNG to ICO</a>
+                <a href="#" class="nav-link text-sm sm:text-base font-medium px-3 py-2 rounded-md whitespace-nowrap" data-tool="base64">Base64 Multi-layer</a>
+                <a href="#" class="nav-link text-sm sm:text-base font-medium px-3 py-2 rounded-md whitespace-nowrap" data-tool="remove-bg">Tách nền ảnh</a>
             </div>
-
-            <!-- Tool 2: Base64 Decode -->
-            <div data-tool="base64-decode" class="tool-card bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center text-center cursor-pointer transform hover:-translate-y-2 transition-transform duration-300">
-                <div class="bg-cyan-500/20 p-4 rounded-full mb-4">
-                    <i data-lucide="binary" class="w-12 h-12 text-cyan-400"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Giải mã / Mã hoá Base64</h3>
-                <p class="text-gray-400">Mã hoá hoặc giải mã chuỗi văn bản Base64 một cách nhanh chóng.</p>
-            </div>
-
-            <!-- Add more tool cards here -->
-            <div class="bg-gray-800/50 border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center text-center">
-                <i data-lucide="plus-circle" class="w-12 h-12 text-gray-600 mb-4"></i>
-                <h3 class="text-xl font-bold text-gray-500">Công cụ tiếp theo</h3>
-                <p class="text-gray-600">Sắp ra mắt...</p>
-            </div>
-
         </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- PNG to ICO Converter Tool -->
+        <div id="tool-png-to-ico" class="tool-content">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg tool-card">
+                <h2 class="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">Chuyển đổi PNG sang ICO</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
+                <div class="space-y-4">
+                    <input type="file" id="png-file-input" accept="image/png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-900 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-800 cursor-pointer"/>
+                    <div id="image-preview-container" class="mt-4 hidden">
+                         <p class="text-sm font-medium mb-2">Ảnh xem trước:</p>
+                         <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200 dark:border-gray-700" />
+                    </div>
+                    <div>
+                        <label for="ico-size-select" class="block font-medium mb-2">Chọn kích thước:</label>
+                        <select id="ico-size-select" class="w-full sm:w-auto p-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="16">16x16 pixels</option>
+                            <option value="32" selected>32x32 pixels</option>
+                            <option value="48">48x48 pixels</option>
+                            <option value="64">64x64 pixels</option>
+                            <option value="128">128x128 pixels</option>
+                        </select>
+                    </div>
+                    <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Chuyển đổi & Tải xuống</button>
+                    <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base64 Encoder/Decoder Tool -->
+        <div id="tool-base64" class="tool-content hidden">
+            <!-- Content for Base64 tool remains the same -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg tool-card">
+                <h2 class="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">Mã hóa & Giải mã Base64 nhiều lớp</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Dán văn bản của bạn vào ô bên dưới. Chức năng mã hóa sẽ thực hiện một lần. Chức năng giải mã sẽ tự động giải mã cho đến khi chuỗi không còn là Base64 hợp lệ.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label for="base64-input" class="font-medium">Đầu vào:</label>
+                        <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label for="base64-output" class="font-medium">Kết quả:</label>
+                        <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg cursor-not-allowed"></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                    <button id="base64-encode-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">Mã hóa (Encode)</button>
+                    <button id="base64-decode-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">Giải mã nhiều lớp (Decode)</button>
+                    <button id="base64-copy-btn" class="sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">Sao chép kết quả</button>
+                </div>
+                <div id="base64-status" class="text-sm mt-4"></div>
+            </div>
+        </div>
+        
+        <!-- Background Remover Tool -->
+        <div id="tool-remove-bg" class="tool-content hidden">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg tool-card">
+                <h2 class="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">Tách nền ảnh</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Tải lên một hình ảnh để tự động xóa nền. Toàn bộ quá trình xử lý diễn ra trên trình duyệt của bạn, đảm bảo riêng tư.</p>
+                <div class="space-y-4">
+                    <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-900 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-800 cursor-pointer"/>
+                    
+                    <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+                        <div>
+                            <p class="text-sm font-medium mb-2">Ảnh gốc:</p>
+                            <img id="bg-remove-original" class="w-full rounded-lg border border-gray-200 dark:border-gray-700"/>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium mb-2">Đã tách nền:</p>
+                            <div class="w-full aspect-video rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center bg-gray-100 dark:bg-gray-700" style="background-image: repeating-conic-gradient(#d1d5db 0 25%, #e5e7eb 0 50%); background-size: 16px 16px;">
+                                 <img id="bg-remove-result" class="hidden max-w-full max-h-full"/>
+                                 <div id="bg-remove-loader" class="loader hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <button id="bg-remove-process-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Tách nền</button>
+                        <button id="bg-remove-download-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Tải xuống kết quả</button>
+                    </div>
+                    <div id="bg-remove-status" class="text-sm text-gray-500 dark:text-gray-400 mt-2 h-5"></div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Modal for Tools -->
-    <div id="tool-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div id="tool-modal-content" class="bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl relative transform opacity-100 scale-100">
-            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-white">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <div id="tool-container" class="p-8">
-                
-                <!-- PNG to ICO Interface -->
-                <div id="png-to-ico" class="tool-interface hidden">
-                    <h2 class="text-3xl font-bold mb-6 text-cyan-400">Chuyển đổi PNG sang ICO</h2>
-                    <div class="space-y-6">
-                        <p class="text-gray-300">Tải lên file PNG của bạn. Công cụ sẽ tự động chuyển đổi sang định dạng ICO.</p>
-                        <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
-                            <i data-lucide="upload-cloud" class="w-16 h-16 mx-auto text-gray-500 mb-4"></i>
-                            <input type="file" id="png-upload" class="hidden" accept="image/png">
-                            <label for="png-upload" class="cursor-pointer bg-cyan-500 text-white font-bold py-2 px-4 rounded-md hover:bg-cyan-600">Chọn File PNG</label>
-                            <p id="file-name" class="text-gray-400 mt-2">Chưa có file nào được chọn</p>
-                        </div>
-                        <button id="convert-button" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed" disabled>Chuyển đổi</button>
-                    </div>
-                </div>
-
-                <!-- Base64 Decode/Encode Interface -->
-                <div id="base64-decode" class="tool-interface hidden">
-                    <h2 class="text-3xl font-bold mb-6 text-cyan-400">Mã hoá / Giải mã Base64</h2>
-                    <div class="space-y-4">
-                        <textarea id="base64-input" rows="6" class="w-full bg-gray-700 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Nhập chuỗi văn bản hoặc Base64 vào đây..."></textarea>
-                        <div class="flex items-center justify-center space-x-4">
-                            <button id="encode-btn" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-md transition-colors">Mã hoá &darr;</button>
-                            <button id="decode-btn" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-md transition-colors">Giải mã &uarr;</button>
-                        </div>
-                        <textarea id="base64-output" rows="6" class="w-full bg-gray-700 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Kết quả sẽ hiển thị ở đây..." readonly></textarea>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
     <!-- Footer -->
-    <footer class="bg-gray-800 mt-12">
-        <div class="container mx-auto px-6 py-6 text-center text-gray-400">
-            <p>&copy; 2025 Hộp Công Cụ. Phát triển bởi [Tên Của Bạn].</p>
+    <footer class="bg-white dark:bg-gray-800 mt-8 py-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>Được tạo ra với tình yêu ❤️. Sẽ có thêm nhiều công cụ sớm.</p>
         </div>
     </footer>
 
     <script>
-        // Initialize lucide icons
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Logic chuyển đổi tab công cụ ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const toolContents = document.querySelectorAll('.tool-content');
 
-        const toolModal = document.getElementById('tool-modal');
-        const toolContainer = document.getElementById('tool-container');
-        const closeModalButton = document.getElementById('close-modal-button');
-        const toolCards = document.querySelectorAll('.tool-card');
-        const toolInterfaces = document.querySelectorAll('.tool-interface');
-        
-        // Show modal with the correct tool interface
-        toolCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const toolId = card.dataset.tool;
-                
-                // Hide all interfaces first
-                toolInterfaces.forEach(intf => intf.classList.add('hidden'));
-                
-                // Show the selected one
-                const activeInterface = document.getElementById(toolId);
-                if (activeInterface) {
-                    activeInterface.classList.remove('hidden');
-                    toolModal.classList.remove('hidden');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const toolId = link.dataset.tool;
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    link.classList.add('active');
+                    toolContents.forEach(content => {
+                        content.id === `tool-${toolId}` ? content.classList.remove('hidden') : content.classList.add('hidden');
+                    });
+                });
+            });
+
+            // --- Logic công cụ PNG to ICO ---
+            const pngFileInput = document.getElementById('png-file-input');
+            const convertBtn = document.getElementById('convert-to-ico-btn');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            const imagePreview = document.getElementById('image-preview');
+            const icoStatus = document.getElementById('ico-status');
+            const icoSizeSelect = document.getElementById('ico-size-select');
+
+            pngFileInput.addEventListener('change', () => {
+                const file = pngFileInput.files[0];
+                if (file) {
+                    convertBtn.disabled = false;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreviewContainer.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    convertBtn.disabled = true;
+                    imagePreviewContainer.classList.add('hidden');
                 }
             });
-        });
 
-        // Close modal function
-        function closeModal() {
-            toolModal.classList.add('hidden');
-        }
-        
-        closeModalButton.addEventListener('click', closeModal);
-        
-        // Close modal if clicking outside the content
-        toolModal.addEventListener('click', (event) => {
-            if (event.target === toolModal) {
-                closeModal();
+            convertBtn.addEventListener('click', () => {
+                const file = pngFileInput.files[0];
+                if (!file) return;
+                const size = parseInt(icoSizeSelect.value, 10);
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = size;
+                        canvas.height = size;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, size, size);
+                        
+                        canvas.toBlob(blob => {
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = 'favicon.ico';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            icoStatus.textContent = `Tệp favicon.ico (${size}x${size}) đã được tải xuống!`;
+                            setTimeout(() => { icoStatus.textContent = '' }, 3000);
+                        }, 'image/png');
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // --- Logic công cụ Base64 ---
+            const base64Input = document.getElementById('base64-input');
+            const base64Output = document.getElementById('base64-output');
+            const encodeBtn = document.getElementById('base64-encode-btn');
+            const decodeBtn = document.getElementById('base64-decode-btn');
+            const copyBtn = document.getElementById('base64-copy-btn');
+            const base64Status = document.getElementById('base64-status');
+            
+            function safeBtoa(str) {
+                try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; }
             }
-        });
-
-        // --- Tool Specific Logic ---
-
-        // 1. PNG to ICO
-        const pngUpload = document.getElementById('png-upload');
-        const fileNameDisplay = document.getElementById('file-name');
-        const convertButton = document.getElementById('convert-button');
-
-        pngUpload.addEventListener('change', () => {
-            if (pngUpload.files.length > 0) {
-                fileNameDisplay.textContent = pngUpload.files[0].name;
-                convertButton.disabled = false;
-            } else {
-                fileNameDisplay.textContent = 'Chưa có file nào được chọn';
-                convertButton.disabled = true;
+            
+            function safeAtob(str) {
+                try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; }
             }
+
+            encodeBtn.addEventListener('click', () => { /* ... (same as before) ... */
+                const input = base64Input.value;
+                if (!input) { base64Output.value = ''; return; }
+                const encoded = safeBtoa(input);
+                 if (encoded) {
+                    base64Output.value = encoded;
+                    base64Status.textContent = 'Mã hóa thành công!';
+                } else {
+                    base64Output.value = 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
+                    base64Status.textContent = 'Mã hóa thất bại.';
+                }
+                setTimeout(() => { base64Status.textContent = '' }, 3000);
+            });
+
+            decodeBtn.addEventListener('click', () => { /* ... (same as before) ... */
+                let currentString = base64Input.value;
+                if (!currentString) { base64Output.value = ''; return; }
+                let decoded;
+                let decodeCount = 0;
+                let lastValidString = currentString;
+                while (true) {
+                    decoded = safeAtob(currentString);
+                    if (decoded !== null && decoded !== currentString) {
+                        currentString = decoded;
+                        lastValidString = decoded;
+                        decodeCount++;
+                    } else { break; }
+                }
+                base64Output.value = lastValidString;
+                if (decodeCount > 0) {
+                    base64Status.textContent = `Giải mã thành công qua ${decodeCount} lớp.`;
+                } else {
+                    base64Status.textContent = 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
+                }
+                setTimeout(() => { base64Status.textContent = '' }, 4000);
+            });
+            
+            copyBtn.addEventListener('click', () => { /* ... (same as before) ... */
+                if (!base64Output.value) return;
+                const textarea = document.createElement('textarea');
+                textarea.value = base64Output.value;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    base64Status.textContent = 'Đã sao chép kết quả!';
+                } catch (err) {
+                    base64Status.textContent = 'Không thể sao chép!';
+                }
+                document.body.removeChild(textarea);
+                setTimeout(() => { base64Status.textContent = '' }, 3000);
+            });
+
+            // --- Logic công cụ Tách nền ---
+            const bgRemoveInput = document.getElementById('bg-remove-input');
+            const bgRemovePreviews = document.getElementById('bg-remove-previews');
+            const bgRemoveOriginal = document.getElementById('bg-remove-original');
+            const bgRemoveResult = document.getElementById('bg-remove-result');
+            const bgRemoveLoader = document.getElementById('bg-remove-loader');
+            const bgRemoveProcessBtn = document.getElementById('bg-remove-process-btn');
+            const bgRemoveDownloadBtn = document.getElementById('bg-remove-download-btn');
+            const bgRemoveStatus = document.getElementById('bg-remove-status');
+            let resultBlob = null;
+
+            bgRemoveInput.addEventListener('change', () => {
+                const file = bgRemoveInput.files[0];
+                if (file) {
+                    resultBlob = null;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        bgRemoveOriginal.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    bgRemovePreviews.classList.remove('hidden');
+                    bgRemoveResult.classList.add('hidden');
+                    bgRemoveLoader.classList.add('hidden');
+                    bgRemoveProcessBtn.disabled = false;
+                    bgRemoveDownloadBtn.disabled = true;
+                    bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
+                }
+            });
+
+            bgRemoveProcessBtn.addEventListener('click', async () => {
+                const file = bgRemoveInput.files[0];
+                if (!file) return;
+
+                bgRemoveLoader.classList.remove('hidden');
+                bgRemoveResult.classList.add('hidden');
+                bgRemoveStatus.textContent = 'Đang khởi tạo...';
+                bgRemoveProcessBtn.disabled = true;
+                bgRemoveDownloadBtn.disabled = true;
+
+                if (typeof removeBackground !== 'function') {
+                    bgRemoveStatus.textContent = 'Lỗi: Thư viện tách nền chưa tải xong. Vui lòng làm mới trang và thử lại.';
+                    bgRemoveLoader.classList.add('hidden');
+                    bgRemoveProcessBtn.disabled = false;
+                    return;
+                }
+
+                try {
+                    resultBlob = await removeBackground(file, {
+                        progress: (key, current, total) => {
+                            const [action, model] = key.split(':');
+                            const progress = ((current / total) * 100).toFixed(0);
+                            let statusText = 'Đang xử lý...';
+                            if (action === 'compute') statusText = `Đang phân tích ảnh: ${progress}%`;
+                            if (action === 'download') statusText = `Đang tải model (${model}): ${progress}%`;
+                            
+                            bgRemoveStatus.textContent = statusText;
+                        }
+                    });
+                    bgRemoveResult.src = URL.createObjectURL(resultBlob);
+                    bgRemoveResult.classList.remove('hidden');
+                    bgRemoveDownloadBtn.disabled = false;
+                    bgRemoveStatus.textContent = 'Tách nền thành công!';
+                } catch (error) {
+                    console.error('Background removal error:', error);
+                    let errorMessage = 'Đã xảy ra lỗi khi tách nền.';
+                    if (error && error.message) {
+                        errorMessage = `Lỗi: ${error.message}. Vui lòng thử lại với một ảnh khác có chủ thể rõ ràng hơn.`;
+                    } else {
+                        errorMessage += ' Vui lòng kiểm tra kết nối mạng hoặc thử lại với một ảnh khác.';
+                    }
+                    bgRemoveStatus.textContent = errorMessage;
+                } finally {
+                    bgRemoveLoader.classList.add('hidden');
+                    bgRemoveProcessBtn.disabled = false;
+                }
+            });
+
+            bgRemoveDownloadBtn.addEventListener('click', () => {
+                if (!resultBlob) return;
+                const originalFile = bgRemoveInput.files[0];
+                const fileName = originalFile.name.replace(/\.[^/.]+$/, "") + '-no-bg.png';
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(resultBlob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
         });
-
-        convertButton.addEventListener('click', () => {
-            // Đây là nơi bạn sẽ thêm logic chuyển đổi file.
-            // For now, it just shows an alert.
-            alert(`Bắt đầu chuyển đổi file: ${fileNameDisplay.textContent}`);
-            // Sau khi chuyển đổi thành công, bạn sẽ tạo ra một link để tải file ICO.
-        });
-
-        // 2. Base64 Decode/Encode
-        const base64Input = document.getElementById('base64-input');
-        const base64Output = document.getElementById('base64-output');
-        const encodeBtn = document.getElementById('encode-btn');
-        const decodeBtn = document.getElementById('decode-btn');
-
-        encodeBtn.addEventListener('click', () => {
-            try {
-                // btoa() encodes a string in Base64
-                base64Output.value = btoa(base64Input.value);
-            } catch (e) {
-                base64Output.value = 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
-            }
-        });
-
-        decodeBtn.addEventListener('click', () => {
-            try {
-                // atob() decodes a Base64 string
-                base64Output.value = atob(base64Input.value);
-            } catch (e) {
-                base64Output.value = 'Lỗi: Chuỗi Base64 không hợp lệ.';
-            }
-        });
-
     </script>
 </body>
 </html>
+
 
