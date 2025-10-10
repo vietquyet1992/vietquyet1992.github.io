@@ -269,7 +269,7 @@
             });
 
             // --- BG Removal Logic (Dùng Photoroom API) ---
-            const PHOTOROOM_API_KEY = 'sk_pr_default_584d54ce9b1e1056dd878af3c001749174fb5106';
+            
             const bgRemoveInput = document.getElementById('bg-remove-input');
             const bgRemovePreviews = document.getElementById('bg-remove-previews');
             const bgRemoveOriginal = document.getElementById('bg-remove-original');
@@ -313,9 +313,9 @@
                 const formData = new FormData();
                 formData.append('image_file', file);
                 try {
-                    const response = await fetch('https://sdk.photoroom.com/v1/segment', {
+                    const response = await fetch('/api/photoroom', { 
                         method: 'POST',
-                        headers: { 'x-api-key': PHOTOROOM_API_KEY },
+                        // Không cần headers ở đây nữa, vì API key đã ở trên server
                         body: formData,
                     });
                     if (!response.ok) {
