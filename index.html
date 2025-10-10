@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hộp công cụ của tôi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal/dist/bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        // Apply theme immediately to avoid FOUC (Flash of Unstyled Content)
+        // Apply theme immediately to avoid FOUC
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
@@ -18,7 +22,6 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* New warm, soft yellow/orange background for light theme */
             background: linear-gradient(120deg, #fffbeb 0%, #fff7ed 100%);
             background-size: 400% 400%;
             animation: gradientBG 20s ease infinite;
@@ -36,7 +39,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Enhanced Glassmorphism effect */
         .glass-effect {
             background: rgba(255, 255, 255, 0.6);
             border-radius: 16px;
@@ -46,45 +48,30 @@
             border: 1px solid rgba(255, 255, 255, 0.8);
         }
         .dark .glass-effect {
-            background: rgba(30, 41, 59, 0.4); /* slate-800 with alpha */
+            background: rgba(30, 41, 59, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .tool-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .tool-card:hover {
+        .tool-card:hover, .app-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
         }
-        /* New accent color: Amber (Warm Yellow/Orange) */
         .nav-link.active {
-            background-color: #f59e0b; /* amber-500 */
+            background-color: #f59e0b;
             color: white;
             box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
         }
-        textarea {
-            resize: vertical;
-        }
         
-        /* BUG FIX: Stacking context for tool content */
-        main {
-            display: grid;
-        }
-        .tool-content {
-            grid-area: 1 / 1;
-            transition: opacity 0.4s ease-in-out;
-        }
+        main { display: grid; }
+        .tool-content { grid-area: 1 / 1; transition: opacity 0.4s ease-in-out; }
         
-        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: rgba(245, 158, 11, 0.5); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
         .dark ::-webkit-scrollbar-thumb { background-color: rgba(245, 158, 11, 0.5); }
 
-        /* Loader animation */
         .loader {
             border: 4px solid rgba(0,0,0,0.1);
-            border-top: 4px solid #f59e0b; /* amber-500 */
+            border-top: 4px solid #f59e0b;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -103,7 +90,7 @@
         <aside class="w-64 min-h-screen p-4 flex flex-col glass-effect">
             <div class="text-center mb-10">
                 <h1 class="text-2xl font-bold text-amber-600 dark:text-amber-400">My Toolbox</h1>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Công cụ tiện ích</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Công cụ & Ứng dụng</p>
             </div>
             <nav class="flex flex-col space-y-2">
                  <a href="#" class="nav-link active group flex items-center px-4 py-3 rounded-lg transition-all duration-200" data-tool="remove-bg">
@@ -118,12 +105,23 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm12 3a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h2a1 1 0 011 1v1h4V6a1 1 0 011-1h2a1 1 0 011 1v1z" clip-rule="evenodd" /></svg>
                     <span class="font-medium">Base64 Multi-layer</span>
                 </a>
+                <a href="#" class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-apps">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    <span class="font-medium">My Apps</span>
+                </a>
             </nav>
-            <div class="mt-auto p-4">
-                <button id="theme-toggle" class="w-full flex items-center justify-center p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
-                    <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                </button>
+            <div class="mt-auto">
+                <div class="p-4">
+                    <button id="theme-toggle" class="w-full flex items-center justify-center p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div class="text-center pt-4 border-t border-gray-300/50 dark:border-gray-600/50">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        &copy; 2025 Tiêu Viết Quyết
+                    </p>
+                </div>
             </div>
         </aside>
 
@@ -209,60 +207,162 @@
                 </div>
             </div>
             
+            <!-- My Apps Content -->
+            <div id="tool-my-apps" class="tool-content hidden opacity-0">
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Ứng dụng của tôi</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
+                    <div id="apps-list" class="space-y-6">
+                        <div id="apps-loader" class="flex justify-center items-center py-8">
+                            <div class="loader"></div>
+                        </div>
+                        <p id="apps-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có ứng dụng nào được thêm.</p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Logic Theme Toggle ---
+            // --- Firebase Initialization ---
+            const firebaseConfig = {
+                apiKey: "AIzaSyCG_OqnwjNTg3kfCUmEkxo-qrJTMMsyhqk",
+                authDomain: "my-toolbox-downloads.firebaseapp.com",
+                projectId: "my-toolbox-downloads",
+                storageBucket: "my-toolbox-downloads.appspot.com",
+                messagingSenderId: "723884147235",
+                appId: "1:723884147235:web:d08241abfd477d91c2e796"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            // --- Theme Toggle Logic ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
-
-            // Show correct icon on page load
             if (document.documentElement.classList.contains('dark')) {
                 lightIcon.classList.remove('hidden');
             } else {
                 darkIcon.classList.remove('hidden');
             }
-
             themeToggleBtn.addEventListener('click', () => {
                 darkIcon.classList.toggle('hidden');
                 lightIcon.classList.toggle('hidden');
                 document.documentElement.classList.toggle('dark');
-                if (document.documentElement.classList.contains('dark')) {
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    localStorage.setItem('theme', 'light');
-                }
+                localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // --- Logic chuyển đổi tab công cụ ---
+            // --- Navigation Logic ---
             const navLinks = document.querySelectorAll('.nav-link');
             const toolContents = document.querySelectorAll('.tool-content');
-
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const toolId = link.dataset.tool;
                     navLinks.forEach(nav => nav.classList.remove('active'));
                     link.classList.add('active');
-
                     toolContents.forEach(content => {
                         const isTarget = content.id === `tool-${toolId}`;
                         if (isTarget) {
                             content.classList.remove('hidden');
-                            setTimeout(() => content.classList.remove('opacity-0'), 10); // Fade in
+                            setTimeout(() => content.classList.remove('opacity-0'), 10);
                         } else {
                             content.classList.add('opacity-0');
-                            setTimeout(() => content.classList.add('hidden'), 400); // Hide after fade out
+                            setTimeout(() => content.classList.add('hidden'), 400);
                         }
                     });
                 });
             });
 
-            // --- Logic công cụ PNG to ICO ---
-            // (The existing JavaScript logic for all tools remains unchanged)
+            // --- FULL LOGIC FOR OTHER TOOLS ---
+            // --- BG Removal Logic ---
+            const bgRemoveInput = document.getElementById('bg-remove-input');
+            const bgRemovePreviews = document.getElementById('bg-remove-previews');
+            const bgRemoveOriginal = document.getElementById('bg-remove-original');
+            const bgRemoveResult = document.getElementById('bg-remove-result');
+            const bgRemoveLoader = document.getElementById('bg-remove-loader');
+            const bgRemoveProcessBtn = document.getElementById('bg-remove-process-btn');
+            const bgRemoveDownloadBtn = document.getElementById('bg-remove-download-btn');
+            const bgRemoveStatus = document.getElementById('bg-remove-status');
+            let bgRemovalLibraryLoaded = false;
+            let resultBlob = null;
+            
+            function loadBgRemovalLibrary() {
+                if (typeof removeBackground === 'function') {
+                    bgRemovalLibraryLoaded = true;
+                    bgRemoveStatus.textContent = 'Thư viện đã sẵn sàng.';
+                    if (bgRemoveInput.files[0]) {
+                        bgRemoveProcessBtn.disabled = false;
+                    }
+                    return;
+                }
+                setTimeout(loadBgRemovalLibrary, 200);
+            }
+
+            bgRemoveInput.addEventListener('change', () => {
+                const file = bgRemoveInput.files[0];
+                if (file) {
+                    resultBlob = null;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        bgRemoveOriginal.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    bgRemovePreviews.classList.remove('hidden');
+                    bgRemoveResult.classList.add('hidden');
+                    bgRemoveLoader.classList.add('hidden');
+                    bgRemoveDownloadBtn.disabled = true;
+
+                    if (!bgRemovalLibraryLoaded) {
+                        bgRemoveStatus.textContent = 'Đang khởi tạo thư viện, vui lòng đợi...';
+                        bgRemoveProcessBtn.disabled = true;
+                        loadBgRemovalLibrary();
+                    } else {
+                        bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
+                        bgRemoveProcessBtn.disabled = false;
+                    }
+                }
+            });
+
+            bgRemoveProcessBtn.addEventListener('click', async () => {
+                const file = bgRemoveInput.files[0];
+                if (!file || !bgRemovalLibraryLoaded) return;
+
+                bgRemoveLoader.classList.remove('hidden');
+                bgRemoveResult.classList.add('hidden');
+                bgRemoveStatus.textContent = 'Đang xử lý, quá trình này có thể mất một lúc...';
+                bgRemoveProcessBtn.disabled = true;
+                bgRemoveDownloadBtn.disabled = true;
+
+                try {
+                    resultBlob = await removeBackground(file);
+                    const url = URL.createObjectURL(resultBlob);
+                    bgRemoveResult.src = url;
+                    bgRemoveResult.classList.remove('hidden');
+                    bgRemoveStatus.textContent = 'Tách nền thành công!';
+                    bgRemoveDownloadBtn.disabled = false;
+                } catch (error) {
+                    console.error("Background removal error:", error);
+                    bgRemoveStatus.textContent = 'Lỗi: Không thể xử lý hình ảnh này.';
+                } finally {
+                    bgRemoveLoader.classList.add('hidden');
+                    bgRemoveProcessBtn.disabled = false;
+                }
+            });
+
+            bgRemoveDownloadBtn.addEventListener('click', () => {
+                if (resultBlob) {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(resultBlob);
+                    link.download = 'background-removed.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+
+            // --- PNG to ICO Logic ---
             const pngFileInput = document.getElementById('png-file-input');
             const convertBtn = document.getElementById('convert-to-ico-btn');
             const imagePreviewContainer = document.getElementById('image-preview-container');
@@ -286,7 +386,6 @@
                 }
             });
 
-            // CORRECT ICO CONVERSION LOGIC
             convertBtn.addEventListener('click', () => {
                 const file = pngFileInput.files[0];
                 if (!file) return;
@@ -296,18 +395,16 @@
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
-                    img.onload = async () => {
+                    img.onload = () => {
                         const canvas = document.createElement('canvas');
                         canvas.width = size;
                         canvas.height = size;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, size, size);
-
-                        // This function now creates a TRUE ICO file blob
-                        const icoBlob = await createIcoBlob(canvas);
-
+                        const icoData = createIco(ctx, size);
+                        const blob = new Blob([icoData], { type: 'image/x-icon' });
                         const link = document.createElement('a');
-                        link.href = URL.createObjectURL(icoBlob);
+                        link.href = URL.createObjectURL(blob);
                         link.download = 'favicon.ico';
                         document.body.appendChild(link);
                         link.click();
@@ -319,71 +416,64 @@
                 };
                 reader.readAsDataURL(file);
             });
-            
-            async function createIcoBlob(canvas) {
-                const pngDataUrl = canvas.toDataURL('image/png');
-                const response = await fetch(pngDataUrl);
-                const pngData = await response.arrayBuffer();
 
-                const header = new ArrayBuffer(6);
-                const headerView = new DataView(header);
-                headerView.setUint16(0, 0, true); // Reserved, must be 0
-                headerView.setUint16(2, 1, true); // Image type (1 for ICO)
-                headerView.setUint16(4, 1, true); // Number of images
-
-                const imageEntry = new ArrayBuffer(16);
-                const imageEntryView = new DataView(imageEntry);
-                imageEntryView.setUint8(0, canvas.width); // Width
-                imageEntryView.setUint8(1, canvas.height); // Height
-                imageEntryView.setUint8(2, 0); // Color palette count
-                imageEntryView.setUint8(3, 0); // Reserved, should be 0
-                imageEntryView.setUint16(4, 1, true); // Color planes
-                imageEntryView.setUint16(6, 32, true); // Bits per pixel
-                imageEntryView.setUint32(8, pngData.byteLength, true); // Size of image data
-                imageEntryView.setUint32(12, 22, true); // Offset of image data (6 for header + 16 for entry)
-
-                return new Blob([header, imageEntry, pngData], { type: 'image/x-icon' });
+            function createIco(ctx, size) {
+                const imageData = ctx.getImageData(0, 0, size, size).data;
+                const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
+                const view = new DataView(buffer);
+                view.setUint16(0, 0, true); view.setUint16(2, 1, true); view.setUint16(4, 1, true);
+                view.setUint8(6, size); view.setUint8(7, size); view.setUint8(8, 0); view.setUint8(9, 0);
+                view.setUint16(10, 1, true); view.setUint16(12, 32, true);
+                view.setUint32(14, 40 + (size * size * 4), true); view.setUint32(18, 22, true);
+                let offset = 22;
+                view.setUint32(offset, 40, true); offset += 4;
+                view.setUint32(offset, size, true); offset += 4;
+                view.setUint32(offset, size * 2, true); offset += 4;
+                view.setUint16(offset, 1, true); offset += 2;
+                view.setUint16(offset, 32, true); offset += 2;
+                view.setUint32(offset, 0, true); offset += 4;
+                view.setUint32(offset, size * size * 4, true); offset += 4;
+                view.setUint32(offset, 0, true); offset += 4;
+                view.setUint32(offset, 0, true); offset += 4;
+                view.setUint32(offset, 0, true); offset += 4;
+                view.setUint32(offset, 0, true); offset += 4;
+                for (let y = size - 1; y >= 0; y--) {
+                    for (let x = 0; x < size; x++) {
+                        const i = (y * size + x) * 4;
+                        view.setUint8(offset++, imageData[i + 2]); view.setUint8(offset++, imageData[i + 1]);
+                        view.setUint8(offset++, imageData[i]); view.setUint8(offset++, imageData[i + 3]);
+                    }
+                }
+                return new Uint8Array(buffer);
             }
 
-
-            // --- Logic công cụ Base64 ---
+            // --- Base64 Logic ---
             const base64Input = document.getElementById('base64-input');
             const base64Output = document.getElementById('base64-output');
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
             const copyBtn = document.getElementById('base64-copy-btn');
             const base64Status = document.getElementById('base64-status');
-            
-            function safeBtoa(str) {
-                try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; }
-            }
-            
-            function safeAtob(str) {
-                try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; }
-            }
+
+            function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
+            function safeAtob(str) { try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; } }
 
             encodeBtn.addEventListener('click', () => {
                 const input = base64Input.value;
                 if (!input) { base64Output.value = ''; return; }
                 const encoded = safeBtoa(input);
-                 if (encoded) {
-                    base64Output.value = encoded;
-                    base64Status.textContent = 'Mã hóa thành công!';
-                } else {
-                    base64Output.value = 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
-                    base64Status.textContent = 'Mã hóa thất bại.';
-                }
+                base64Output.value = encoded ? encoded : 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
+                base64Status.textContent = encoded ? 'Mã hóa thành công!' : 'Mã hóa thất bại.';
                 setTimeout(() => { base64Status.textContent = '' }, 3000);
             });
 
             decodeBtn.addEventListener('click', () => {
                 let currentString = base64Input.value;
                 if (!currentString) { base64Output.value = ''; return; }
-                let decoded;
                 let decodeCount = 0;
                 let lastValidString = currentString;
                 while (true) {
-                    decoded = safeAtob(currentString);
+                    const decoded = safeAtob(currentString);
                     if (decoded !== null && decoded !== currentString) {
                         currentString = decoded;
                         lastValidString = decoded;
@@ -391,149 +481,93 @@
                     } else { break; }
                 }
                 base64Output.value = lastValidString;
-                if (decodeCount > 0) {
-                    base64Status.textContent = `Giải mã thành công qua ${decodeCount} lớp.`;
-                } else {
-                    base64Status.textContent = 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
-                }
+                base64Status.textContent = decodeCount > 0 ? `Giải mã thành công qua ${decodeCount} lớp.` : 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
                 setTimeout(() => { base64Status.textContent = '' }, 4000);
             });
-            
+
             copyBtn.addEventListener('click', () => {
                 if (!base64Output.value) return;
-                const textarea = document.createElement('textarea');
-                textarea.value = base64Output.value;
-                document.body.appendChild(textarea);
-                textarea.select();
-                try {
-                    document.execCommand('copy');
+                navigator.clipboard.writeText(base64Output.value).then(() => {
                     base64Status.textContent = 'Đã sao chép kết quả!';
-                } catch (err) {
+                }, () => {
                     base64Status.textContent = 'Không thể sao chép!';
-                }
-                document.body.removeChild(textarea);
+                });
                 setTimeout(() => { base64Status.textContent = '' }, 3000);
             });
 
-            // --- Logic công cụ Tách nền ---
-            const bgRemoveInput = document.getElementById('bg-remove-input');
-            const bgRemovePreviews = document.getElementById('bg-remove-previews');
-            const bgRemoveOriginal = document.getElementById('bg-remove-original');
-            const bgRemoveResult = document.getElementById('bg-remove-result');
-            const bgRemoveLoader = document.getElementById('bg-remove-loader');
-            const bgRemoveProcessBtn = document.getElementById('bg-remove-process-btn');
-            const bgRemoveDownloadBtn = document.getElementById('bg-remove-download-btn');
-            const bgRemoveStatus = document.getElementById('bg-remove-status');
-            let resultBlob = null;
-            let isBgRemovalLibReady = false;
 
-            // NEW: Smart library loader
-            function initializeBgRemover() {
-                bgRemoveStatus.textContent = 'Đang khởi tạo thư viện...';
-                
-                const checkInterval = setInterval(() => {
-                    if (typeof window.removeBackground === 'function') {
-                        clearInterval(checkInterval);
-                        isBgRemovalLibReady = true;
-                        // If a file is already selected by the user, update status and enable button
-                        if (bgRemoveInput.files.length > 0) {
-                            bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
-                            bgRemoveProcessBtn.disabled = false;
-                        } else {
-                            bgRemoveStatus.textContent = 'Vui lòng chọn một ảnh để bắt đầu.';
+            // --- My Apps Logic ---
+            const appsListContainer = document.getElementById('apps-list');
+            const appsLoader = document.getElementById('apps-loader');
+            const appsEmptyState = document.getElementById('apps-empty-state');
+            db.collection("my_apps").onSnapshot((querySnapshot) => {
+                appsLoader.classList.add('hidden');
+                appsListContainer.innerHTML = '';
+                appsListContainer.appendChild(appsLoader);
+                appsListContainer.appendChild(appsEmptyState);
+
+                if (querySnapshot.empty) {
+                    appsEmptyState.classList.remove('hidden');
+                } else {
+                    appsEmptyState.classList.add('hidden');
+                    querySnapshot.forEach((doc) => {
+                        const app = doc.data();
+                        const appId = doc.id;
+                        let iconHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`;
+                        if (app.iconUrl && app.iconUrl.trim() !== '') {
+                            // Make the image fill the container for better visibility
+                            iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
                         }
-                    }
-                }, 200);
-
-                // Add a timeout to prevent infinite loop if CDN fails
-                setTimeout(() => {
-                    if (!isBgRemovalLibReady) {
-                        clearInterval(checkInterval);
-                        bgRemoveStatus.textContent = 'Lỗi: Không thể tải thư viện. Vui lòng làm mới trang.';
-                    }
-                }, 20000); // 20-second timeout
-            }
-
-            initializeBgRemover(); // Start the loader
-
-
-            bgRemoveInput.addEventListener('change', () => {
-                const file = bgRemoveInput.files[0];
-                if (file) {
-                    resultBlob = null;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        bgRemoveOriginal.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                    bgRemovePreviews.classList.remove('hidden');
-                    bgRemoveResult.classList.add('hidden');
-                    bgRemoveLoader.classList.add('hidden');
-                    bgRemoveDownloadBtn.disabled = true;
-
-                    // Only enable the button if the library is ready
-                    if (isBgRemovalLibReady) {
-                        bgRemoveProcessBtn.disabled = false;
-                        bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
-                    } else {
-                        bgRemoveProcessBtn.disabled = true;
-                        bgRemoveStatus.textContent = 'Đang tải thư viện, vui lòng đợi...';
-                    }
-                }
-            });
-
-            bgRemoveProcessBtn.addEventListener('click', async () => {
-                // The button is only clickable if the library is ready, so no need for the old check
-                const file = bgRemoveInput.files[0];
-                if (!file) return;
-
-                bgRemoveLoader.classList.remove('hidden');
-                bgRemoveResult.classList.add('hidden');
-                bgRemoveStatus.textContent = 'Đang khởi tạo...';
-                bgRemoveProcessBtn.disabled = true;
-                bgRemoveDownloadBtn.disabled = true;
-
-                try {
-                    resultBlob = await window.removeBackground(file, {
-                        progress: (key, current, total) => {
-                            const [action, model] = key.split(':');
-                            const progress = ((current / total) * 100).toFixed(0);
-                            let statusText = 'Đang xử lý...';
-                            if (action === 'compute') statusText = `Đang phân tích ảnh: ${progress}%`;
-                            if (action === 'download') statusText = `Đang tải model (${model}): ${progress}%`;
-                            bgRemoveStatus.textContent = statusText;
-                        }
+                        const appCardHTML = `
+                            <div class="app-card bg-white/50 dark:bg-slate-800/50 p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                                <div class="flex-shrink-0 w-16 h-16 bg-white/70 dark:bg-slate-900/50 rounded-lg flex items-center justify-center overflow-hidden">
+                                    ${iconHTML}
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 mt-1">${app.description || 'Không có mô tả.'}</p>
+                                    <div class="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                                        <span>Số lượt tải: </span>
+                                        <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
+                                    </div>
+                                </div>
+                                <div class="w-full sm:w-auto flex-shrink-0">
+                                    <button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                        <span>Tải về</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        appsListContainer.insertAdjacentHTML('beforeend', appCardHTML);
                     });
-                    bgRemoveResult.src = URL.createObjectURL(resultBlob);
-                    bgRemoveResult.classList.remove('hidden');
-                    bgRemoveDownloadBtn.disabled = false;
-                    bgRemoveStatus.textContent = 'Tách nền thành công!';
-                } catch (error) {
-                    console.error('Background removal error:', error);
-                    let errorMessage = 'Đã xảy ra lỗi khi tách nền.';
-                    if (error && error.message) {
-                        errorMessage = `Lỗi: ${error.message}. Thử lại với ảnh có chủ thể rõ ràng hơn.`;
-                    } else {
-                        errorMessage += ' Kiểm tra kết nối mạng hoặc thử lại với ảnh khác.';
-                    }
-                    bgRemoveStatus.textContent = errorMessage;
-                } finally {
-                    bgRemoveLoader.classList.add('hidden');
-                    bgRemoveProcessBtn.disabled = false;
                 }
+            }, (error) => {
+                console.error("Error getting documents: ", error);
+                appsLoader.classList.add('hidden');
+                appsListContainer.innerHTML = '<p class="text-center text-red-500">Đã xảy ra lỗi khi tải danh sách ứng dụng.</p>';
             });
 
-            bgRemoveDownloadBtn.addEventListener('click', () => {
-                if (!resultBlob) return;
-                const originalFile = bgRemoveInput.files[0];
-                const fileName = originalFile.name.replace(/\.[^/.]+$/, "") + '-no-bg.png';
-
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(resultBlob);
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            appsListContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.download-btn');
+                if (button) {
+                    const docId = button.dataset.docId;
+                    const url = button.dataset.url;
+                    if (!docId || url === '#') {
+                        alert('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
+                        return;
+                    }
+                    const appRef = db.collection('my_apps').doc(docId);
+                    appRef.update({
+                        downloadCount: firebase.firestore.FieldValue.increment(1)
+                    }).then(() => {
+                        console.log("Download count updated!");
+                        window.open(url, '_blank');
+                    }).catch((error) => {
+                        console.error("Error updating document: ", error);
+                        window.open(url, '_blank');
+                    });
+                }
             });
         });
     </script>
