@@ -301,10 +301,7 @@
             bgRemoveProcessBtn.addEventListener('click', async () => {
                 const file = bgRemoveInput.files[0];
                 if (!file) return;
-                if (PHOTOROOM_API_KEY === 'DÁN_API_KEY_CỦA_BẠN_VÀO_ĐÂY') {
-                    bgRemoveStatus.textContent = 'Lỗi: Vui lòng cung cấp API Key của Photoroom.';
-                    return;
-                }
+
                 bgRemoveLoader.classList.remove('hidden');
                 bgRemoveResult.classList.add('hidden');
                 bgRemoveStatus.textContent = 'Đang tải ảnh lên và xử lý...';
