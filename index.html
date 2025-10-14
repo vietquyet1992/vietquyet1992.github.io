@@ -246,27 +246,64 @@
                 localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // --- Navigation Logic ---
+// --- Navigation Logic ---
             const navLinks = document.querySelectorAll('.nav-link');
             const toolContents = document.querySelectorAll('.tool-content');
+
+            // Hàm để hiển thị công cụ và cập nhật URL
+            function showTool(toolId) {
+                // Xóa trạng thái active của tất cả các nav-link
+                navLinks.forEach(nav => nav.classList.remove('active'));
+
+                // Thêm trạng thái active cho nav-link tương ứng
+                const activeLink = document.querySelector(`.nav-link[data-tool="${toolId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+
+                // Ẩn tất cả nội dung công cụ
+                toolContents.forEach(content => {
+                    content.classList.add('opacity-0');
+                    // Sử dụng setTimeout để đảm bảo hiệu ứng fade-out xong rồi mới thêm hidden
+                    setTimeout(() => {
+                        content.classList.add('hidden');
+                        // Sau khi ẩn các nội dung khác, hiển thị nội dung của công cụ hiện tại
+                        const targetContent = document.getElementById(`tool-${toolId}`);
+                        if (targetContent) {
+                            targetContent.classList.remove('hidden');
+                            setTimeout(() => targetContent.classList.remove('opacity-0'), 10);
+                        }
+                    }, 400); // Thời gian chờ bằng với transition-duration (0.4s)
+                });
+            }
+
+            // Xử lý khi click vào các nav-link
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
+                    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
                     const toolId = link.dataset.tool;
-                    navLinks.forEach(nav => nav.classList.remove('active'));
-                    link.classList.add('active');
-                    toolContents.forEach(content => {
-                        const isTarget = content.id === `tool-${toolId}`;
-                        if (isTarget) {
-                            content.classList.remove('hidden');
-                            setTimeout(() => content.classList.remove('opacity-0'), 10);
-                        } else {
-                            content.classList.add('opacity-0');
-                            setTimeout(() => content.classList.add('hidden'), 400);
-                        }
-                    });
+                    
+                    // Cập nhật URL mà không tải lại trang
+                    history.pushState({ toolId: toolId }, '', `#${toolId}`);
+                    
+                    showTool(toolId); // Hiển thị công cụ
                 });
             });
+
+            // Xử lý khi người dùng dùng nút Back/Forward của trình duyệt
+            window.addEventListener('popstate', (e) => {
+                if (e.state && e.state.toolId) {
+                    showTool(e.state.toolId);
+                } else {
+                    // Nếu không có state (ví dụ: quay về trang gốc), hiển thị tab mặc định
+                    showTool(navLinks[0].dataset.tool); // Hiển thị tab đầu tiên
+                }
+            });
+
+            // Xử lý khi trang được tải lần đầu (để hiển thị đúng tab nếu URL có hash)
+            // Hoặc hiển thị tab mặc định nếu không có hash
+            const initialToolId = window.location.hash.substring(1) || navLinks[0].dataset.tool;
+            showTool(initialToolId);
 
             // --- BG Removal Logic (Dùng Photoroom API) ---
             
