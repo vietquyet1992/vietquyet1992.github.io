@@ -2,19 +2,19 @@
 /* 1. HIỆU ỨNG NỀN VÀ FONT */
 /* ------------------------------------------------------------------- */
 body {
-    /* FIX: Thêm font dự phòng (Roboto, Arial) hỗ trợ Tiếng Việt tốt hơn */
+    /* FIX FONT: Thêm font dự phòng (Roboto, Arial) hỗ trợ Tiếng Việt tốt hơn */
     font-family: 'Inter', Roboto, Arial, sans-serif; 
-    /* color: black; <--- ĐÃ XÓA DÒNG NÀY ĐỂ TAILWIND XỬ LÝ THEME COLOR */
-    /* Nền sáng */
+    /* Nền sáng MẶC ĐỊNH */
     background: linear-gradient(120deg, #fffbeb 0%, #fff7ed 100%);
     background-size: 400% 400%;
     animation: gradientBG 20s ease infinite;
     transition: background 0.5s ease;
 }
-.dark body {
-     /* color: white; <--- ĐÃ XÓA DÒNG NÀY ĐỂ TAILWIND XỬ LÝ THEME COLOR */
-     /* Nền tối */
-     background: linear-gradient(-45deg, #1f2937, #374151);
+
+/* FIX CÚ PHÁP LỖI NỀN TỐI: Cần dùng html.dark để CSS áp dụng */
+html.dark body {
+     /* MÀU NỀN TỐI ĐÃ TÙY CHỈNH (sáng hơn một chút so với ban đầu) */
+     background: linear-gradient(-45deg, #253A53, #4C6A8F); 
      background-size: 400% 400%;
      animation: gradientBG 20s ease infinite;
 }
@@ -36,9 +36,11 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.8);
 }
-.dark .glass-effect {
-    background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* FIX CÚ PHÁP LỖI GLASS TỐI: Cần dùng html.dark để CSS áp dụng */
+html.dark .glass-effect {
+    /* Tăng độ đục và viền sáng hơn để nổi bật trên nền tối */
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* ------------------------------------------------------------------- */
@@ -84,4 +86,15 @@ main { display: grid; }
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ------------------------------------------------------------------- */
+/* 7. TINH CHỈNH MÀU SẮC RIÊNG CHO MÀN HÌNH LỚN (Desktop) - FIX NỀN SÁNG NHỢT NHẠT */
+/* ------------------------------------------------------------------- */
+@media (min-width: 1024px) { /* Áp dụng từ kích thước màn hình LỚN (lg) trở lên */
+    body:not(.dark) { /* Khi KHÔNG ở chế độ tối (tức là chế độ sáng) */
+        /* Giữ nguyên như lần trước */
+        background: linear-gradient(120deg, #fefce8 0%, #fff7e5 100%);
+        background-size: 400% 400%;
+    }
 }
