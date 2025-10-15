@@ -98,3 +98,17 @@ main { display: grid; }
         background-size: 400% 400%;
     }
 }
+/* ------------------------------------------------------------------- */
+/* 8. TỐI ƯU MÀU CHỮ TAB CHO MOBILE (Màn hình < 1024px) */
+/* ------------------------------------------------------------------- */
+@media (max-width: 1023px) { 
+    .nav-link {
+        /* Tăng cường độ màu chữ trên mobile (Chế độ Sáng) */
+        color: #1f2937 !important; /* Ví dụ: Chuyển từ gray-700 sang gray-800 đậm hơn */
+    }
+
+    html.dark .nav-link {
+        /* Giảm độ nhạt của chữ trên nền tối mobile */
+        color: #e5e7eb !important; /* Ví dụ: Chuyển từ gray-300 sang gray-200 sáng hơn */
+    }
+}
