@@ -82,10 +82,10 @@
         }
     </style>
 </head>
-<body class="text-gray-900 dark:text-gray-100 min-h-screen">
+<body class="text-black dark:text-gray-100 min-h-screen">
     
-    <div class="flex">
-        <aside class="w-64 min-h-screen p-4 flex flex-col glass-effect">
+    <div class="lg:flex">
+        <aside class="lg:w-64 w-full h-auto p-4 flex flex-col glass-effect **sm:sticky**">
             <div class="text-center mb-10">
                 <h1 class="text-2xl font-bold text-amber-600 dark:text-amber-400">My Toolbox</h1>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Công cụ & Ứng dụng</p>
@@ -123,11 +123,11 @@
             </div>
         </aside>
 
-        <main class="flex-1 p-8 overflow-y-auto min-h-screen">
+        <main class="flex-1 p-4 lg:p-8 overflow-y-auto min-h-screen">
             <div id="tool-remove-bg" class="tool-content">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Tách nền ảnh</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
                     <div class="space-y-4">
                         <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
@@ -155,7 +155,7 @@
             <div id="tool-png-to-ico" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Chuyển đổi PNG sang ICO</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
                     <div class="space-y-4">
                         <input type="file" id="png-file-input" accept="image/png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
                         <div id="image-preview-container" class="mt-4 hidden">
@@ -181,7 +181,7 @@
             <div id="tool-base64" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                      <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Mã hóa & Giải mã Base64</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="base64-input" class="font-medium">Đầu vào:</label>
@@ -204,7 +204,7 @@
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Ứng dụng của tôi</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
                     <div id="apps-list" class="space-y-6">
                         <div id="apps-loader" class="flex justify-center items-center py-8">
                             <div class="loader"></div>
