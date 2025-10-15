@@ -10,88 +10,30 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
 <script>
-    // Apply theme immediately to avoid FOUC
+    // Áp dụng chủ đề (sáng/tối) ngay lập tức để tránh hiện tượng nháy font (FOUC)
     if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
         document.documentElement.classList.add('dark');
     } else {
         document.documentElement.classList.remove('dark');
     }
 </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(120deg, #fffbeb 0%, #fff7ed 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-            transition: background 0.5s ease;
-        }
-        .dark body {
-             background: linear-gradient(-45deg, #1f2937, #374151);
-             background-size: 400% 400%;
-             animation: gradientBG 20s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-        }
-        .dark .glass-effect {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .tool-card:hover, .app-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-        }
-        .nav-link.active {
-            background-color: #f59e0b;
-            color: white;
-            box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
-        }
-        
-        main { display: grid; }
-        .tool-content { grid-area: 1 / 1; transition: opacity 0.4s ease-in-out; }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background-color: rgba(245, 158, 11, 0.5); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
-        .dark ::-webkit-scrollbar-thumb { background-color: rgba(245, 158, 11, 0.5); }
-
-        .loader {
-            border: 4px solid rgba(0,0,0,0.1);
-            border-top: 4px solid #f59e0b;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
 </head>
-<body class="text-gray-400 dark:text-gray-100 min-h-screen">
- 
+<body class="text-black dark:text-gray-100 min-h-screen"> 
+    
     <div class="lg:flex">
-        <aside class="lg:w-64 w-full h-auto p-4 flex flex-col glass-effect **sm:sticky**">
+        <aside class="lg:w-64 w-full lg:min-h-screen p-4 flex flex-col glass-effect">
             <div class="text-center mb-10">
                 <h1 class="text-2xl font-bold text-amber-600 dark:text-amber-400">My Toolbox</h1>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Công cụ & Ứng dụng</p>
             </div>
             <nav class="flex flex-col space-y-2">
-                <a href="#" class="nav-link active group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"data-tool="remove-bg">
+                <a href="#" class="nav-link active group flex items-center px-4 py-3 rounded-lg transition-all duration-200 
+                    text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" 
+                    data-tool="remove-bg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 2a3.5 3.5 0 013.163 5.002L13 11.172V15a1 1 0 01-1 1H6a1 1 0 01-1-1v-3.828l4.337-4.17A3.5 3.5 0 115.5 2zM4.5 3.5a2.5 2.5 0 105 0 2.5 2.5 0 00-5 0z" /><path d="M11.94 11.513l-1.34-1.29a.75.75 0 00-1.06 1.06l1.5 1.44a.75.75 0 001.12-.001l3.5-3.719a.75.75 0 00-1.08-1.04l-2.64 2.79z" /></svg>
                     <span class="font-medium">Tách nền ảnh</span>
                 </a>
@@ -127,7 +69,7 @@
             <div id="tool-remove-bg" class="tool-content">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Tách nền ảnh</h2>
-                    <p class="text-gray-400 dark:text-gray-400 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
                     <div class="space-y-4">
                         <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
@@ -155,7 +97,7 @@
             <div id="tool-png-to-ico" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Chuyển đổi PNG sang ICO</h2>
-                    <p class="text-gray-400 dark:text-gray-400 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
                     <div class="space-y-4">
                         <input type="file" id="png-file-input" accept="image/png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
                         <div id="image-preview-container" class="mt-4 hidden">
@@ -181,7 +123,7 @@
             <div id="tool-base64" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                      <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Mã hóa & Giải mã Base64</h2>
-                    <p class="text-gray-400 dark:text-gray-400 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="base64-input" class="font-medium">Đầu vào:</label>
@@ -203,7 +145,7 @@
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-amber-400">Ứng dụng của tôi</h2>
-                    <p class="text-gray-400 dark:text-gray-400 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
+                    <p class="text-gray-800 dark:text-gray-400 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
                     <div id="apps-list" class="space-y-6">
                         <div id="apps-loader" class="flex justify-center items-center py-8">
                             <div class="loader"></div>
@@ -470,7 +412,7 @@
             const base64Output = document.getElementById('base64-output');
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
-            const copyBtn = document.getElementById('base64-copy-btn');
+            // const copyBtn = document.getElementById('base64-copy-btn'); // Nút này đã được xoá khỏi HTML
             const base64Status = document.getElementById('base64-status');
 
             function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
@@ -503,16 +445,6 @@
                 setTimeout(() => { base64Status.textContent = '' }, 4000);
             });
 
-            copyBtn.addEventListener('click', () => {
-                if (!base64Output.value) return;
-                navigator.clipboard.writeText(base64Output.value).then(() => {
-                    base64Status.textContent = 'Đã sao chép kết quả!';
-                }, () => {
-                    base64Status.textContent = 'Không thể sao chép!';
-                });
-                setTimeout(() => { base64Status.textContent = '' }, 3000);
-            });
-
             // --- My Apps Logic ---
             const appsListContainer = document.getElementById('apps-list');
             const appsLoader = document.getElementById('apps-loader');
@@ -541,7 +473,7 @@
                                 </div>
                                 <div class="flex-grow">
                                     <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mt-1">${app.description || 'Không có mô tả.'}</p>
+                                    <p class="**text-gray-600 dark:text-gray-400** mt-1">${app.description || 'Không có mô tả.'}</p>
                                     <div class="text-xs text-gray-500 dark:text-gray-500 mt-2">
                                         <span>Số lượt tải: </span>
                                         <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
@@ -569,7 +501,8 @@
                     const docId = button.dataset.docId;
                     const url = button.dataset.url;
                     if (!docId || url === '#') {
-                        alert('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
+                        // Sử dụng console.error thay vì alert
+                        console.error('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
                         return;
                     }
                     const appRef = db.collection('my_apps').doc(docId);

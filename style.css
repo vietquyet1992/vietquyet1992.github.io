@@ -1,0 +1,87 @@
+/* ------------------------------------------------------------------- */
+/* 1. HIỆU ỨNG NỀN VÀ FONT */
+/* ------------------------------------------------------------------- */
+body {
+    /* FIX: Thêm font dự phòng (Roboto, Arial) hỗ trợ Tiếng Việt tốt hơn */
+    font-family: 'Inter', Roboto, Arial, sans-serif; 
+    /* color: black; <--- ĐÃ XÓA DÒNG NÀY ĐỂ TAILWIND XỬ LÝ THEME COLOR */
+    /* Nền sáng */
+    background: linear-gradient(120deg, #fffbeb 0%, #fff7ed 100%);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    transition: background 0.5s ease;
+}
+.dark body {
+     /* color: white; <--- ĐÃ XÓA DÒNG NÀY ĐỂ TAILWIND XỬ LÝ THEME COLOR */
+     /* Nền tối */
+     background: linear-gradient(-45deg, #1f2937, #374151);
+     background-size: 400% 400%;
+     animation: gradientBG 20s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ------------------------------------------------------------------- */
+/* 2. HIỆU ỨNG GLASS MORPHISM */
+/* ------------------------------------------------------------------- */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.dark .glass-effect {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------------------------------------------- */
+/* 3. HIỆU ỨNG HOVER & NAVIGATION */
+/* ------------------------------------------------------------------- */
+.tool-card:hover, .app-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+.nav-link.active {
+    background-color: #f59e0b;
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+}
+
+/* ------------------------------------------------------------------- */
+/* 4. CẤU TRÚC VÀ CUỘN (SCROLL) */
+/* ------------------------------------------------------------------- */
+main { display: grid; }
+.tool-content { grid-area: 1 / 1; transition: opacity 0.4s ease-in-out; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+    background-color: rgba(245, 158, 11, 0.5); 
+    border-radius: 10px; 
+    border: 3px solid transparent; 
+    background-clip: content-box; 
+}
+.dark ::-webkit-scrollbar-thumb { background-color: rgba(245, 158, 11, 0.5); }
+
+/* ------------------------------------------------------------------- */
+/* 5. LOADER ANIMATION */
+/* ------------------------------------------------------------------- */
+.loader {
+    border: 4px solid rgba(0,0,0,0.1);
+    border-top: 4px solid #f59e0b;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
