@@ -71,14 +71,22 @@
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Tách nền ảnh</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
                     <div class="space-y-4">
-                        <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
+                        
+                        <div class="flex items-center space-x-4">
+                            <label for="bg-remove-input" class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">
+                                Chọn tệp...
+                            </label>
+                            <span id="bg-remove-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
+                            <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="hidden"/>
+                        </div>
+
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
                             <div>
-                                <p class="text-sm font-medium mb-2">Ảnh gốc:</p>
+                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh gốc:</p>
                                 <img id="bg-remove-original" class="w-full rounded-lg border border-gray-200/50 dark:border-gray-700/50"/>
                             </div>
                             <div>
-                                <p class="text-sm font-medium mb-2">Đã tách nền:</p>
+                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Đã tách nền:</p>
                                 <div class="w-full aspect-video rounded-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center bg-gray-100/50 dark:bg-gray-700/50" style="background-image: repeating-conic-gradient(#d1d5db80 0 25%, #e5e7eb80 0 50%); background-size: 16px 16px;">
                                     <img id="bg-remove-result" class="hidden max-w-full max-h-full"/>
                                     <div id="bg-remove-loader" class="loader hidden"></div>
@@ -86,8 +94,14 @@
                             </div>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                            <button id="bg-remove-process-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-amber-500/40" disabled>Tách nền</button>
-                            <button id="bg-remove-download-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-green-500/50" disabled>Tải xuống kết quả</button>
+                            <button id="bg-remove-process-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
+                                                                     disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+                                                                     dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+                                                                     shadow-lg hover:shadow-amber-500/40" disabled>Tách nền</button>
+                            <button id="bg-remove-download-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
+                                                                       disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+                                                                       dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+                                                                       shadow-lg hover:shadow-amber-500/40" disabled>Tải xuống kết quả</button>
                         </div>
                         <div id="bg-remove-status" class="text-sm text-gray-500 dark:text-gray-400 mt-2 h-5"></div>
                     </div>
@@ -99,13 +113,21 @@
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Chuyển đổi PNG sang ICO</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
                     <div class="space-y-4">
-                        <input type="file" id="png-file-input" accept="image/png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100/50 dark:file:bg-amber-900/50 file:text-amber-700 dark:file:text-amber-300 hover:file:bg-amber-100/70 dark:hover:file:bg-amber-800/50 cursor-pointer"/>
+                        
+                        <div class="flex items-center space-x-4">
+                            <label for="png-file-input" class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">
+                                Chọn tệp...
+                            </label>
+                            <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
+                            <input type="file" id="png-file-input" accept="image/png" class="hidden"/>
+                        </div>
+
                         <div id="image-preview-container" class="mt-4 hidden">
-                            <p class="text-sm font-medium mb-2">Ảnh xem trước:</p>
+                            <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh xem trước:</p>
                             <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
                         </div>
                         <div>
-                            <label for="ico-size-select" class="block font-medium mb-2">Chọn kích thước:</label>
+                            <label for="ico-size-select" class="block font-medium mb-2 dark:text-gray-300">Chọn kích thước:</label>
                             <select id="ico-size-select" class="w-full sm:w-auto p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
                                 <option value="16">16x16 pixels</option>
                                 <option value="32" selected>32x32 pixels</option>
@@ -114,7 +136,10 @@
                                 <option value="128">128x128 pixels</option>
                             </select>
                         </div>
-                        <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
+                        <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
+                                                                 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+                                                                 dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+                                                                 shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
                         <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
                     </div>
                 </div>
@@ -126,17 +151,17 @@
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label for="base64-input" class="font-medium">Đầu vào:</label>
+                            <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
                             <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
                         </div>
                         <div class="space-y-2">
-                            <label for="base64-output" class="font-medium">Kết quả:</label>
+                            <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
                             <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
                         </div>
                     </div>
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
-                        <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
+                        <button id="base64-encode-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">Mã hóa (Encode)</button>
+                        <button id="base64-decode-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">Giải mã (Decode)</button>
                     </div>
                     <div id="base64-status" class="text-sm mt-4"></div>
                 </div>
@@ -249,6 +274,7 @@
             // --- BG Removal Logic (Dùng Photoroom API) ---
             
             const bgRemoveInput = document.getElementById('bg-remove-input');
+            const bgRemoveFilename = document.getElementById('bg-remove-filename');
             const bgRemovePreviews = document.getElementById('bg-remove-previews');
             const bgRemoveOriginal = document.getElementById('bg-remove-original');
             const bgRemoveResult = document.getElementById('bg-remove-result');
@@ -261,6 +287,7 @@
             bgRemoveInput.addEventListener('change', () => {
                 const file = bgRemoveInput.files[0];
                 if (file) {
+                    bgRemoveFilename.textContent = file.name;
                     resultBlob = null;
                     const reader = new FileReader();
                     reader.onload = (e) => {
@@ -273,6 +300,8 @@
                     bgRemoveDownloadBtn.disabled = true;
                     bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
                     bgRemoveProcessBtn.disabled = false;
+                } else {
+                    bgRemoveFilename.textContent = 'Chưa chọn tệp nào.';
                 }
             });
 
@@ -290,7 +319,6 @@
                 try {
                     const response = await fetch('/api/photoroom', { 
                         method: 'POST',
-                        // Không cần headers ở đây nữa, vì API key đã ở trên server
                         body: formData,
                     });
                     if (!response.ok) {
@@ -326,6 +354,7 @@
             
             // --- PNG to ICO Logic ---
             const pngFileInput = document.getElementById('png-file-input');
+            const pngFilename = document.getElementById('png-filename');
             const convertBtn = document.getElementById('convert-to-ico-btn');
             const imagePreviewContainer = document.getElementById('image-preview-container');
             const imagePreview = document.getElementById('image-preview');
@@ -335,6 +364,7 @@
             pngFileInput.addEventListener('change', () => {
                 const file = pngFileInput.files[0];
                 if (file) {
+                    pngFilename.textContent = file.name;
                     convertBtn.disabled = false;
                     const reader = new FileReader();
                     reader.onload = (e) => {
@@ -343,6 +373,7 @@
                     };
                     reader.readAsDataURL(file);
                 } else {
+                    pngFilename.textContent = 'Chưa chọn tệp nào.';
                     convertBtn.disabled = true;
                     imagePreviewContainer.classList.add('hidden');
                 }
@@ -382,6 +413,7 @@
                 const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
                 const view = new DataView(buffer);
                 view.setUint16(0, 0, true); view.setUint16(2, 1, true); view.setUint16(4, 1, true);
+                view.setUint8(6, size); view.setUint8(7, size); view.setUint8(8, 0); view.setUint8(9, 0);
                 view.setUint16(10, 1, true); view.setUint16(12, 32, true);
                 view.setUint32(14, 40 + (size * size * 4), true); view.setUint32(18, 22, true);
                 let offset = 22;
@@ -464,15 +496,16 @@
                         if (app.iconUrl && app.iconUrl.trim() !== '') {
                             iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
                         }
+                        
                         const appCardHTML = `
-                            <div class="app-card bg-white/50 dark:bg-slate-800/50 p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-slate-900/50 rounded-lg flex items-center justify-center overflow-hidden">
+                            <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                                <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
                                     ${iconHTML}
                                 </div>
                                 <div class="flex-grow">
                                     <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
-                                    <p class="text-gray-600 dark:text-gray-300 mt-1">${app.description || 'Không có mô tả.'}</p>
-                                    <div class="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                                    <p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                                         <span>Số lượt tải: </span>
                                         <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
                                     </div>

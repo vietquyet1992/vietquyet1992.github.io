@@ -120,3 +120,75 @@ main { display: grid; }
         color: #e5e7eb !important; /* Ví dụ: Chuyển từ gray-300 sang gray-200 sáng hơn */
     }
 }
+
+/* ------------------------------------------------------------------- */
+/* 9. "TỔNG TẤN CÔNG" SỬA LỖI MÀU SẮC KHU VỰC NỘI DUNG (Content) */
+/* ------------------------------------------------------------------- */
+
+/* ----- Sửa Tiêu đề (H2) và Mô tả (P) cho tất cả các tab ----- */
+html.dark .tool-card h2 {
+    color: #F59E0B !important; /* Đổi thành Amber-500 (vàng cam "thương hiệu") */
+}
+html.dark .tool-card > p {
+    color: #D1D5DB !important; /* Ép thành màu XÁM SÁNG (cho chữ "Tải lên tệp...") */
+}
+
+/* ----- Sửa chữ <label> (Đầu vào:, Chọn kích thước:) ----- */
+html.dark .tool-card label {
+    color: #D1D5DB !important; /* Ép thành màu XÁM SÁNG */
+}
+html.dark .tool-card p.text-sm {
+     color: #D1D5DB !important;
+}
+
+
+/* ----- Sửa nền xám của khung icon trong tab My Apps ----- */
+html.dark .app-card .flex-shrink-0 {
+    /* Ép thành TRONG SUỐT để tiệp vào nền kính */
+    background: transparent !important;
+}
+
+/* ----- Sửa chữ mờ trong card của tab My Apps ----- */
+html.dark .app-card p {
+    color: #E5E7EB !important; /* Ép thành màu XÁM SIÊU SÁNG */
+}
+html.dark .app-card .text-xs {
+    color: #9CA3AF !important; /* Ép thành màu XÁM (sáng hơn 500) */
+}
+
+/* ------------------------------------------------------------------- */
+/* 10. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ SIDEBAR BÊN TRÁI */
+/* ------------------------------------------------------------------- */
+/* CON SỬA 2 CÁI NÀY - Thêm H1 và P.text-xs */
+html.dark aside h1 {
+    color: #F59E0B !important; /* Đổi về Amber-500 (vàng cam "thương hiệu") */
+}
+html.dark aside .text-xs { /* Chữ "Công cụ & Ứng dụng" */
+    color: #D1D5DB !important; /* Nâng cấp lên Gray-300 (xám sáng) */
+}
+
+html.dark .nav-link:not(.active) span {
+    color: #E5E7EB !important; /* Nâng cấp màu chữ menu (gray-300 -> gray-200) */
+}
+/* Icon của menu (SVG) */
+html.dark .nav-link:not(.active) svg {
+    color: #9CA3AF !important; /* Nâng cấp màu icon (amber-500 -> gray-400) */
+}
+/* Icon khi hover */
+html.dark .nav-link:not(.active):hover span,
+html.dark .nav-link:not(.active):hover svg {
+    color: white !important;
+}
+
+
+/* ------------------------------------------------------------------- */
+/* 11. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ 2 CÁI FOOTER */
+/* ------------------------------------------------------------------- */
+/* Chữ Copyright "© 2025" ở sidebar */
+html.dark aside .text-base {
+    color: #9CA3AF !important; /* Nâng cấp (gray-400) */
+}
+/* Chữ "Thời đại AI..." ở footer chính */
+html.dark footer .text-base {
+    color: #9CA3AF !important; /* Nâng cấp (gray-400) */
+}
