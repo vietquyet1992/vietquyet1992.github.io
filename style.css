@@ -134,7 +134,8 @@ html.dark .tool-card > p {
 }
 
 /* ----- Sửa chữ <label> (Đầu vào:, Chọn kích thước:) ----- */
-html.dark .tool-card label {
+/* Chỉ "ép" mấy cái label THƯỜNG, KHÔNG "ép" cái label "Chọn tệp" */
+html.dark .tool-card label:not(.cursor-pointer) {
     color: #D1D5DB !important; /* Ép thành màu XÁM SÁNG */
 }
 html.dark .tool-card p.text-sm {
