@@ -149,6 +149,11 @@ html.dark .app-card .flex-shrink-0 {
     background: transparent !important;
 }
 
+/* Chữ Tiêu đề App (D&C, Manual Creator...) */
+html.dark .app-card h3 {
+    color: #F3F4F6 !important; /* Ép thành màu Gray-100 (trắng xám) */
+}
+
 /* ----- Sửa chữ mờ trong card của tab My Apps ----- */
 html.dark .app-card p {
     color: #E5E7EB !important; /* Ép thành màu XÁM SIÊU SÁNG */
