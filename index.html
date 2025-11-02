@@ -122,7 +122,7 @@
 
             <div id="tool-base64" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
-                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
@@ -382,7 +382,6 @@
                 const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
                 const view = new DataView(buffer);
                 view.setUint16(0, 0, true); view.setUint16(2, 1, true); view.setUint16(4, 1, true);
-                view.setUint8(6, size); view.setUint8(7, size); view.setUint8(8, 0); view.setUint8(9, 0);
                 view.setUint16(10, 1, true); view.setUint16(12, 32, true);
                 view.setUint32(14, 40 + (size * size * 4), true); view.setUint32(18, 22, true);
                 let offset = 22;
@@ -412,7 +411,6 @@
             const base64Output = document.getElementById('base64-output');
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
-            // const copyBtn = document.getElementById('base64-copy-btn'); // Nút này đã được xoá khỏi HTML
             const base64Status = document.getElementById('base64-status');
 
             function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
@@ -501,7 +499,6 @@
                     const docId = button.dataset.docId;
                     const url = button.dataset.url;
                     if (!docId || url === '#') {
-                        // Sử dụng console.error thay vì alert
                         console.error('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
                         return;
                     }
@@ -520,7 +517,7 @@
         });
     </script>
     <footer class="text-center py-4 mt-8">
-    <p class="text-base text-gray-1100 dark:text-gray-400">
+    <p class="text-base text-gray-500 dark:text-gray-400">
         Thời đại AI đang đến!!!! <br>
         Tất cả mọi thứ ở đây đều được tạo bằng Gemini.
     </p>

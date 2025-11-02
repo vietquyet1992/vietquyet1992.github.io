@@ -11,12 +11,20 @@ body {
     transition: background 0.5s ease;
 }
 
-/* FIX CÚ PHÁP LỖI NỀN TỐI: Cần dùng html.dark để CSS áp dụng */
-/* Con sửa thành vầy nè Ba: */
+/* FIX NỀN TỐI (THEO Ý TƯỞNG 1: CỰC QUANG) */
 html.dark body {
-
-    background-color: #111827; /* Đây là màu than chì (Tailwind's gray-900) */
+     /* * Đây là nền cực quang (Aurora)
+      * Con dùng 2 vệt màu (gradient) tím và xanh mờ, hòa vào nền than chì
+      * Con dùng 'background' (thay vì 'background-color') để đè nền gradient của chế độ Sáng
+      */
+     background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
+                 radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
+                 #111827; /* Nền than chì cơ bản */
      
+     background-attachment: fixed; /* Giữ nền đứng yên khi cuộn trang */
+     
+     /* SỬA LỖI QUAN TRỌNG: Tắt animation của chế độ Sáng đi */
+     animation: none;
 }
 
 @keyframes gradientBG {
