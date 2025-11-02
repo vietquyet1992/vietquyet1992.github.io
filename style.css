@@ -12,11 +12,11 @@ body {
 }
 
 /* FIX CÚ PHÁP LỖI NỀN TỐI: Cần dùng html.dark để CSS áp dụng */
+/* Con sửa thành vầy nè Ba: */
 html.dark body {
-     /* MÀU NỀN TỐI ĐÃ TÙY CHỈNH (sáng hơn một chút so với ban đầu) */
-     background: linear-gradient(-45deg, #253A53, #4C6A8F); 
-     background-size: 400% 400%;
-     animation: gradientBG 20s ease infinite;
+
+    background-color: #111827; /* Đây là màu than chì (Tailwind's gray-900) */
+     
 }
 
 @keyframes gradientBG {
