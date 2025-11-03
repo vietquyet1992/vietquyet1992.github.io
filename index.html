@@ -200,38 +200,39 @@
             const db = firebase.firestore();
 
             // === CODE MỚI DÀNH CHO BỘ ĐẾM TRUY CẬP ===
+            // Hàm JavaScript đã được tối ưu tốc độ
             async function updateVisitCount() {
                 const counterElement = document.getElementById('visit-counter');
                 const docRef = db.collection("stats").doc("global"); 
                 
-                try {
-                    // 1. Tăng số đếm lên 1 (atomic increment)
-                    await docRef.update({
-                        visits: firebase.firestore.FieldValue.increment(1)
-                    });
-                    
-                    // 2. Lấy con số mới nhất
-                    const doc = await docRef.get();
+                // BƯỚC 1: CỰC KỲ QUAN TRỌNG - CHỈ GỌI LỆNH TĂNG SỐ VÀ KHÔNG CHỜ (KHÔNG DÙNG await)
+                // Code sẽ gửi lệnh tăng số lên Firebase và tiếp tục chạy luôn
+                docRef.update({
+                    visits: firebase.firestore.FieldValue.increment(1)
+                }).catch(error => {
+                    // Lỡ lỗi do doc chưa tồn tại, mình tạo nó ra
+                    if (error.code === 'not-found') {
+                        docRef.set({ visits: 1 }).catch(err => console.error("Lỗi tạo Document lần đầu:", err));
+                    } else {
+                        console.error("Lỗi tăng lượt truy cập:", error);
+                    }
+                });
+
+                // BƯỚC 2: NGHE NGÓNG (realtime listener) - Nhanh hơn việc fetch thủ công
+                // Firebase sẽ tự động gửi con số mới nhất về ngay khi nó thay đổi
+                docRef.onSnapshot((doc) => {
                     if (doc.exists) {
                         const count = doc.data().visits;
-                        // 3. Hiển thị lên màn hình (định dạng số)
+                        // Hiển thị ngay khi có số mới, không cần phải chờ 2 lần như trước
                         counterElement.innerHTML = `Lượt truy cập: <strong>${count.toLocaleString('vi-VN')}</strong>`;
-                    } else {
-                        // Trường hợp lần đầu, document chưa có
-                        await docRef.set({ visits: 1 });
-                        counterElement.innerHTML = `Lượt truy cập: <strong>1</strong>`;
                     }
-                    
-                } catch (error) {
-                    console.error("Lỗi cập nhật lượt truy cập: ", error);
+                }, (error) => {
+                    console.error("Lỗi đọc lượt truy cập (listener):", error);
+                    // Cập nhật lại trạng thái nếu bị lỗi
                     counterElement.textContent = 'Lượt truy cập: Không thể tải.';
-                }
+                });
             }
-            
-            // GỌI HÀM KHI TRANG TẢI XONG
-            updateVisitCount();
-             // --- Theme Toggle Logic ---
-            
+            updateVisitCount(); 
 
             // --- Theme Toggle Logic ---
             const themeToggleBtn = document.getElementById('theme-toggle');
