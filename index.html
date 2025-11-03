@@ -23,6 +23,7 @@
 </script>
 </head>
 <body class="text-black dark:text-gray-100 min-h-screen"> 
+    <audio id="nhac-nen-cua-ba" src="assets/am-thanh.mp3" loop></audio>
     
     <div class="lg:flex">
         <aside class="lg:w-64 w-full lg:min-h-screen p-4 flex flex-col glass-effect">
@@ -556,5 +557,26 @@
         Tất cả mọi thứ ở đây đều được tạo bằng Gemini.
     </p>
 </footer>
+<script>
+    let daPhatNhacLanDau = false;
+
+    document.addEventListener('click', function() {
+        if (!daPhatNhacLanDau) {
+            
+            // Tìm cái loa theo tên (id) mình đặt ở Bước 1
+            let fileNhac = document.getElementById('nhac-nen-cua-ba');
+            
+            if (fileNhac) { // Kiểm tra xem có tìm thấy cái loa không
+                fileNhac.play().catch(error => {
+                    // Báo lỗi ra console nếu ba bật F12, chứ không phiền người dùng
+                    console.log("Trình duyệt chặn tự động phát nhạc:", error);
+                });
+                daPhatNhacLanDau = true; // Đánh dấu đã phát
+            }
+        }
+    });
+</script>
+
+</body>
 </body>
 </html>
