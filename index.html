@@ -196,7 +196,42 @@
                 appId: "1:723884147235:web:d08241abfd477d91c2e796"
             };
             firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+
+            // === CODE MỚI DÀNH CHO BỘ ĐẾM TRUY CẬP ===
+            async function updateVisitCount() {
+                const counterElement = document.getElementById('visit-counter');
+                const docRef = db.collection("stats").doc("global"); 
+                
+                try {
+                    // 1. Tăng số đếm lên 1 (atomic increment)
+                    await docRef.update({
+                        visits: firebase.firestore.FieldValue.increment(1)
+                    });
+                    
+                    // 2. Lấy con số mới nhất
+                    const doc = await docRef.get();
+                    if (doc.exists) {
+                        const count = doc.data().visits;
+                        // 3. Hiển thị lên màn hình (định dạng số)
+                        counterElement.innerHTML = `Lượt truy cập: <strong>${count.toLocaleString('vi-VN')}</strong>`;
+                    } else {
+                        // Trường hợp lần đầu, document chưa có
+                        await docRef.set({ visits: 1 });
+                        counterElement.innerHTML = `Lượt truy cập: <strong>1</strong>`;
+                    }
+                    
+                } catch (error) {
+                    console.error("Lỗi cập nhật lượt truy cập: ", error);
+                    counterElement.textContent = 'Lượt truy cập: Không thể tải.';
+                }
+            }
+            
+            // GỌI HÀM KHI TRANG TẢI XONG
+            updateVisitCount();
+             // --- Theme Toggle Logic ---
+            
 
             // --- Theme Toggle Logic ---
             const themeToggleBtn = document.getElementById('theme-toggle');
@@ -551,12 +586,21 @@
             });
         });
     </script>
-    <footer class="text-center py-4 mt-8">
+    <footer class="text-center py-4 mt-8 relative">
+    
     <p class="text-base text-gray-500 dark:text-gray-400">
         Thời đại AI đang đến!!!! <br>
         Tất cả mọi thứ ở đây đều được tạo bằng Gemini.
     </p>
+    
+    <div class="absolute right-4 bottom-4 hidden sm:block">
+        <p id="visit-counter" class="text-xs text-gray-400 dark:text-gray-500 text-right">
+            Lượt truy cập: Đang tải...
+        </p>
+    </div>
+    
 </footer>
+
 <script>
     let daPhatNhacLanDau = false;
 
@@ -576,7 +620,5 @@
         }
     });
 </script>
-
-</body>
 </body>
 </html>
