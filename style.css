@@ -198,3 +198,29 @@ html.dark aside .text-base {
 html.dark footer .text-base {
     color: #9CA3AF !important; /* Nâng cấp (gray-400) */
 }
+
+/* ========================================= */
+/* 12. "TẤT TAY" ĐỔI CON TRỎ CHUỘT CỦA BA MỠ */
+/* ========================================= */
+
+/* * :root là "thằng sếp" cao nhất (giống html)
+ * Mỡ dùng nó với !important để "ra lệnh" đè bẹp
+ * cái lệnh "cứng đầu" của Tailwind CSS.
+*/
+:root {
+    /* Ba dùng link ảnh của ba nè! */
+    cursor: url('assets/chuot-mac-dinh.png'), auto !important;
+}
+
+/* * Mỡ "ép" tất cả thẻ link <a>, nút <button>,
+ * và cả mấy cái class .cursor-pointer của Tailwind
+ * phải đổi con chuột theo ý ba.
+*/
+a, 
+a:hover, 
+[role="button"], 
+button, 
+.cursor-pointer {
+    /* Ba dùng link ảnh-link của ba nè! */
+    cursor: url('assets/chuot-link.png'), pointer !important;
+}
