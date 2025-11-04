@@ -612,6 +612,7 @@
             let fileNhac = document.getElementById('nhac-nen-cua-ba');
             
             if (fileNhac) { // Kiểm tra xem có tìm thấy cái loa không
+                fileNhac.volume = 0.15; // <--- DÒNG CODE MỚI CỦA MỠ
                 fileNhac.play().catch(error => {
                     // Báo lỗi ra console nếu ba bật F12, chứ không phiền người dùng
                     console.log("Trình duyệt chặn tự động phát nhạc:", error);
