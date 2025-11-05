@@ -1,32 +1,51 @@
 /* ------------------------------------------------------------------- */
-/* 1. HIỆU ỨNG NỀN VÀ FONT */
+/* 1. HIỆU ỨNG NỀN VÀ FONT (Ý TƯỞNG 1: APPLE GRADIENT) */
 /* ------------------------------------------------------------------- */
 body {
-    /* FIX FONT: Thêm font dự phòng (Roboto, Arial) hỗ trợ Tiếng Việt tốt hơn */
+    /* FIX FONT: Giữ nguyên font của ba */
     font-family: 'Inter', Roboto, Arial, sans-serif; 
-    /* Nền sáng MẶC ĐỊNH */
-    background: linear-gradient(120deg, #fffbeb 0%, #fff7ed 100%);
+    
+    /* === NỀN SÁNG "ĐỘT PHÁ" (APPLE GRADIENT) === */
+    /* * Con Mỡ dùng 4 màu pastel SÁNG RỰC RỠ chạy chéo
+     * * Dùng hsla để màu nó "airy" (nhẹ như không khí)
+     */
+    background: linear-gradient(
+        135deg, 
+        hsla(190, 90%, 80%, 0.8), /* Xanh da trời */
+        hsla(330, 90%, 85%, 0.8), /* Hồng cánh sen */
+        hsla(40, 90%, 80%, 0.8),  /* Vàng/Cam nhạt */
+        hsla(160, 80%, 80%, 0.8)  /* Xanh mint */
+    );
+
+    /* TUYỆT VỜI: Tận dụng 100% animation cũ của ba! */
     background-size: 400% 400%;
-    animation: gradientBG 20s ease infinite;
+    animation: gradientBG 20s ease infinite; 
+    
     transition: background 0.5s ease;
+    background-attachment: fixed; /* Giữ nền đứng yên */
 }
 
-/* FIX NỀN TỐI (THEO Ý TƯỞNG 1: CỰC QUANG) */
+/* === NỀN TỐI "CỰC QUANG" (CON MỠ GIỮ Y NGUYÊN) === */
+/* * Code "Cực quang" của ba con Mỡ BÊ NGUYÊN, không sửa gì!
+ */
 html.dark body {
-     /* * Đây là nền cực quang (Aurora)
-      * Con dùng 2 vệt màu (gradient) tím và xanh mờ, hòa vào nền than chì
-      * Con dùng 'background' (thay vì 'background-color') để đè nền gradient của chế độ Sáng
-      */
-     background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
-                 radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
-                 #111827; /* Nền than chì cơ bản */
-     
-     background-attachment: fixed; /* Giữ nền đứng yên khi cuộn trang */
-     
-     /* SỬA LỖI QUAN TRỌNG: Tắt animation của chế độ Sáng đi */
-     animation: none;
+      /* * Đây là nền cực quang (Aurora)
+       * Con dùng 2 vệt màu (gradient) tím và xanh mờ, hòa vào nền than chì
+       * Con dùng 'background' (thay vì 'background-color') để đè nền gradient của chế độ Sáng
+       */
+      background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
+                  radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
+                  #111827; /* Nền than chì cơ bản */
+      
+      background-attachment: fixed; /* Giữ nền đứng yên khi cuộn trang */
+      
+      /* Tắt animation của chế độ Sáng đi */
+      animation: none;
 }
 
+/* === KEYFRAMES "THỞ" (CON MỠ GIỮ Y NGUYÊN) === */
+/* * Dùng lại keyframes cũ của ba
+ */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -96,16 +115,6 @@ main { display: grid; }
     100% { transform: rotate(360deg); }
 }
 
-/* ------------------------------------------------------------------- */
-/* 7. TINH CHỈNH MÀU SẮC RIÊNG CHO MÀN HÌNH LỚN (Desktop) - FIX NỀN SÁNG NHỢT NHẠT */
-/* ------------------------------------------------------------------- */
-@media (min-width: 1024px) { /* Áp dụng từ kích thước màn hình LỚN (lg) trở lên */
-    body:not(.dark) { /* Khi KHÔNG ở chế độ tối (tức là chế độ sáng) */
-        /* Giữ nguyên như lần trước */
-        background: linear-gradient(120deg, #fefce8 0%, #fff7e5 100%);
-        background-size: 400% 400%;
-    }
-}
 /* ------------------------------------------------------------------- */
 /* 8. TỐI ƯU MÀU CHỮ TAB CHO MOBILE (Màn hình < 1024px) */
 /* ------------------------------------------------------------------- */
