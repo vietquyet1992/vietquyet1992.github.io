@@ -233,3 +233,41 @@ button,
     /* Ba dùng link ảnh-link của ba nè! */
     cursor: url('assets/chuot-link.png'), pointer !important;
 }
+
+/* ------------------------------------------------------------------- */
+/* 13. "TỔNG TẤN CÔNG" TĂNG TƯƠNG PHẢN (CHẾ ĐỘ SÁNG) - V3.1 */
+/* (Con Mỡ "vớt" 2 chữ mờ trong sidebar theo ý ba) */
+/* ------------------------------------------------------------------- */
+
+/* === Vặn màu XÁM (KHUNG NỘI DUNG CHÍNH <main> và <footer>) === */
+/* (Mấy cái này ba ưng rồi, con Mỡ giữ nguyên) */
+
+html:not(.dark) main .text-gray-700 {
+    color: #111827 !important;
+}
+html:not(.dark) main .text-gray-600 {
+    color: #1F2937 !important;
+}
+html:not(.dark) main .text-gray-500,
+html:not(.dark) footer .text-gray-500 {
+    color: #374151 !important;
+}
+html:not(.dark) footer .text-gray-400 {
+    color: #4B5563 !important;
+}
+html:not(.dark) main .text-gray-800 {
+    color: #111827 !important;
+}
+
+/* === "VỚT" 2 CHỮ BỊ SÓT TRONG SIDEBAR <aside> === */
+/* (Con Mỡ thêm 2 cục này theo ý ba nè!) */
+
+/* Chữ "Công cụ & Ứng dụng" (gray-500 -> gray-700) */
+html:not(.dark) aside .text-xs {
+    color: #374151 !important;
+}
+
+/* Chữ "© 2025 Tiêu Viết Quyết" (gray-500 -> gray-700) */
+html:not(.dark) aside .text-base {
+    color: #374151 !important;
+}
