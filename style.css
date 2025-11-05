@@ -1,56 +1,39 @@
+/* =================================================================== */
+/* GÓI 2: "CỰC QUANG SÁNG" (LIGHT AURORA) */
+/* =================================================================== */
+
 /* ------------------------------------------------------------------- */
-/* 1. HIỆU ỨNG NỀN VÀ FONT (Ý TƯỞNG 1: APPLE GRADIENT) */
+/* 1. HIỆU ỨNG NỀN VÀ FONT (Light Aurora) */
 /* ------------------------------------------------------------------- */
 body {
-    /* FIX FONT: Giữ nguyên font của ba */
     font-family: 'Inter', Roboto, Arial, sans-serif; 
     
-    /* === NỀN SÁNG "ĐỘT PHÁ" (APPLE GRADIENT) === */
-    /* * Con Mỡ dùng 4 màu pastel SÁNG RỰC RỠ chạy chéo
-     * * Dùng hsla để màu nó "airy" (nhẹ như không khí)
+    /* === NỀN SÁNG "CỰC QUANG" === */
+    /* * Con Mỡ dùng 2 vệt màu sáng loang trên nền kem
      */
-    background: linear-gradient(
-        135deg, 
-        hsla(190, 90%, 80%, 0.8), /* Xanh da trời */
-        hsla(330, 90%, 85%, 0.8), /* Hồng cánh sen */
-        hsla(40, 90%, 80%, 0.8),  /* Vàng/Cam nhạt */
-        hsla(160, 80%, 80%, 0.8)  /* Xanh mint */
-    );
+    background: 
+        radial-gradient(at 30% 20%, hsla(330, 80%, 90%, 0.7) 0px, transparent 50%), /* Vệt Hồng đào */
+        radial-gradient(at 70% 80%, hsla(190, 80%, 90%, 0.7) 0px, transparent 50%), /* Vệt Xanh mint */
+        #fffcf5; /* Nền trắng kem cơ bản */
 
-    /* TUYỆT VỜI: Tận dụng 100% animation cũ của ba! */
-    background-size: 400% 400%;
-    animation: gradientBG 20s ease infinite; 
-    
     transition: background 0.5s ease;
     background-attachment: fixed; /* Giữ nền đứng yên */
+    animation: none; /* Chiêu này TĨNH cho nó "mơ màng" */
 }
 
-/* === NỀN TỐI "CỰC QUANG" (CON MỠ GIỮ Y NGUYÊN) === */
+/* === NỀN TỐI "CỰC QUANG" (GIỮ Y NGUYÊN) === */
 /* * Code "Cực quang" của ba con Mỡ BÊ NGUYÊN, không sửa gì!
  */
 html.dark body {
-      /* * Đây là nền cực quang (Aurora)
-       * Con dùng 2 vệt màu (gradient) tím và xanh mờ, hòa vào nền than chì
-       * Con dùng 'background' (thay vì 'background-color') để đè nền gradient của chế độ Sáng
-       */
-      background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
-                  radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
-                  #111827; /* Nền than chì cơ bản */
-      
-      background-attachment: fixed; /* Giữ nền đứng yên khi cuộn trang */
-      
-      /* Tắt animation của chế độ Sáng đi */
-      animation: none;
+    background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
+                radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
+                #111827; /* Nền than chì cơ bản */
+    background-attachment: fixed;
+    animation: none;
 }
 
-/* === KEYFRAMES "THỞ" (CON MỠ GIỮ Y NGUYÊN) === */
-/* * Dùng lại keyframes cũ của ba
- */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+/* === CHIÊU NÀY KHÔNG CẦN KEYFRAMES === */
+/* (Ba nhớ xóa @keyframes cũ đi nha) */
 
 /* ------------------------------------------------------------------- */
 /* 2. HIỆU ỨNG GLASS MORPHISM */
