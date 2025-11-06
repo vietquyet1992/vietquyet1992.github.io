@@ -6,8 +6,11 @@
     <title>TVQ's World</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
@@ -50,60 +53,61 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="font-medium">My Apps</span>
                 </a>
-            </nav>
+                
+                <a href="#" id="nav-my-diary" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-diary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" /></svg>
+                    <span class="font-medium">My Diary</span>
+                </a>
+                <a href="#" id="nav-my-research" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-research">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V2.75A.75.75 0 0110 2zM8.5 4.5A.75.75 0 007.75 5.25v1.25a.75.75 0 001.5 0V5.25A.75.75 0 008.5 4.5zM12.25 5.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0V5.25zM10 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V10.75A.75.75 0 0110 10zM8.5 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM12.25 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM5.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75V10.75A.75.75 0 015.5 10zM4 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM6.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM14.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H14.5a.75.75 0 01-.75-.75V10.75A.75.75 0 0114.5 10zM13 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM15.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25z" clip-rule="evenodd" /></svg>
+                    <span class="font-medium">My Research</span>
+                </a>
+                </nav>
             <div class="mt-auto">
+                
                 <div class="p-4">
                     <button id="theme-toggle" class="w-full flex items-center justify-center p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
                         <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                         <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
                 </div>
-                <div class="text-center pt-4 border-t border-gray-300/50 dark:border-gray-600/50">
-                    <p class="text-base text-gray-500 dark:text-gray-400">
+
+                <div id="guest-view" class="text-center pt-4 border-t border-gray-300/50 dark:border-gray-600/50">
+                    <p id="admin-login-btn" class="text-base text-gray-500 dark:text-gray-400 cursor-pointer hover:text-amber-500 dark:hover:text-amber-400 transition-colors">
                         &copy; 2025 Tiêu Viết Quyết
                     </p>
                 </div>
-            </div>
+                
+                <div id="admin-view" class="hidden p-4 border-t border-gray-300/50 dark:border-gray-600/50">
+                    <div class="flex items-center space-x-3">
+                        <img id="admin-avatar" src="images/favicon.png" alt="Avatar" class="h-10 w-10 rounded-full border-2 border-amber-500 object-cover">
+                        <div class="flex-1">
+                            <p id="admin-name" class="font-semibold text-sm text-gray-800 dark:text-gray-100">Chào ba!</p>
+                            <a href="#" id="admin-logout-btn" class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
         </aside>
 
         <main class="flex-1 p-4 lg:p-8 overflow-y-auto min-h-screen">
             <div id="tool-remove-bg" class="tool-content">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Tách nền ảnh</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
+                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
                     <div class="space-y-4">
-                        
                         <div class="flex items-center space-x-4">
                             <label for="bg-remove-input" class="cursor-pointer bg-gray-300 text-gray-700 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
-                                
                                 Chọn tệp...
                             </label>
                             <span id="bg-remove-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
                             <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="hidden"/>
                         </div>
-
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
-                            <div>
-                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh gốc:</p>
-                                <img id="bg-remove-original" class="w-full rounded-lg border border-gray-200/50 dark:border-gray-700/50"/>
                             </div>
-                            <div>
-                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Đã tách nền:</p>
-                                <div class="w-full aspect-video rounded-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center bg-gray-100/50 dark:bg-gray-700/50" style="background-image: repeating-conic-gradient(#d1d5db80 0 25%, #e5e7eb80 0 50%); background-size: 16px 16px;">
-                                    <img id="bg-remove-result" class="hidden max-w-full max-h-full"/>
-                                    <div id="bg-remove-loader" class="loader hidden"></div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                            <button id="bg-remove-process-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
-                                                                     disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
-                                                                     dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
-                                                                     shadow-lg hover:shadow-amber-500/40" disabled>Tách nền</button>
-                            <button id="bg-remove-download-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
-                                                                       disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
-                                                                       dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
-                                                                       shadow-lg hover:shadow-blue-500/50" disabled>Tải xuống kết quả</button>
+                            <button id="bg-remove-process-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tách nền</button>
+                            <button id="bg-remove-download-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tải xuống kết quả</button>
                         </div>
                         <div id="bg-remove-status" class="text-sm text-gray-500 dark:text-gray-400 mt-2 h-5"></div>
                     </div>
@@ -114,59 +118,14 @@
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Chuyển đổi PNG sang ICO</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
-                    <div class="space-y-4">
-                        
-                        <div class="flex items-center space-x-4">
-                            <label for="png-file-input" class="cursor-pointer bg-gray-300 text-gray-500 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
-                                Chọn tệp...
-                            </label>
-                            <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
-                            <input type="file" id="png-file-input" accept="image/png" class="hidden"/>
-                        </div>
-
-                        <div id="image-preview-container" class="mt-4 hidden">
-                            <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh xem trước:</p>
-                            <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
-                        </div>
-                        <div>
-                            <label for="ico-size-select" class="block font-medium mb-2 dark:text-gray-300">Chọn kích thước:</label>
-                            <select id="ico-size-select" class="w-full sm:w-auto p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
-                                <option value="16">16x16 pixels</option>
-                                <option value="32" selected>32x32 pixels</option>
-                                <option value="48">48x48 pixels</option>
-                                <option value="64">64x64 pixels</option>
-                                <option value="128">128x128 pixels</option>
-                            </select>
-                        </div>
-                        <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
-                                                                 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
-                                                                 dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
-                                                                 shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
-                        <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
                     </div>
-                </div>
             </div>
 
             <div id="tool-base64" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
-                            <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
-                        </div>
-                        <div class="space-y-2">
-                            <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
-                            <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
-                        </div>
                     </div>
-                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
-                        <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
-                    </div>
-                    <div id="base64-status" class="text-sm mt-4"></div>
-                </div>
             </div>
             
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
@@ -174,19 +133,59 @@
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Ứng dụng của tôi</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
                     <div id="apps-list" class="space-y-6">
-                        <div id="apps-loader" class="flex justify-center items-center py-8">
+                         <div id="apps-loader" class="flex justify-center items-center py-8">
                             <div class="loader"></div>
-                        </div>
-                        <p id="apps-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có ứng dụng nào được thêm.</p>
+                         </div>
+                         <p id="apps-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có ứng dụng nào được thêm.</p>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <div id="tool-my-diary" class="tool-content hidden opacity-0">
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Diary</h2>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nhật ký của ba...</p>
+                    </div>
+            </div>
+            <div id="tool-my-research" class="tool-content hidden opacity-0">
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Research</h2>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nghiên cứu của ba...</p>
+                    </div>
+            </div>
+            </main>
     </div>
 
+    <footer class="text-center py-4 mt-8 relative">
+        <p class="text-base text-gray-500 dark:text-gray-400">
+            Thời đại AI đang đến!!!! <br>
+            Tất cả mọi thứ ở đây đều được tạo bằng Gemini.
+        </p>
+        <div class="absolute right-4 bottom-4 hidden sm:block">
+            <p id="visit-counter" class="text-xs text-gray-400 dark:text-gray-500 text-right">
+                Lượt truy cập: Đang tải...
+            </p>
+        </div>
+    </footer>
+
+    <div id="role-selection-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="p-8 rounded-lg shadow-xl w-full max-w-sm glass-effect">
+            <h3 class="text-2xl font-bold text-center mb-6 text-amber-600 dark:text-amber-400">Chào mừng ba!</h3>
+            <p class="text-center mb-8 text-gray-700 dark:text-gray-300">Ba muốn truy cập với tư cách nào ạ?</p>
+            <div class="flex flex-col space-y-4">
+                <button id="select-role-admin" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">
+                    Admin (Đăng nhập)
+                </button>
+                <button id="select-role-guest" class="w-full bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-lg transition duration-300">
+                    Khách (Xem thôi)
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Firebase Initialization ---
+            
+            // --- Firebase Initialization (CŨ CỦA BA) ---
             const firebaseConfig = {
                 apiKey: "AIzaSyCG_OqnwjNTg3kfCUmEkxo-qrJTMMsyhqk",
                 authDomain: "my-toolbox-downloads.firebaseapp.com",
@@ -196,21 +195,172 @@
                 appId: "1:723884147235:web:d08241abfd477d91c2e796"
             };
             firebase.initializeApp(firebaseConfig);
-            firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+            
+            // === CODE MỚI CỦA MỠ (CÁCH 2) ===
+            const auth = firebase.auth(); // Khởi tạo dịch vụ AUTH
+            const provider = new firebase.auth.GoogleAuthProvider(); // Chọn nhà cung cấp Google
 
-            // === CODE MỚI DÀNH CHO BỘ ĐẾM TRUY CẬP ===
-            // Hàm JavaScript đã được tối ưu tốc độ
+            
+
+            // Lấy các element UI
+            const modal = document.getElementById('role-selection-modal');
+            const selectGuestBtn = document.getElementById('select-role-guest');
+            const selectAdminBtn = document.getElementById('select-role-admin');
+            
+            // *** MỠ SỬA LẠI CHỖ NÀY: Nút login giờ là chữ Copyright ***
+            const adminLoginBtn = document.getElementById('admin-login-btn'); 
+            
+            const adminLogoutBtn = document.getElementById('admin-logout-btn');
+
+            const guestView = document.getElementById('guest-view');
+            const adminView = document.getElementById('admin-view');
+            const navDiary = document.getElementById('nav-my-diary');
+            const navResearch = document.getElementById('nav-my-research');
+            
+            // Hàm mới để check quyền Admin (Hỏi Firestore)
+async function checkAdminStatus(user) {
+    if (!user) {
+        updateUI(null, false); // Không có user, là Guest
+        return;
+    }
+
+    // 1. Lấy email của user đã login
+    const userEmail = user.email;
+
+    // 2. Query Firestore xem email này có trong "sổ" admins không
+    try {
+        const adminDocRef = db.collection("admins").doc(userEmail);
+        const adminDoc = await adminDocRef.get();
+
+        if (adminDoc.exists) {
+            // 3. Nếu TỒN TẠI -> Đây là Admin
+            console.log("Admin đã đăng nhập:", userEmail);
+            updateUI(user, true); // true = là admin
+        } else {
+            // 4. Nếu KHÔNG TỒN TẠI -> User lạ
+            console.log("User lạ đăng nhập, không có quyền:", userEmail);
+            updateUI(user, false); // false = không phải admin
+        }
+    } catch (error) {
+        console.error("Lỗi khi check admin:", error);
+        updateUI(user, false); // Mặc định là guest nếu có lỗi
+    }
+}
+
+// Hàm updateUI (sửa lại 1 chút)
+function updateUI(user, isAdmin) { // Thêm 1 tham số 'isAdmin'
+    if (user && isAdmin) {
+        // Là Admin
+        guestView.classList.add('hidden');
+        adminView.classList.add('show');
+        navDiary.classList.remove('hidden');
+        navResearch.classList.remove('hidden');
+        
+        document.getElementById('admin-avatar').src = user.photoURL || 'images/favicon.png';
+        document.getElementById('admin-name').textContent = user.displayName || "Chào Admin!";
+    } else {
+        // Là Guest
+        guestView.classList.remove('hidden');
+        adminView.classList.add('hidden');
+        adminView.classList.remove('show');
+        navDiary.classList.add('hidden');
+        navResearch.classList.add('hidden');
+
+        // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
+        if (user && !isAdmin) {
+             // Tự động logout họ luôn cho an toàn
+             signOut(); 
+             alert("Tài khoản này không có quyền Admin!");
+        }
+    }
+}
+
+                // Hàm onAuthStateChanged (Hàm "lắng nghe" chính)
+                auth.onAuthStateChanged((user) => {
+                    const role = localStorage.getItem('userRole');
+                    
+                    if (user) {
+                        // User đã login, check xem có phải admin ko
+                        checkAdminStatus(user);
+                    } else {
+                        // User đã logout
+                        updateUI(null, false);
+                        // Hiện modal nếu chưa chọn role bao giờ
+                        if (!role) {
+                            modal.classList.add('show');
+                        }
+                    }
+                });
+
+                // Hàm signInWithGoogle (Không cần sửa nhiều)
+                function signInWithGoogle() {
+                    auth.signInWithPopup(provider)
+                        .then((result) => {
+                            // Đăng nhập thành công
+                            // Hàm onAuthStateChanged ở trên sẽ tự động chạy và check admin
+                            localStorage.setItem('userRole', 'admin'); // Vẫn lưu để lần sau k hỏi modal
+                        })
+                        .catch((error) => {
+                            console.error("Lỗi đăng nhập:", error);
+                        });
+                }
+
+            
+
+            // Hàm đăng xuất
+            function signOut() {
+                auth.signOut()
+                    .then(() => {
+                        console.log("Đã đăng xuất.");
+                        localStorage.setItem('userRole', 'guest'); // Đặt về guest
+                    })
+                    .catch((error) => {
+                        console.error("Lỗi đăng xuất:", error);
+                    });
+            }
+
+            // === XỬ LÝ LOGIC CHÍNH ===
+            
+            
+
+            // 2. Gán sự kiện cho các nút
+            
+            // Nút chọn "Khách" trên Modal
+            selectGuestBtn.addEventListener('click', () => {
+                localStorage.setItem('userRole', 'guest');
+                modal.classList.remove('show');
+            });
+
+            // Nút chọn "Admin" trên Modal
+            selectAdminBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+                signInWithGoogle(); // Gọi hàm đăng nhập
+            });
+
+            // *** MỠ SỬA LẠI CHỖ NÀY: Nút login giờ là chữ Copyright ***
+            adminLoginBtn.addEventListener('click', () => {
+                signInWithGoogle(); // Gọi hàm đăng nhập
+            });
+
+            // Nút "Đăng xuất"
+            adminLogoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signOut(); // Gọi hàm đăng xuất
+            });
+            
+            
+            // === CODE CŨ CỦA BA (MỠ GỘP VÀO ĐÂY) ===
+
+            // --- BỘ ĐẾM TRUY CẬP (CŨ CỦA BA) ---
             async function updateVisitCount() {
                 const counterElement = document.getElementById('visit-counter');
+                if (!counterElement) return; // Mỡ thêm: nếu k tìm thấy thì bỏ qua
                 const docRef = db.collection("stats").doc("global"); 
                 
-                // BƯỚC 1: CỰC KỲ QUAN TRỌNG - CHỈ GỌI LỆNH TĂNG SỐ VÀ KHÔNG CHỜ (KHÔNG DÙNG await)
-                // Code sẽ gửi lệnh tăng số lên Firebase và tiếp tục chạy luôn
                 docRef.update({
                     visits: firebase.firestore.FieldValue.increment(1)
                 }).catch(error => {
-                    // Lỡ lỗi do doc chưa tồn tại, mình tạo nó ra
                     if (error.code === 'not-found') {
                         docRef.set({ visits: 1 }).catch(err => console.error("Lỗi tạo Document lần đầu:", err));
                     } else {
@@ -218,23 +368,19 @@
                     }
                 });
 
-                // BƯỚC 2: NGHE NGÓNG (realtime listener) - Nhanh hơn việc fetch thủ công
-                // Firebase sẽ tự động gửi con số mới nhất về ngay khi nó thay đổi
                 docRef.onSnapshot((doc) => {
                     if (doc.exists) {
                         const count = doc.data().visits;
-                        // Hiển thị ngay khi có số mới, không cần phải chờ 2 lần như trước
                         counterElement.innerHTML = `Lượt truy cập: <strong>${count.toLocaleString('vi-VN')}</strong>`;
                     }
                 }, (error) => {
                     console.error("Lỗi đọc lượt truy cập (listener):", error);
-                    // Cập nhật lại trạng thái nếu bị lỗi
                     counterElement.textContent = 'Lượt truy cập: Không thể tải.';
                 });
             }
             updateVisitCount(); 
 
-            // --- Theme Toggle Logic ---
+            // --- Theme Toggle Logic (CŨ CỦA BA) ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
@@ -250,67 +396,65 @@
                 localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // --- Navigation Logic ---
+            // --- Navigation Logic (CŨ CỦA BA) ---
             const navLinks = document.querySelectorAll('.nav-link');
             const toolContents = document.querySelectorAll('.tool-content');
 
-            // Hàm để hiển thị công cụ và cập nhật URL
             function showTool(toolId) {
-                // Xóa trạng thái active của tất cả các nav-link
                 navLinks.forEach(nav => nav.classList.remove('active'));
 
-                // Thêm trạng thái active cho nav-link tương ứng
                 const activeLink = document.querySelector(`.nav-link[data-tool="${toolId}"]`);
                 if (activeLink) {
                     activeLink.classList.add('active');
                 }
 
-                // Ẩn tất cả nội dung công cụ
+                let targetFound = false;
                 toolContents.forEach(content => {
-                    content.classList.add('opacity-0');
-                    // Sử dụng setTimeout để đảm bảo hiệu ứng fade-out xong rồi mới thêm hidden
-                    setTimeout(() => {
-                        content.classList.add('hidden');
-                        // Sau khi ẩn các nội dung khác, hiển thị nội dung của công cụ hiện tại
-                        const targetContent = document.getElementById(`tool-${toolId}`);
-                        if (targetContent) {
-                            targetContent.classList.remove('hidden');
-                            setTimeout(() => targetContent.classList.remove('opacity-0'), 10);
-                        }
-                    }, 400); // Thời gian chờ bằng với transition-duration (0.4s)
+                    if (content.id === `tool-${toolId}`) {
+                        targetFound = true;
+                        // Hiển thị nội dung target
+                        content.classList.remove('hidden');
+                        setTimeout(() => content.classList.remove('opacity-0'), 10);
+                    } else {
+                        // Ẩn nội dung khác
+                        content.classList.add('opacity-0');
+                        setTimeout(() => {
+                            content.classList.add('hidden');
+                        }, 400); // Thời gian chờ bằng với transition-duration
+                    }
                 });
+
+                // Nếu không tìm thấy toolId (ví dụ: admin tab nhưng đang là guest)
+                // thì tự động chuyển về tab đầu tiên
+                if (!targetFound && navLinks.length > 0) {
+                    const defaultToolId = navLinks[0].dataset.tool;
+                    if (toolId !== defaultToolId) { // Tránh lặp vô hạn
+                        showTool(defaultToolId);
+                    }
+                }
             }
 
-            // Xử lý khi click vào các nav-link
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+                    e.preventDefault(); 
                     const toolId = link.dataset.tool;
-                    
-                    // Cập nhật URL mà không tải lại trang
                     history.pushState({ toolId: toolId }, '', `#${toolId}`);
-                    
-                    showTool(toolId); // Hiển thị công cụ
+                    showTool(toolId); 
                 });
             });
 
-            // Xử lý khi người dùng dùng nút Back/Forward của trình duyệt
             window.addEventListener('popstate', (e) => {
                 if (e.state && e.state.toolId) {
                     showTool(e.state.toolId);
                 } else {
-                    // Nếu không có state (ví dụ: quay về trang gốc), hiển thị tab mặc định
-                    showTool(navLinks[0].dataset.tool); // Hiển thị tab đầu tiên
+                    showTool(navLinks[0].dataset.tool);
                 }
             });
 
-            // Xử lý khi trang được tải lần đầu (để hiển thị đúng tab nếu URL có hash)
-            // Hoặc hiển thị tab mặc định nếu không có hash
             const initialToolId = window.location.hash.substring(1) || navLinks[0].dataset.tool;
             showTool(initialToolId);
 
-            // --- BG Removal Logic (Dùng Photoroom API) ---
-            
+            // --- BG Removal Logic (CŨ CỦA BA) ---
             const bgRemoveInput = document.getElementById('bg-remove-input');
             const bgRemoveFilename = document.getElementById('bg-remove-filename');
             const bgRemovePreviews = document.getElementById('bg-remove-previews');
@@ -322,75 +466,77 @@
             const bgRemoveStatus = document.getElementById('bg-remove-status');
             let resultBlob = null;
             
-            bgRemoveInput.addEventListener('change', () => {
-                const file = bgRemoveInput.files[0];
-                if (file) {
-                    bgRemoveFilename.textContent = file.name;
-                    resultBlob = null;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        bgRemoveOriginal.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                    bgRemovePreviews.classList.remove('hidden');
-                    bgRemoveResult.classList.add('hidden');
-                    bgRemoveLoader.classList.add('hidden');
-                    bgRemoveDownloadBtn.disabled = true;
-                    bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
-                    bgRemoveProcessBtn.disabled = false;
-                } else {
-                    bgRemoveFilename.textContent = 'Chưa chọn tệp nào.';
-                }
-            });
-
-            bgRemoveProcessBtn.addEventListener('click', async () => {
-                const file = bgRemoveInput.files[0];
-                if (!file) return;
-
-                bgRemoveLoader.classList.remove('hidden');
-                bgRemoveResult.classList.add('hidden');
-                bgRemoveStatus.textContent = 'Đang tải ảnh lên và xử lý...';
-                bgRemoveProcessBtn.disabled = true;
-                bgRemoveDownloadBtn.disabled = true;
-                const formData = new FormData();
-                formData.append('image_file', file);
-                try {
-                    const response = await fetch('/api/photoroom', { 
-                        method: 'POST',
-                        body: formData,
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.detail || `Lỗi HTTP: ${response.status}`);
+            if (bgRemoveInput) { // Mỡ thêm: check null
+                bgRemoveInput.addEventListener('change', () => {
+                    const file = bgRemoveInput.files[0];
+                    if (file) {
+                        bgRemoveFilename.textContent = file.name;
+                        resultBlob = null;
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            bgRemoveOriginal.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                        bgRemovePreviews.classList.remove('hidden');
+                        bgRemoveResult.classList.add('hidden');
+                        bgRemoveLoader.classList.add('hidden');
+                        bgRemoveDownloadBtn.disabled = true;
+                        bgRemoveStatus.textContent = 'Sẵn sàng để tách nền.';
+                        bgRemoveProcessBtn.disabled = false;
+                    } else {
+                        bgRemoveFilename.textContent = 'Chưa chọn tệp nào.';
                     }
-                    resultBlob = await response.blob();
-                    const url = URL.createObjectURL(resultBlob);
-                    bgRemoveResult.src = url;
-                    bgRemoveResult.classList.remove('hidden');
-                    bgRemoveStatus.textContent = 'Tách nền thành công!';
-                    bgRemoveDownloadBtn.disabled = false;
-                } catch (error) {
-                    console.error("Photoroom API error:", error);
-                    bgRemoveStatus.textContent = `Lỗi: ${error.message}`;
-                } finally {
-                    bgRemoveLoader.classList.add('hidden');
-                    bgRemoveProcessBtn.disabled = false;
-                }
-            });
+                });
 
-            bgRemoveDownloadBtn.addEventListener('click', () => {
-                if (resultBlob) {
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(resultBlob);
-                    const originalFileName = bgRemoveInput.files[0].name.split('.').slice(0, -1).join('.');
-                    link.download = `${originalFileName}-removed-bg.png`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
-            });
+                bgRemoveProcessBtn.addEventListener('click', async () => {
+                    const file = bgRemoveInput.files[0];
+                    if (!file) return;
+
+                    bgRemoveLoader.classList.remove('hidden');
+                    bgRemoveResult.classList.add('hidden');
+                    bgRemoveStatus.textContent = 'Đang tải ảnh lên và xử lý...';
+                    bgRemoveProcessBtn.disabled = true;
+                    bgRemoveDownloadBtn.disabled = true;
+                    const formData = new FormData();
+                    formData.append('image_file', file);
+                    try {
+                        const response = await fetch('/api/photoroom', { 
+                            method: 'POST',
+                            body: formData,
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.detail || `Lỗi HTTP: ${response.status}`);
+                        }
+                        resultBlob = await response.blob();
+                        const url = URL.createObjectURL(resultBlob);
+                        bgRemoveResult.src = url;
+                        bgRemoveResult.classList.remove('hidden');
+                        bgRemoveStatus.textContent = 'Tách nền thành công!';
+                        bgRemoveDownloadBtn.disabled = false;
+                    } catch (error) {
+                        console.error("Photoroom API error:", error);
+                        bgRemoveStatus.textContent = `Lỗi: ${error.message}`;
+                    } finally {
+                        bgRemoveLoader.classList.add('hidden');
+                        bgRemoveProcessBtn.disabled = false;
+                    }
+                });
+
+                bgRemoveDownloadBtn.addEventListener('click', () => {
+                    if (resultBlob) {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(resultBlob);
+                        const originalFileName = bgRemoveInput.files[0].name.split('.').slice(0, -1).join('.');
+                        link.download = `${originalFileName}-removed-bg.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                });
+            } // Hết check null bgRemoveInput
             
-            // --- PNG to ICO Logic ---
+            // --- PNG to ICO Logic (CŨ CỦA BA) ---
             const pngFileInput = document.getElementById('png-file-input');
             const pngFilename = document.getElementById('png-filename');
             const convertBtn = document.getElementById('convert-to-ico-btn');
@@ -399,228 +545,217 @@
             const icoStatus = document.getElementById('ico-status');
             const icoSizeSelect = document.getElementById('ico-size-select');
 
-            pngFileInput.addEventListener('change', () => {
-                const file = pngFileInput.files[0];
-                if (file) {
-                    pngFilename.textContent = file.name;
-                    convertBtn.disabled = false;
+            if (pngFileInput) { // Mỡ thêm: check null
+                pngFileInput.addEventListener('change', () => {
+                    const file = pngFileInput.files[0];
+                    if (file) {
+                        pngFilename.textContent = file.name;
+                        convertBtn.disabled = false;
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            imagePreview.src = e.target.result;
+                            imagePreviewContainer.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        pngFilename.textContent = 'Chưa chọn tệp nào.';
+                        convertBtn.disabled = true;
+                        imagePreviewContainer.classList.add('hidden');
+                    }
+                });
+
+                convertBtn.addEventListener('click', () => {
+                    const file = pngFileInput.files[0];
+                    if (!file) return;
+                    const size = parseInt(icoSizeSelect.value, 10);
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        imagePreview.src = e.target.result;
-                        imagePreviewContainer.classList.remove('hidden');
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = size;
+                            canvas.height = size;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, size, size);
+                            const icoData = createIco(ctx, size);
+                            const blob = new Blob([icoData], { type: 'image/x-icon' });
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = 'favicon.ico';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            icoStatus.textContent = `Tệp favicon.ico (${size}x${size}) đã được tải xuống!`;
+                            setTimeout(() => { icoStatus.textContent = '' }, 3000);
+                        };
+                        img.src = e.target.result;
                     };
                     reader.readAsDataURL(file);
-                } else {
-                    pngFilename.textContent = 'Chưa chọn tệp nào.';
-                    convertBtn.disabled = true;
-                    imagePreviewContainer.classList.add('hidden');
-                }
-            });
+                });
 
-            convertBtn.addEventListener('click', () => {
-                const file = pngFileInput.files[0];
-                if (!file) return;
-                const size = parseInt(icoSizeSelect.value, 10);
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = size;
-                        canvas.height = size;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, size, size);
-                        const icoData = createIco(ctx, size);
-                        const blob = new Blob([icoData], { type: 'image/x-icon' });
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(blob);
-                        link.download = 'favicon.ico';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        icoStatus.textContent = `Tệp favicon.ico (${size}x${size}) đã được tải xuống!`;
-                        setTimeout(() => { icoStatus.textContent = '' }, 3000);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-
-            function createIco(ctx, size) {
-                const imageData = ctx.getImageData(0, 0, size, size).data;
-                const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
-                const view = new DataView(buffer);
-                view.setUint16(0, 0, true); view.setUint16(2, 1, true); view.setUint16(4, 1, true);
-                view.setUint8(6, size); view.setUint8(7, size); view.setUint8(8, 0); view.setUint8(9, 0);
-                view.setUint16(10, 1, true); view.setUint16(12, 32, true);
-                view.setUint32(14, 40 + (size * size * 4), true); view.setUint32(18, 22, true);
-                let offset = 22;
-                view.setUint32(offset, 40, true); offset += 4;
-                view.setUint32(offset, size, true); offset += 4;
-                view.setUint32(offset, size * 2, true); offset += 4;
-                view.setUint16(offset, 1, true); offset += 2;
-                view.setUint16(offset, 32, true); offset += 2;
-                view.setUint32(offset, 0, true); offset += 4;
-                view.setUint32(offset, size * size * 4, true); offset += 4;
-                view.setUint32(offset, 0, true); offset += 4;
-                view.setUint32(offset, 0, true); offset += 4;
-                view.setUint32(offset, 0, true); offset += 4;
-                view.setUint32(offset, 0, true); offset += 4;
-                for (let y = size - 1; y >= 0; y--) {
-                    for (let x = 0; x < size; x++) {
-                        const i = (y * size + x) * 4;
-                        view.setUint8(offset++, imageData[i + 2]); view.setUint8(offset++, imageData[i + 1]);
-                        view.setUint8(offset++, imageData[i]); view.setUint8(offset++, imageData[i + 3]);
+                function createIco(ctx, size) {
+                    const imageData = ctx.getImageData(0, 0, size, size).data;
+                    const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
+                    const view = new DataView(buffer);
+                    view.setUint16(0, 0, true); view.setUint16(2, 1, true); view.setUint16(4, 1, true);
+                    view.setUint8(6, size); view.setUint8(7, size); view.setUint8(8, 0); view.setUint8(9, 0);
+                    view.setUint16(10, 1, true); view.setUint16(12, 32, true);
+                    view.setUint32(14, 40 + (size * size * 4), true); view.setUint32(18, 22, true);
+                    let offset = 22;
+                    view.setUint32(offset, 40, true); offset += 4;
+                    view.setUint32(offset, size, true); offset += 4;
+                    view.setUint32(offset, size * 2, true); offset += 4;
+                    view.setUint16(offset, 1, true); offset += 2;
+                    view.setUint16(offset, 32, true); offset += 2;
+                    view.setUint32(offset, 0, true); offset += 4;
+                    view.setUint32(offset, size * size * 4, true); offset += 4;
+                    view.setUint32(offset, 0, true); offset += 4;
+                    view.setUint32(offset, 0, true); offset += 4;
+                    view.setUint32(offset, 0, true); offset += 4;
+                    view.setUint32(offset, 0, true); offset += 4;
+                    for (let y = size - 1; y >= 0; y--) {
+                        for (let x = 0; x < size; x++) {
+                            const i = (y * size + x) * 4;
+                            view.setUint8(offset++, imageData[i + 2]); view.setUint8(offset++, imageData[i + 1]);
+                            view.setUint8(offset++, imageData[i]); view.setUint8(offset++, imageData[i + 3]);
+                        }
                     }
+                    return new Uint8Array(buffer);
                 }
-                return new Uint8Array(buffer);
-            }
+            } // Hết check null pngFileInput
 
-            // --- Base64 Logic ---
+            // --- Base64 Logic (CŨ CỦA BA) ---
             const base64Input = document.getElementById('base64-input');
             const base64Output = document.getElementById('base64-output');
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
             const base64Status = document.getElementById('base64-status');
 
-            function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
-            function safeAtob(str) { try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; } }
+            if (base64Input) { // Mỡ thêm: check null
+                function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
+                function safeAtob(str) { try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; } }
 
-            encodeBtn.addEventListener('click', () => {
-                const input = base64Input.value;
-                if (!input) { base64Output.value = ''; return; }
-                const encoded = safeBtoa(input);
-                base64Output.value = encoded ? encoded : 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
-                base64Status.textContent = encoded ? 'Mã hóa thành công!' : 'Mã hóa thất bại.';
-                setTimeout(() => { base64Status.textContent = '' }, 3000);
-            });
+                encodeBtn.addEventListener('click', () => {
+                    const input = base64Input.value;
+                    if (!input) { base64Output.value = ''; return; }
+                    const encoded = safeBtoa(input);
+                    base64Output.value = encoded ? encoded : 'Lỗi: Dữ liệu đầu vào không hợp lệ.';
+                    base64Status.textContent = encoded ? 'Mã hóa thành công!' : 'Mã hóa thất bại.';
+                    setTimeout(() => { base64Status.textContent = '' }, 3000);
+                });
 
-            decodeBtn.addEventListener('click', () => {
-                let currentString = base64Input.value;
-                if (!currentString) { base64Output.value = ''; return; }
-                let decodeCount = 0;
-                let lastValidString = currentString;
-                while (true) {
-                    const decoded = safeAtob(currentString);
-                    if (decoded !== null && decoded !== currentString) {
-                        currentString = decoded;
-                        lastValidString = decoded;
-                        decodeCount++;
-                    } else { break; }
-                }
-                base64Output.value = lastValidString;
-                base64Status.textContent = decodeCount > 0 ? `Giải mã thành công qua ${decodeCount} lớp.` : 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
-                setTimeout(() => { base64Status.textContent = '' }, 4000);
-            });
+                decodeBtn.addEventListener('click', () => {
+                    let currentString = base64Input.value;
+                    if (!currentString) { base64Output.value = ''; return; }
+                    let decodeCount = 0;
+                    let lastValidString = currentString;
+                    while (true) {
+                        const decoded = safeAtob(currentString);
+                        if (decoded !== null && decoded !== currentString) {
+                            currentString = decoded;
+                            lastValidString = decoded;
+                            decodeCount++;
+                        } else { break; }
+                    }
+                    base64Output.value = lastValidString;
+                    base64Status.textContent = decodeCount > 0 ? `Giải mã thành công qua ${decodeCount} lớp.` : 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
+                    setTimeout(() => { base64Status.textContent = '' }, 4000);
+                });
+            } // Hết check null base64Input
 
-            // --- My Apps Logic ---
+            // --- My Apps Logic (CŨ CỦA BA) ---
             const appsListContainer = document.getElementById('apps-list');
             const appsLoader = document.getElementById('apps-loader');
             const appsEmptyState = document.getElementById('apps-empty-state');
-            db.collection("my_apps").onSnapshot((querySnapshot) => {
-                appsLoader.classList.add('hidden');
-                appsListContainer.innerHTML = '';
-                appsListContainer.appendChild(appsLoader);
-                appsListContainer.appendChild(appsEmptyState);
 
-                if (querySnapshot.empty) {
-                    appsEmptyState.classList.remove('hidden');
-                } else {
-                    appsEmptyState.classList.add('hidden');
-                    querySnapshot.forEach((doc) => {
-                        const app = doc.data();
-                        const appId = doc.id;
-                        let iconHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`;
-                        if (app.iconUrl && app.iconUrl.trim() !== '') {
-                            iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
-                        }
-                        
-                        const appCardHTML = `
-                            <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
-                                    ${iconHTML}
-                                </div>
-                                <div class="flex-grow">
-                                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
-                                    <p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                        <span>Số lượt tải: </span>
-                                        <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
+            if (appsListContainer) { // Mỡ thêm: check null
+                db.collection("my_apps").onSnapshot((querySnapshot) => {
+                    appsLoader.classList.add('hidden');
+                    // Mỡ sửa: Xóa nội dung cũ an toàn hơn
+                    const appCards = appsListContainer.querySelectorAll('.app-card');
+                    appCards.forEach(card => card.remove());
+
+                    if (querySnapshot.empty) {
+                        appsEmptyState.classList.remove('hidden');
+                    } else {
+                        appsEmptyState.classList.add('hidden');
+                        querySnapshot.forEach((doc) => {
+                            const app = doc.data();
+                            const appId = doc.id;
+                            let iconHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`;
+                            if (app.iconUrl && app.iconUrl.trim() !== '') {
+                                iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
+                            }
+                            
+                            const appCardHTML = `
+                                <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                                    <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+                                        ${iconHTML}
                                     </div>
-                                </div>
-                                <div class="w-full sm:w-auto flex-shrink-0">
-                                    <button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                        <span>Tải về</span>
-                                    </button>
-                                </div>
-                            </div>`;
-                        appsListContainer.insertAdjacentHTML('beforeend', appCardHTML);
-                    });
-                }
-            }, (error) => {
-                console.error("Error getting documents: ", error);
-                appsLoader.classList.add('hidden');
-                appsListContainer.innerHTML = '<p class="text-center text-red-500">Đã xảy ra lỗi khi tải danh sách ứng dụng.</p>';
-            });
-
-            appsListContainer.addEventListener('click', (e) => {
-                const button = e.target.closest('.download-btn');
-                if (button) {
-                    const docId = button.dataset.docId;
-                    const url = button.dataset.url;
-                    if (!docId || url === '#') {
-                        console.error('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
-                        return;
+                                    <div class="flex-grow">
+                                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
+                                        <p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                            <span>Số lượt tải: </span>
+                                            <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full sm:w-auto flex-shrink-0">
+                                        <button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                            <span>Tải về</span>
+                                        </button>
+                                    </div>
+                                </div>`;
+                            appsListContainer.insertAdjacentHTML('beforeend', appCardHTML);
+                        });
                     }
-                    const appRef = db.collection('my_apps').doc(docId);
-                    appRef.update({
-                        downloadCount: firebase.firestore.FieldValue.increment(1)
-                    }).then(() => {
-                        console.log("Download count updated!");
-                        window.open(url, '_blank');
-                    }).catch((error) => {
-                        console.error("Error updating document: ", error);
-                        window.open(url, '_blank');
+                }, (error) => {
+                    console.error("Error getting documents: ", error);
+                    appsLoader.classList.add('hidden');
+                    appsListContainer.innerHTML = '<p class="text-center text-red-500">Đã xảy ra lỗi khi tải danh sách ứng dụng.</p>';
+                });
+
+                appsListContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('.download-btn');
+                    if (button) {
+                        const docId = button.dataset.docId;
+                        const url = button.dataset.url;
+                        if (!docId || url === '#') {
+                            console.error('Lỗi: Không tìm thấy đường link tải về cho ứng dụng này.');
+                            return;
+                        }
+                        const appRef = db.collection('my_apps').doc(docId);
+                        appRef.update({
+                            downloadCount: firebase.firestore.FieldValue.increment(1)
+                        }).then(() => {
+                            console.log("Download count updated!");
+                            window.open(url, '_blank');
+                        }).catch((error) => {
+                            console.error("Error updating document: ", error);
+                            window.open(url, '_blank');
+                        });
+                    }
+                });
+            } // Hết check null appsListContainer
+
+        }); // Hết DOMContentLoaded
+    </script>
+
+    <script>
+        let daPhatNhacLanDau = false;
+        document.addEventListener('click', function() {
+            if (!daPhatNhacLanDau) {
+                let fileNhac = document.getElementById('nhac-nen-cua-ba');
+                if (fileNhac) { 
+                    fileNhac.volume = 0.15; 
+                    fileNhac.play().catch(error => {
+                        console.log("Trình duyệt chặn tự động phát nhạc:", error);
                     });
+                    daPhatNhacLanDau = true; 
                 }
-            });
+            }
         });
     </script>
-    <footer class="text-center py-4 mt-8 relative">
-    
-    <p class="text-base text-gray-500 dark:text-gray-400">
-        Thời đại AI đang đến!!!! <br>
-        Tất cả mọi thứ ở đây đều được tạo bằng Gemini.
-    </p>
-    
-    <div class="absolute right-4 bottom-4 hidden sm:block">
-        <p id="visit-counter" class="text-xs text-gray-400 dark:text-gray-500 text-right">
-            Lượt truy cập: Đang tải...
-        </p>
-    </div>
-    
-</footer>
-
-<script>
-    let daPhatNhacLanDau = false;
-
-    document.addEventListener('click', function() {
-        if (!daPhatNhacLanDau) {
-            
-            // Tìm cái loa theo tên (id) mình đặt ở Bước 1
-            let fileNhac = document.getElementById('nhac-nen-cua-ba');
-            
-            if (fileNhac) { // Kiểm tra xem có tìm thấy cái loa không
-                fileNhac.volume = 0.15; // <--- DÒNG CODE MỚI CỦA MỠ
-                fileNhac.play().catch(error => {
-                    // Báo lỗi ra console nếu ba bật F12, chứ không phiền người dùng
-                    console.log("Trình duyệt chặn tự động phát nhạc:", error);
-                });
-                daPhatNhacLanDau = true; // Đánh dấu đã phát
-            }
-        }
-    });
-</script>
 </body>
 </html>
