@@ -78,7 +78,7 @@
                     </p>
                 </div>
                 
-                <div id="admin-view" class="hidden p-4 border-t border-gray-300/50 dark:border-gray-600/50">
+                <div id="admin-view" class="p-4 border-t border-gray-300/50 dark:border-gray-600/50" style="display: none;">
                     <div class="flex items-center space-x-3">
                         <img id="admin-avatar" src="images/favicon.png" alt="Avatar" class="h-10 w-10 rounded-full border-2 border-amber-500 object-cover">
                         <div class="flex-1">
@@ -129,9 +129,7 @@
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Chuyển đổi PNG sang ICO</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
-                    
                     <div class="space-y-4">
-                        
                         <div class="flex items-center space-x-4">
                             <label for="png-file-input" class="cursor-pointer bg-gray-300 text-gray-500 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
                                 Chọn tệp...
@@ -139,7 +137,6 @@
                             <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
                             <input type="file" id="png-file-input" accept="image/png" class="hidden"/>
                         </div>
-
                         <div id="image-preview-container" class="mt-4 hidden">
                             <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh xem trước:</p>
                             <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
@@ -160,30 +157,30 @@
                                                             shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
                         <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
                     </div>
-                    </div>
+                </div>
             </div>
 
             <div id="tool-base64" class="tool-content hidden opacity-0">
-            <div class="p-8 tool-card glass-effect">
-                <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
-                <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
-                        <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
+                            <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
+                            <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
+                        </div>
                     </div>
-                    <div class="space-y-2">
-                        <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
-                        <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
+                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                        <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
+                        <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
                     </div>
+                    <div id="base64-status" class="text-sm mt-4"></div>
                 </div>
-                <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                    <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
-                    <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
-                </div>
-                <div id="base64-status" class="text-sm mt-4"></div>
-                </div>
-        </div>
+            </div>
             
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
@@ -265,8 +262,9 @@
             const adminLoginBtn = document.getElementById('admin-login-btn'); 
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
             
-            // === HÀM "TRÂU BÒ" MỠ VIẾT LẠI (SỬA LỖI GITHUB) ===
-            // Hàm updateUI (VIẾT LẠI HOÀN TOÀN - TỰ TÌM ELEMENT MỖI LẦN CHẠY)
+            
+            // === HÀM "SIÊU TRÂU BÒ" MỠ VIẾT LẠI (SỬA LỖI GITHUB) ===
+            // === DÙNG style.display THAY VÌ classList ===
             function updateUI(user, isAdmin) {
                 
                 // === TUYỆT CHIÊU: Tìm lại element MỖI LẦN chạy ===
@@ -281,11 +279,12 @@
                     return;
                 }
                 
-                // === Logic như cũ ===
+                // === Logic MỚI: Dùng style.display ===
                 if (user && isAdmin) {
                     // Là Admin
-                    gView.classList.add('hidden');
-                    aView.classList.add('show');
+                    console.log("updateUI: Đang set Admin...");
+                    gView.style.display = 'none';   // DÙNG STYLE
+                    aView.style.display = 'block';  // DÙNG STYLE
                     navD.classList.remove('hidden');
                     navR.classList.remove('hidden');
                     
@@ -297,10 +296,11 @@
                     
                 } else {
                     // Là Guest
-                    gView.classList.remove('hidden');
-                    aView.classList.add('hidden');
-                    aView.classList.remove('show');
+                    console.log("updateUI: Đang set Guest...");
+                    gView.style.display = 'block';  // DÙNG STYLE
+                    aView.style.display = 'none';   // DÙNG STYLE
                     navD.classList.add('hidden');
+    
                     navR.classList.add('hidden');
 
                     // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
