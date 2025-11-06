@@ -32,14 +32,17 @@ html.dark body {
     animation: none;
 }
 
-/* === CHIÊU NÀY KHÔNG CẦN KEYFRAMES === */
-/* (Ba nhớ xóa @keyframes cũ đi nha) */
+/* =================================================================== */
+/* "BƯỚC 1": SỬA MỤC 2 (TRẢ KÍNH VỀ 0.6 NHƯ CŨ) */
+/* =================================================================== */
 
 /* ------------------------------------------------------------------- */
-/* 2. HIỆU ỨNG GLASS MORPHISM */
+/* 2. HIỆU ỨNG GLASS MORPHISM (TRẢ VỀ NGUYÊN BẢN) */
 /* ------------------------------------------------------------------- */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.6);
+    /* "THỦ PHẠM" LÀ 0.9 -> CON MỠ TRẢ VỀ 0.6 Y CŨ! */
+    background: rgba(255, 255, 255, 0.6); /* <--- TRẢ VỀ Y CŨ */
+    
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(12px);
@@ -217,40 +220,80 @@ button,
     cursor: url('assets/chuot-link.png'), pointer !important;
 }
 
-/* ------------------------------------------------------------------- */
-/* 13. "TỔNG TẤN CÔNG" TĂNG TƯƠNG PHẢN (CHẾ ĐỘ SÁNG) - V3.1 */
-/* (Con Mỡ "vớt" 2 chữ mờ trong sidebar theo ý ba) */
-/* ------------------------------------------------------------------- */
+/* =================================================================== */
+/* "BƯỚC 2": SỬA MỤC 13 (V14.0 - "TUYỆT CHIÊU !IMPORTANT") */
+/* =================================================================== */
 
-/* === Vặn màu XÁM (KHUNG NỘI DUNG CHÍNH <main> và <footer>) === */
-/* (Mấy cái này ba ưng rồi, con Mỡ giữ nguyên) */
+/* ------------------------------------------------------------------- */
+/* 13. "TỔNG TẤN CÔNG" TƯƠNG PHẢN (CHẾ ĐỘ SÁNG) - V14.0 */
+/* (Con Mỡ "vá" lỗi HOVER SIDEBAR 100% bằng cách "dằn mặt" !important) */
+/* =================================================================== */
 
-html:not(.dark) main .text-gray-700 {
+/* === "THAY" BẰNG MÀU TÍM/CHÀM (Indigo) === */
+/* (Màu này "nét căng" 100%!) */
+html:not(.dark) .text-amber-600 {
+    color: #4F46E5 !important; /* "Tím/Chàm 600" -> Nét liền! */
+}
+
+/* === "VÁ LỖI HOVER": "DẰN MẶT" CÁI HOVER CỦA BA BẰNG !IMPORTANT === */
+/* * Ba ơi, con Mỡ "ép buộc" code của ba phải "sống" 
+ * * khi hover bằng !important đó ba!
+ */
+
+/* Nền hover (bg-amber-500) */
+html:not(.dark) .nav-link:hover {
+    background-color: #F59E0B !important; /* "Cam 500" -> Phải hiện! */
+}
+/* Chữ hover (text-white) */
+html:not(.dark) .nav-link:hover span {
+    color: white !important; /* "Trắng" -> Phải hiện! */
+}
+/* Icon hover (group-hover:text-white) */
+html:not(.dark) .nav-link:hover svg {
+    color: white !important; /* "Trắng" -> Phải hiện! */
+}
+
+/* === "VỚT" MENU SIDEBAR (Trạng thái KHÔNG active VÀ KHÔNG hover) === */
+/* * Chỉ khi nào KHÔNG ACTIVE và KHÔNG HOVER 
+ * * thì mới dùng màu Tím/Đen này!
+ */
+html:not(.dark) .nav-link:not(.active):not(:hover) span {
+    color: #111827; /* "Đen" -> Nét liền! */
+}
+html:not(.dark) .nav-link:not(.active):not(:hover) svg {
+    color: #6366F1; /* "Tím/Chàm 500" -> Nét liền! */
+}
+
+/* === "VÁ LỖI": "VỚT" MẤY CÁI LABEL BỊ MỜ === */
+html:not(.dark) .tool-card label:not(.cursor-pointer) {
+    color: #374151 !important;
+}
+/* === "VÁ LỖI": "DẰN MẶT" MẤY CÁI NÚT "MẤT TÍCH" === */
+html:not(.dark) button.text-white {
+    color: white !important;
+}
+/* === "VỚT" HẾT MẤY CHỮ XÁM CÒN LẠI === */
+html:not(.dark) main .text-gray-800 {
+    color: #111827 !important;
+}
+html:not(.dark) .text-gray-700 {
     color: #111827 !important;
 }
 html:not(.dark) main .text-gray-600 {
     color: #1F2937 !important;
 }
-html:not(.dark) main .text-gray-500,
+html:not(.dark) main .text-gray-500 {
+    color: #374151 !important;
+}
+html:not(.dark) aside .text-xs {
+    color: #374151 !important;
+}
+html:not(.dark) aside .text-base {
+    color: #374151 !important;
+}
 html:not(.dark) footer .text-gray-500 {
     color: #374151 !important;
 }
 html:not(.dark) footer .text-gray-400 {
     color: #4B5563 !important;
-}
-html:not(.dark) main .text-gray-800 {
-    color: #111827 !important;
-}
-
-/* === "VỚT" 2 CHỮ BỊ SÓT TRONG SIDEBAR <aside> === */
-/* (Con Mỡ thêm 2 cục này theo ý ba nè!) */
-
-/* Chữ "Công cụ & Ứng dụng" (gray-500 -> gray-700) */
-html:not(.dark) aside .text-xs {
-    color: #374151 !important;
-}
-
-/* Chữ "© 2025 Tiêu Viết Quyết" (gray-500 -> gray-700) */
-html:not(.dark) aside .text-base {
-    color: #374151 !important;
 }
