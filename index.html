@@ -322,14 +322,13 @@
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth(); 
             const provider = new firebase.auth.GoogleAuthProvider(); 
-            
+            provider.setCustomParameters({ prompt: 'select_account' }); // <<< DÒNG MỠ THÊM VÀO ĐÂY
             const modal = document.getElementById('role-selection-modal');
             const selectGuestBtn = document.getElementById('select-role-guest');
             const selectAdminBtn = document.getElementById('select-role-admin');
             const adminLoginBtn = document.getElementById('admin-login-btn'); 
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
             
-            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC ===
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
         function updateUI(user, isAdmin) {
 
