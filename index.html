@@ -330,66 +330,88 @@
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
             
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC ===
-            function updateUI(user, isAdmin) {
-                
-                const gView = document.getElementById('guest-view');
-                const aView = document.getElementById('admin-view');
-                const navD = document.getElementById('nav-my-diary');
-                const navR = document.getElementById('nav-my-research');
-                const navB = document.getElementById('nav-badminton-scheduler');
-                const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
+            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
+        function updateUI(user, isAdmin) {
 
-                if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) { 
-                    console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
-                    return;
-                }
-                
-                if (user && isAdmin) {
-                    // Là Admin
-                    gView.style.display = 'none';   
-                    aView.style.display = 'block';  
-                    navD.classList.remove('hidden');
-                    navR.classList.remove('hidden');
-                    navB.classList.remove('hidden'); 
-                    
-                    if (!window.calendarInitialized) { 
-                        
-                        // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
-                        if (!addDepositInput.autoNumericInstance) { 
-                            const anInput = new AutoNumeric(addDepositInput, {
-                                decimalCharacter: ',',
-                                digitGroupSeparator: '.',
-                                decimalPlaces: 0,
-                                minimumValue: '-999999999', 
-                                maximumValue: '999999999',
-                            });
-                            addDepositInput.autoNumericInstance = anInput;
-                        }
+            // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
+            // Biến này sẽ giúp hàm showTool ở dưới biết ba là ai
+            window.isAdmin = (user && isAdmin);
+            // ===============================================
 
-                        loadFundData(); // Tải Quỹ
-                        renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
-                        window.calendarInitialized = true; 
-                    }
-                    
-                    const adminAvatar = document.getElementById('admin-avatar');
-                    const adminName = document.getElementById('admin-name');
-                    if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
-                    if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
-                    
-                } else {
-                    // Là Guest
-                    gView.style.display = 'block';  
-                    aView.style.display = 'none';   
-                    navD.classList.add('hidden');
-                    navR.classList.add('hidden');
-                    navB.classList.add('hidden'); 
-                    
-                    if (user && !isAdmin) {
-                         signOut(); 
-                         alert("Tài khoản này không có quyền Admin!");
-                    }
-                }
+            const gView = document.getElementById('guest-view');
+            const aView = document.getElementById('admin-view');
+            const navD = document.getElementById('nav-my-diary');
+            const navR = document.getElementById('nav-my-research');
+            const navB = document.getElementById('nav-badminton-scheduler');
+            const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
+
+            if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) { 
+                console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
+                return;
             }
+            
+            if (user && isAdmin) {
+                // Là Admin
+                gView.style.display = 'none';   
+                aView.style.display = 'block';  
+                navD.classList.remove('hidden');
+                navR.classList.remove('hidden');
+                navB.classList.remove('hidden'); 
+                
+                if (!window.calendarInitialized) { 
+                    
+                    // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
+                    if (!addDepositInput.autoNumericInstance) { 
+                        const anInput = new AutoNumeric(addDepositInput, {
+                            decimalCharacter: ',',
+                            digitGroupSeparator: '.',
+                            decimalPlaces: 0,
+                            minimumValue: '-999999999', 
+                            maximumValue: '999999999',
+                        });
+                        addDepositInput.autoNumericInstance = anInput;
+                    }
+
+                    loadFundData(); // Tải Quỹ
+                    renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
+                    window.calendarInitialized = true; 
+                }
+                
+                const adminAvatar = document.getElementById('admin-avatar');
+                const adminName = document.getElementById('admin-name');
+                if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
+                if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
+                
+            } else {
+                // Là Guest
+                gView.style.display = 'block';  
+                aView.style.display = 'none';   
+                navD.classList.add('hidden');
+                navR.classList.add('hidden');
+                navB.classList.add('hidden'); 
+                
+                if (user && !isAdmin) {
+                    signOut(); 
+                    alert("Tài khoản này không có quyền Admin!");
+                }
+
+                // === MỠ BỔ SUNG 2: "Quét phòng" khi Logout ===
+                // Khi ba logout, kiểm tra xem ba có đang ở phòng cấm không
+                // Nếu có, "đá" ba về trang chủ an toàn
+                const currentHash = window.location.hash.substring(1);
+                const protectedTools = ['my-diary', 'my-research', 'badminton-scheduler'];
+                const defaultTool = 'remove-bg'; // Trang an toàn
+
+                if (protectedTools.includes(currentHash)) {
+                    console.warn("User logged out while in protected area. Redirecting...");
+                    // Chuyển link về trang an toàn
+                    history.pushState({ toolId: defaultTool }, '', `#${defaultTool}`);
+                    // Gọi hàm showTool để "vẽ" lại trang an toàn
+                    showTool(defaultTool);
+                }
+                // ============================================
+            }
+        }
 
             // === HÀM CHECK ADMIN (HỎI FIRESTORE) ===
             async function checkAdminStatus(user) {
