@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TVQ's World</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-storage-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5/dist/autoNumeric.min.js"></script>
-    
+    <script src="tinymce/tinymce.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
-    
-<script>
-    // Áp dụng chủ đề (sáng/tối) ngay lập tức để tránh hiện tượng nháy font (FOUC)
-    if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-</script>
+    <script>
+        if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
-<body class="text-black dark:text-gray-100 min-h-screen"> 
+
+<body class="text-black dark:text-gray-100 min-h-screen">
     <audio id="nhac-nen-cua-ba" src="assets/am-thanh.mp3" loop></audio>
-    
     <div class="lg:flex">
         <aside class="lg:w-64 w-full lg:min-h-screen p-4 flex flex-col glass-effect">
             <div class="text-center mb-10">
@@ -37,119 +34,193 @@
             </div>
             <nav class="flex flex-col space-y-2">
                 <a href="#" class="nav-link active group flex items-center px-4 py-3 rounded-lg transition-all duration-200 
-                    text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" 
-                    data-tool="remove-bg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 2a3.5 3.5 0 013.163 5.002L13 11.172V15a1 1 0 01-1 1H6a1 1 0 01-1-1v-3.828l4.337-4.17A3.5 3.5 0 115.5 2zM4.5 3.5a2.5 2.5 0 105 0 2.5 2.5 0 00-5 0z" /><path d="M11.94 11.513l-1.34-1.29a.75.75 0 00-1.06 1.06l1.5 1.44a.75.75 0 001.12-.001l3.5-3.719a.75.75 0 00-1.08-1.04l-2.64 2.79z" /></svg>
+text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="remove-bg">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M5.5 2a3.5 3.5 0 013.163 5.002L13 11.172V15a1 1 0 01-1 1H6a1 1 0 01-1-1v-3.828l4.337-4.17A3.5 3.5 0 115.5 2zM4.5 3.5a2.5 2.5 0 105 0 2.5 2.5 0 00-5 0z" />
+                        <path
+                            d="M11.94 11.513l-1.34-1.29a.75.75 0 00-1.06 1.06l1.5 1.44a.75.75 0 001.12-.001l3.5-3.719a.75.75 0 00-1.08-1.04l-2.64 2.79z" />
+                    </svg>
                     <span class="font-medium">Tách nền ảnh</span>
                 </a>
-                <a href="#" class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="png-to-ico">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
+                <a href="#"
+                    class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="png-to-ico">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clip-rule="evenodd" />
+                    </svg>
                     <span class="font-medium">PNG to ICO</span>
                 </a>
-                <a href="#" class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="base64">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm12 3a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h2a1 1 0 011 1v1h4V6a1 1 0 011-1h2a1 1 0 011 1v1z" clip-rule="evenodd" /></svg>
+                <a href="#"
+                    class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="base64">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm12 3a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h2a1 1 0 011 1v1h4V6a1 1 0 011-1h2a1 1 0 011 1v1z"
+                            clip-rule="evenodd" />
+                    </svg>
                     <span class="font-medium">Base64 Multi-layer</span>
                 </a>
-                <a href="#" class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-apps">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                <a href="#"
+                    class="nav-link group flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="my-apps">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
                     <span class="font-medium">My Apps</span>
                 </a>
-                
-                <a href="#" id="nav-my-diary" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-diary">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" /></svg>
+                <a href="#" id="nav-my-diary"
+                    class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="my-diary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" />
+                    </svg>
                     <span class="font-medium">My Diary</span>
                 </a>
-                <a href="#" id="nav-my-research" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="my-research">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V2.75A.75.75 0 0110 2zM8.5 4.5A.75.75 0 007.75 5.25v1.25a.75.75 0 001.5 0V5.25A.75.75 0 008.5 4.5zM12.25 5.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0V5.25zM10 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V10.75A.75.75 0 0110 10zM8.5 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM12.25 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM5.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75V10.75A.75.75 0 015.5 10zM4 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM6.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM14.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H14.5a.75.75 0 01-.75-.75V10.75A.75.75 0 0114.5 10zM13 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM15.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25z" clip-rule="evenodd" /></svg>
+                <a href="#" id="nav-my-research"
+                    class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="my-research">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 2a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V2.75A.75.75 0 0110 2zM8.5 4.5A.75.75 0 007.75 5.25v1.25a.75.75 0 001.5 0V5.25A.75.75 0 008.5 4.5zM12.25 5.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0V5.25zM10 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V10.75A.75.75 0 0110 10zM8.5 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM12.25 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM5.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75V10.75A.75.75 0 015.5 10zM4 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM6.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM14.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H14.5a.75.75 0 01-.75-.75V10.75A.75.75 0 0114.5 10zM13 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM15.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25z"
+                            clip-rule="evenodd" />
+                    </svg>
                     <span class="font-medium">My Research</span>
                 </a>
-                <a href="#" id="nav-badminton-scheduler" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="badminton-scheduler">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                <a href="#" id="nav-badminton-scheduler"
+                    class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="badminton-scheduler">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                            clip-rule="evenodd" />
                     </svg>
                     <span class="font-medium">B Scheduler</span>
                 </a>
-                </nav>
+            </nav>
             <div class="mt-auto">
-                
                 <div class="p-4">
-                    <button id="theme-toggle" class="w-full flex items-center justify-center p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
-                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <button id="theme-toggle"
+                        class="w-full flex items-center justify-center p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
                     </button>
                 </div>
-
                 <div id="guest-view" class="text-center pt-4 border-t border-gray-300/50 dark:border-gray-600/50">
-                    <p id="admin-login-btn" class="text-base text-gray-500 dark:text-gray-400 cursor-pointer hover:text-amber-500 dark:hover:text-amber-400 transition-colors">
+                    <p id="admin-login-btn"
+                        class="text-base text-gray-500 dark:text-gray-400 cursor-pointer hover:text-amber-500 dark:hover:text-amber-400 transition-colors">
                         &copy; 2025 Tiêu Viết Quyết
                     </p>
                 </div>
-                <div id="admin-view" class="p-4 border-t border-gray-300/50 dark:border-gray-600/50" style="display: none;">
+                <div id="admin-view" class="p-4 border-t border-gray-300/50 dark:border-gray-600/50"
+                    style="display: none;">
                     <div class="flex items-center space-x-3">
-                        <img id="admin-avatar" src="images/favicon.png" alt="Avatar" class="h-10 w-10 rounded-full border-2 border-amber-500 object-cover">
+                        <img id="admin-avatar" src="images/favicon.png" alt="Avatar"
+                            class="h-10 w-10 rounded-full border-2 border-amber-500 object-cover">
                         <div class="flex-1">
-                            <p id="admin-name" class="font-semibold text-sm text-gray-800 dark:text-gray-100">Chào ba!</p>
-                            <a href="#" id="admin-logout-btn" class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">Đăng xuất</a>
+                            <p id="admin-name" class="font-semibold text-sm text-gray-800 dark:text-gray-100">Chào ba!
+                            </p>
+                            <a href="#" id="admin-logout-btn"
+                                class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">Đăng
+                                xuất</a>
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
         </aside>
-
         <main class="flex-1 p-4 lg:p-8 overflow-y-auto min-h-screen">
             <div id="tool-remove-bg" class="tool-content">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Tách nền ảnh</h2>
-                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API của Photoroom.</p>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên một hình ảnh để tự động xóa nền bằng API
+                        của Photoroom.</p>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-4">
-                            <label for="bg-remove-input" class="cursor-pointer bg-gray-300 text-gray-700 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
+                            <label for="bg-remove-input"
+                                class="cursor-pointer bg-gray-300 text-gray-700 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
                                 Chọn tệp...
                             </label>
-                            <span id="bg-remove-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
-                            <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="hidden"/>
+                            <span id="bg-remove-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp
+                                nào.</span>
+                            <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="hidden" />
                         </div>
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
-                             <div>
+                            <div>
                                 <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh gốc:</p>
-                                <img id="bg-remove-original" class="w-full rounded-lg border border-gray-200/50 dark:border-gray-700/50"/>
-                             </div>
-                             <div>
+                                <img id="bg-remove-original"
+                                    class="w-full rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
+                            </div>
+                            <div>
                                 <p class="text-sm font-medium mb-2 dark:text-gray-300">Đã tách nền:</p>
-                                <div class="w-full aspect-video rounded-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center bg-gray-100/50 dark:bg-gray-700/50" style="background-image: repeating-conic-gradient(#d1d5db80 0 25%, #e5e7eb80 0 50%); background-size: 16px 16px;">
-                                    <img id="bg-remove-result" class="hidden max-w-full max-h-full"/>
+                                <div class="w-full aspect-video rounded-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center bg-gray-100/50 dark:bg-gray-700/50"
+                                    style="background-image: repeating-conic-gradient(#d1d5db80 0 25%, #e5e7eb80 0 50%); background-size: 16px 16px;">
+                                    <img id="bg-remove-result" class="hidden max-w-full max-h-full" />
                                     <div id="bg-remove-loader" class="loader hidden"></div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                            <button id="bg-remove-process-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tách nền</button>
-                            <button id="bg-remove-download-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tải xuống kết quả</button>
+                            <button id="bg-remove-process-btn"
+                                class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg"
+                                disabled>Tách nền</button>
+                            <button id="bg-remove-download-btn"
+                                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg"
+                                disabled>Tải xuống kết quả</button>
                         </div>
                         <div id="bg-remove-status" class="text-sm text-gray-500 dark:text-gray-400 mt-2 h-5"></div>
                     </div>
                 </div>
             </div>
-
             <div id="tool-png-to-ico" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Chuyển đổi PNG sang ICO</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO
+                        (biểu tượng trang web).</p>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-4">
-                            <label for="png-file-input" class="cursor-pointer bg-gray-300 text-gray-500 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
+                            <label for="png-file-input"
+                                class="cursor-pointer bg-gray-300 text-gray-500 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
                                 Chọn tệp...
                             </label>
-                            <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
-                            <input type="file" id="png-file-input" accept="image/png" class="hidden"/>
+                            <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp
+                                nào.</span>
+                            <input type="file" id="png-file-input" accept="image/png" class="hidden" />
                         </div>
                         <div id="image-preview-container" class="mt-4 hidden">
                             <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh xem trước:</p>
-                            <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
+                            <img id="image-preview"
+                                class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
                         </div>
                         <div>
-                            <label for="ico-size-select" class="block font-medium mb-2 dark:text-gray-300">Chọn kích thước:</label>
-                            <select id="ico-size-select" class="w-full sm:w-auto p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                            <label for="ico-size-select" class="block font-medium mb-2 dark:text-gray-300">Chọn kích
+                                thước:</label>
+                            <select id="ico-size-select"
+                                class="w-full sm:w-auto p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
                                 <option value="16">16x16 pixels</option>
                                 <option value="32" selected>32x32 pixels</option>
                                 <option value="48">48x48 pixels</option>
@@ -158,49 +229,55 @@
                             </select>
                         </div>
                         <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
-                                                            disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
-                                                            dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
-                                                            shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
+disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
                         <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
                     </div>
                 </div>
             </div>
-
             <div id="tool-base64" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn
+                        bản của bạn.</p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
-                            <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
+                            <textarea id="base64-input" rows="8"
+                                class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
                         </div>
                         <div class="space-y-2">
                             <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
-                            <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
+                            <textarea id="base64-output" rows="8" readonly
+                                class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
                         </div>
                     </div>
                     <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                        <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
-                        <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
+                        <button id="base64-encode-btn"
+                            class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã
+                            hóa (Encode)</button>
+                        <button id="base64-decode-btn"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải
+                            mã (Decode)</button>
                     </div>
                     <div id="base64-status" class="text-sm mt-4"></div>
                 </div>
             </div>
-            
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Ứng dụng của tôi</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển. Nhấn để tải về và trải nghiệm!</p>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tổng hợp các ứng dụng Windows do tôi phát triển.
+                        Nhấn để tải về và trải nghiệm!</p>
                     <div id="apps-list" class="space-y-6">
-                         <div id="apps-loader" class="flex justify-center items-center py-8">
+                        <div id="apps-loader" class="flex justify-center items-center py-8">
                             <div class="loader"></div>
-                         </div>
-                         <p id="apps-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có ứng dụng nào được thêm.</p>
+                        </div>
+                        <p id="apps-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có ứng dụng nào được
+                            thêm.</p>
                     </div>
                 </div>
             </div>
-
             <div id="tool-my-diary" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Diary</h2>
@@ -208,58 +285,89 @@
                 </div>
             </div>
             <div id="tool-my-research" class="tool-content hidden opacity-0">
-                <div class="p-8 tool-card glass-effect">
+                <div class="p-8 tool-card glass-effect space-y-8">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Research</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nghiên cứu của ba...</p>
+                    <div id="blog-admin-controls" class="hidden">
+                        <button id="blog-create-new-btn"
+                            class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/40 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span>Tạo bài viết mới</span>
+                        </button>
+                    </div>
+                    <div id="blog-posts-list" class="space-y-6">
+                        <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang tải bài viết...</p>
+                        <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có bài viết nào.</p>
+                    </div>
                 </div>
             </div>
-
             <div id="tool-badminton-scheduler" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect space-y-8">
-                    
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Badminton Scheduler</h2>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        
                         <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng tiền đã nộp:</label>
-                            <p id="badminton-total-deposited" class="text-2xl font-bold text-green-600 dark:text-green-400">0 đ</p>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng tiền đã
+                                nộp:</label>
+                            <p id="badminton-total-deposited"
+                                class="text-2xl font-bold text-green-600 dark:text-green-400">0 đ</p>
                             <div class="mt-4 flex gap-2">
-                                <input type="text" id="badminton-add-deposit" placeholder="Nộp thêm..." class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"/>
-                                <button id="badminton-submit-deposit" class="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold transition-all shadow-lg hover:shadow-green-500/50">
+                                <input type="text" id="badminton-add-deposit" placeholder="Nộp thêm..."
+                                    class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" />
+                                <button id="badminton-submit-deposit"
+                                    class="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold transition-all shadow-lg hover:shadow-green-500/50">
                                     [+]
                                 </button>
                             </div>
                         </div>
-
                         <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số ngày đi:</label>
-                            <p id="badminton-total-days" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0 ngày</p>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số ngày
+                                đi:</label>
+                            <p id="badminton-total-days" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0
+                                ngày</p>
                         </div>
-
                         <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số tiền sân (tháng này):</label>
-                            <p id="badminton-total-cost" class="text-2xl font-bold text-red-500 dark:text-red-400">0 đ</p>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số tiền sân
+                                (tháng này):</label>
+                            <p id="badminton-total-cost" class="text-2xl font-bold text-red-500 dark:text-red-400">0 đ
+                            </p>
                         </div>
-
                         <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Số tiền còn lại:</label>
-                            <p id="badminton-remaining-balance" class="text-2xl font-bold text-amber-600 dark:text-amber-400">0 đ</p>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Số tiền còn
+                                lại:</label>
+                            <p id="badminton-remaining-balance"
+                                class="text-2xl font-bold text-amber-600 dark:text-amber-400">0 đ</p>
                         </div>
                     </div>
-
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <button id="calendar-prev-month" class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                            <button id="calendar-prev-month"
+                                class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             </button>
-                            <h3 id="calendar-month-year" class="text-xl font-bold text-center text-amber-600 dark:text-amber-400">Tháng 11 / 2025</h3>
-                            <button id="calendar-next-month" class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                            <h3 id="calendar-month-year"
+                                class="text-xl font-bold text-center text-amber-600 dark:text-amber-400">Tháng 11 / 2025
+                            </h3>
+                            <button id="calendar-next-month"
+                                class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             </button>
                         </div>
-
-                        <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 dark:text-gray-400">
+                        <div
+                            class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 dark:text-gray-400">
                             <div class="calendar-header">Thứ 2</div>
                             <div class="calendar-header">Thứ 3</div>
                             <div class="calendar-header">Thứ 4</div>
@@ -268,16 +376,13 @@
                             <div class="calendar-header text-red-500 dark:text-red-400">Thứ 7</div>
                             <div class="calendar-header text-red-500 dark:text-red-400">Chủ Nhật</div>
                         </div>
-                        
                         <div id="calendar-grid" class="grid grid-cols-7 gap-1 mt-2">
-                            </div>
-
+                        </div>
                     </div>
                 </div>
             </div>
-            </main>
+        </main>
     </div>
-
     <footer class="text-center py-4 mt-8 relative">
         <p class="text-base text-gray-500 dark:text-gray-400">
             Thời đại AI đang đến!!!! <br>
@@ -289,24 +394,79 @@
             </p>
         </div>
     </footer>
-
-    <div id="role-selection-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+    <div id="role-selection-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
         <div class="p-8 rounded-lg shadow-xl w-full max-w-sm glass-effect">
             <h3 class="text-2xl font-bold text-center mb-6 text-amber-600 dark:text-amber-400">Chào mừng ba!</h3>
             <p class="text-center mb-8 text-gray-700 dark:text-gray-300">Ba muốn truy cập với tư cách nào ạ?</p>
             <div class="flex flex-col space-y-4">
-                <button id="select-role-admin" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">
+                <button id="select-role-admin"
+                    class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40">
                     Admin (Đăng nhập)
                 </button>
-                <button id="select-role-guest" class="w-full bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-lg transition duration-300">
+                <button id="select-role-guest"
+                    class="w-full bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-lg transition duration-300">
                     Khách (Xem thôi)
                 </button>
             </div>
         </div>
     </div>
+    <div id="blog-editor-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
+        <div class="w-full max-w-4xl max-h-[90vh] flex flex-col bg-white dark:bg-slate-800 p-6 rounded-lg shadow-xl">
+            <h3 class="text-2xl font-bold mb-6 text-amber-600 dark:text-amber-400">Soạn thảo bài viết</h3>
+            <div class="space-y-4 overflow-y-auto pr-2">
+                <div>
+                    <label for="blog-editor-title" class="block font-medium mb-1 dark:text-gray-300">Tiêu đề:</label>
+                    <input type="text" id="blog-editor-title"
+                        class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                </div>
+                <div>
+                    <label for="blog-editor-tags" class="block font-medium mb-1 dark:text-gray-300">Hashtags:</label>
+                    <input type="text" id="blog-editor-tags" placeholder="Ví dụ: excel, vba, ai"
+                        class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Cách nhau bằng dấu phẩy (,)</p>
+                </div>
+                <div>
+                    <label class="block font-medium mb-1 dark:text-gray-300">Nội dung:</label>
+                    <textarea id="blog-editor-textarea"></textarea>
+                </div>
+            </div>
+            <div class="mt-6 flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-300/50 dark:border-gray-600/50">
+                <button id="blog-editor-save-btn"
+                    class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Lưu
+                    bài viết</button>
+                <button id="blog-editor-cancel-btn"
+                    class="flex-1 bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-2 px-6 rounded-lg transition duration-300">Hủy</button>
+                <input type="hidden" id="blog-editor-post-id">
+            </div>
+        </div>
+    </div>
+    <div id="blog-reader-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 hidden p-4">
+        <div id="blog-reader-content"
+            class="w-11/12 h-[90vh] flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-2xl overflow-hidden">
+            <header class="flex-shrink-0 p-6 border-b border-gray-200 dark:border-gray-700 overflow-y-auto">
+                <h2 id="blog-reader-title" class="text-3xl font-bold text-amber-600 dark:text-amber-400">
+                    Đây là Tiêu đề Bài viết
+                </h2>
+                <div id="blog-reader-tags" class="flex flex-wrap gap-2 mt-4">
+                </div>
+            </header>
+            <article class="flex-1 p-6 overflow-y-auto">
+                <div id="blog-reader-body" class="prose dark:prose-invert max-w-none">
+                </div>
+            </article>
+            <footer
+                class="flex-shrink-0 p-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-gray-700">
+                <button id="blog-reader-close-btn"
+                    class="w-full sm:w-auto bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-3 px-8 rounded-lg transition duration-300">
+                    Đóng
+                </button>
+            </footer>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
             // --- Firebase Initialization (CŨ CỦA BA) ---
             const firebaseConfig = {
                 apiKey: "AIzaSyCG_OqnwjNTg3kfCUmEkxo-qrJTMMsyhqk",
@@ -318,104 +478,91 @@
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            
+            const storage = firebase.storage();
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
-            const auth = firebase.auth(); 
-            const provider = new firebase.auth.GoogleAuthProvider(); 
+            const auth = firebase.auth();
+            const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' }); // <<< DÒNG MỠ THÊM VÀO ĐÂY
             const modal = document.getElementById('role-selection-modal');
             const selectGuestBtn = document.getElementById('select-role-guest');
             const selectAdminBtn = document.getElementById('select-role-admin');
-            const adminLoginBtn = document.getElementById('admin-login-btn'); 
+            const adminLoginBtn = document.getElementById('admin-login-btn');
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
-            
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
-        function updateUI(user, isAdmin) {
-
-            // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
-            // Biến này sẽ giúp hàm showTool ở dưới biết ba là ai
-            window.isAdmin = (user && isAdmin);
-            // ===============================================
-
-            const gView = document.getElementById('guest-view');
-            const aView = document.getElementById('admin-view');
-            const navD = document.getElementById('nav-my-diary');
-            const navR = document.getElementById('nav-my-research');
-            const navB = document.getElementById('nav-badminton-scheduler');
-            const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
-
-            if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) { 
-                console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
-                return;
-            }
-            
-            if (user && isAdmin) {
-                // Là Admin
-                gView.style.display = 'none';   
-                aView.style.display = 'block';  
-                navD.classList.remove('hidden');
-                navR.classList.remove('hidden');
-                navB.classList.remove('hidden'); 
-                
-                if (!window.calendarInitialized) { 
-                    
-                    // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
-                    if (!addDepositInput.autoNumericInstance) { 
-                        const anInput = new AutoNumeric(addDepositInput, {
-                            decimalCharacter: ',',
-                            digitGroupSeparator: '.',
-                            decimalPlaces: 0,
-                            minimumValue: '-999999999', 
-                            maximumValue: '999999999',
-                        });
-                        addDepositInput.autoNumericInstance = anInput;
+            function updateUI(user, isAdmin) {
+                // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
+                // Biến này sẽ giúp hàm showTool ở dưới biết ba là ai
+                window.isAdmin = (user && isAdmin);
+                // ===============================================
+                const gView = document.getElementById('guest-view');
+                const aView = document.getElementById('admin-view');
+                const navD = document.getElementById('nav-my-diary');
+                const navR = document.getElementById('nav-my-research');
+                const navB = document.getElementById('nav-badminton-scheduler');
+                const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
+                if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) {
+                    console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
+                    return;
+                }
+                if (user && isAdmin) {
+                    // Là Admin
+                    gView.style.display = 'none';
+                    aView.style.display = 'block';
+                    navD.classList.remove('hidden');
+                    navR.classList.remove('hidden');
+                    navB.classList.remove('hidden');
+                    initializeAdminBlogFeatures(); // Kích hoạt các tính năng Admin Blog
+                    if (!window.calendarInitialized) {
+                        // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
+                        if (!addDepositInput.autoNumericInstance) {
+                            const anInput = new AutoNumeric(addDepositInput, {
+                                decimalCharacter: ',',
+                                digitGroupSeparator: '.',
+                                decimalPlaces: 0,
+                                minimumValue: '-999999999',
+                                maximumValue: '999999999',
+                            });
+                            addDepositInput.autoNumericInstance = anInput;
+                        }
+                        loadFundData(); // Tải Quỹ
+                        renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
+                        window.calendarInitialized = true;
                     }
-
-                    loadFundData(); // Tải Quỹ
-                    renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
-                    window.calendarInitialized = true; 
+                    const adminAvatar = document.getElementById('admin-avatar');
+                    const adminName = document.getElementById('admin-name');
+                    if (adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
+                    if (adminName) adminName.textContent = user.displayName || "Chào Admin!";
+                } else {
+                    // Là Guest
+                    gView.style.display = 'block';
+                    aView.style.display = 'none';
+                    navD.classList.add('hidden');
+                    navR.classList.add('hidden');
+                    navB.classList.add('hidden');
+                    if (user && !isAdmin) {
+                        signOut();
+                        alert("Tài khoản này không có quyền Admin!");
+                    }
+                    // === MỠ BỔ SUNG 2: "Quét phòng" khi Logout ===
+                    // Khi ba logout, kiểm tra xem ba có đang ở phòng cấm không
+                    // Nếu có, "đá" ba về trang chủ an toàn
+                    const currentHash = window.location.hash.substring(1);
+                    const protectedTools = ['my-diary', 'my-research', 'badminton-scheduler'];
+                    const defaultTool = 'remove-bg'; // Trang an toàn
+                    if (protectedTools.includes(currentHash)) {
+                        console.warn("User logged out while in protected area. Redirecting...");
+                        // Chuyển link về trang an toàn
+                        history.pushState({ toolId: defaultTool }, '', `#${defaultTool}`);
+                        // Gọi hàm showTool để "vẽ" lại trang an toàn
+                        showTool(defaultTool);
+                    }
+                    // ============================================
                 }
-                
-                const adminAvatar = document.getElementById('admin-avatar');
-                const adminName = document.getElementById('admin-name');
-                if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
-                if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
-                
-            } else {
-                // Là Guest
-                gView.style.display = 'block';  
-                aView.style.display = 'none';   
-                navD.classList.add('hidden');
-                navR.classList.add('hidden');
-                navB.classList.add('hidden'); 
-                
-                if (user && !isAdmin) {
-                    signOut(); 
-                    alert("Tài khoản này không có quyền Admin!");
-                }
-
-                // === MỠ BỔ SUNG 2: "Quét phòng" khi Logout ===
-                // Khi ba logout, kiểm tra xem ba có đang ở phòng cấm không
-                // Nếu có, "đá" ba về trang chủ an toàn
-                const currentHash = window.location.hash.substring(1);
-                const protectedTools = ['my-diary', 'my-research', 'badminton-scheduler'];
-                const defaultTool = 'remove-bg'; // Trang an toàn
-
-                if (protectedTools.includes(currentHash)) {
-                    console.warn("User logged out while in protected area. Redirecting...");
-                    // Chuyển link về trang an toàn
-                    history.pushState({ toolId: defaultTool }, '', `#${defaultTool}`);
-                    // Gọi hàm showTool để "vẽ" lại trang an toàn
-                    showTool(defaultTool);
-                }
-                // ============================================
             }
-        }
-
             // === HÀM CHECK ADMIN (HỎI FIRESTORE) ===
             async function checkAdminStatus(user) {
                 if (!user) {
-                    updateUI(null, false); 
+                    updateUI(null, false);
                     return;
                 }
                 try {
@@ -423,17 +570,16 @@
                     const adminDoc = await adminDocRef.get();
                     if (adminDoc.exists) {
                         console.log("Admin đã đăng nhập:", user.email);
-                        updateUI(user, true); 
+                        updateUI(user, true);
                     } else {
                         console.log("User lạ đăng nhập, không có quyền:", user.email);
-                        updateUI(user, false); 
+                        updateUI(user, false);
                     }
                 } catch (error) {
                     console.error("Lỗi khi check admin:", error);
-                    updateUI(user, false); 
+                    updateUI(user, false);
                 }
             }
-
             // === CÁC HÀM XỬ LÝ AUTH (GIỮ NGUYÊN) ===
             auth.onAuthStateChanged((user) => {
                 const role = localStorage.getItem('userRole');
@@ -449,7 +595,7 @@
             function signInWithGoogle() {
                 auth.signInWithPopup(provider)
                     .then((result) => {
-                        localStorage.setItem('userRole', 'admin'); 
+                        localStorage.setItem('userRole', 'admin');
                     })
                     .catch((error) => {
                         console.error("Lỗi đăng nhập:", error);
@@ -464,13 +610,12 @@
                 auth.signOut()
                     .then(() => {
                         console.log("Đã đăng xuất.");
-                        localStorage.setItem('userRole', 'guest'); 
+                        localStorage.setItem('userRole', 'guest');
                     })
                     .catch((error) => {
                         console.error("Lỗi đăng xuất:", error);
                     });
             }
-
             // === GÁN SỰ KIỆN CHO CÁC NÚT AUTH ===
             selectGuestBtn.addEventListener('click', () => {
                 localStorage.setItem('userRole', 'guest');
@@ -478,17 +623,329 @@
             });
             selectAdminBtn.addEventListener('click', () => {
                 modal.classList.remove('show');
-                signInWithGoogle(); 
+                signInWithGoogle();
             });
             adminLoginBtn.addEventListener('click', () => {
-                signInWithGoogle(); 
+                signInWithGoogle();
             });
             adminLogoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                signOut(); 
+                signOut();
             });
-            
-            
+            /* ============================================================
+            === BỘ NÃO BLOG "MY RESEARCH" (HOÀN CHỈNH GĐ 2, 3, 4) ===
+            ============================================================
+            */
+            // --- 1. Khai báo biến toàn cục cho Blog ---
+            const blogPostsRef = db.collection("blog_posts");
+            const blogAdminControls = document.getElementById('blog-admin-controls');
+            const blogCreateNewBtn = document.getElementById('blog-create-new-btn');
+            const blogPostsList = document.getElementById('blog-posts-list');
+            const blogLoadingState = document.getElementById('blog-loading-state');
+            const blogEmptyState = document.getElementById('blog-empty-state');
+            const blogEditorModal = document.getElementById('blog-editor-modal');
+            const blogEditorTitle = document.getElementById('blog-editor-title');
+            const blogEditorTags = document.getElementById('blog-editor-tags');
+            const blogEditorTextarea = document.getElementById('blog-editor-textarea');
+            const blogEditorSaveBtn = document.getElementById('blog-editor-save-btn');
+            const blogEditorCancelBtn = document.getElementById('blog-editor-cancel-btn');
+            const blogEditorPostId = document.getElementById('blog-editor-post-id');
+            // === KHAI BÁO BIẾN CHO CỬA SỔ ĐỌC (READER MODAL) ===
+            const blogReaderModal = document.getElementById('blog-reader-modal');
+            const blogReaderTitle = document.getElementById('blog-reader-title');
+            const blogReaderTags = document.getElementById('blog-reader-tags');
+            const blogReaderBody = document.getElementById('blog-reader-body');
+            const blogReaderCloseBtn = document.getElementById('blog-reader-close-btn');
+            let isBlogInitialized = false; // Biến này để mình chỉ load 1 lần
+            // --- GIAI ĐOẠN 2: HÀM TẢI VÀ "VẼ" BÀI VIẾT ---
+            function loadBlogPosts() {
+                blogLoadingState.classList.remove('hidden');
+                blogEmptyState.classList.add('hidden');
+                blogPostsList.querySelectorAll('.blog-post-card').forEach(card => card.remove());
+                blogPostsRef.orderBy("createdAt", "desc").limit(10)
+                    .get()
+                    .then((querySnapshot) => {
+                        blogLoadingState.classList.add('hidden');
+                        if (querySnapshot.empty) {
+                            blogEmptyState.classList.remove('hidden');
+                        } else {
+                            querySnapshot.forEach((doc) => {
+                                const post = doc.data();
+                                const postId = doc.id;
+                                let adminButtonsHTML = '';
+                                if (window.isAdmin) {
+                                    adminButtonsHTML = `
+<div class="mt-4 flex gap-2">
+<button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+<button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+</div>
+`;
+                                }
+                                // Tách tags ra để hiển thị (nếu có)
+                                let tagsHTML = '';
+                                if (post.tags && post.tags.length > 0) {
+                                    tagsHTML = post.tags.map(tag =>
+                                        `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`
+                                    ).join(' ');
+                                    tagsHTML = `<div class="mt-4 flex flex-wrap gap-2">${tagsHTML}</div>`;
+                                }
+                                const postCardHTML = `
+<div class="blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg">
+<h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors"
+onclick='openReaderModal(${JSON.stringify(post)})'>
+${post.title || 'Bài viết không có tiêu đề'}
+</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mb-4">${new Date(post.createdAt.seconds * 1000).toLocaleString('vi-VN')}</p>
+<div class="prose dark:prose-invert max-w-none cursor-pointer" onclick='openReaderModal(${JSON.stringify(post)})'>
+${post.content || ''}
+</div>
+${tagsHTML}
+${adminButtonsHTML}
+</div>
+`;
+                                blogPostsList.insertAdjacentHTML('beforeend', postCardHTML);
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Lỗi khi tải bài viết: ", error);
+                        blogLoadingState.classList.add('hidden');
+                        blogPostsList.innerHTML = '<p class="text-center text-red-500">Không thể tải bài viết. Đã có lỗi xảy ra.</p>';
+                    });
+            }
+            // --- GIAI ĐOẠN 3: HÀM MỞ "PHÒNG SOẠN THẢO" (TinyMCE) ---
+            function openBlogEditor(postData = null) {
+                // 1. Dọn dẹp phòng
+                blogEditorTitle.value = '';
+                blogEditorTags.value = '';
+                blogEditorPostId.value = ''; // ID ẩn
+                // 2. Hủy TinyMCE cũ (nếu có) để tránh lỗi
+                if (tinymce.get('blog-editor-textarea')) {
+                    tinymce.get('blog-editor-textarea').destroy();
+                }
+                // 3. Khởi tạo "Bộ Gõ Xịn"
+                tinymce.init({
+                    selector: '#blog-editor-textarea',
+                    license_key: 'gpl',
+                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount fullscreen',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen',
+                    skin: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "oxide-dark" : "oxide",
+                    content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "dark" : "default",
+                    height: 400,
+                    // --- PHÉP THUẬT TẢI ẢNH/FILE LÊN KHO STORAGE ---
+                    file_picker_types: 'image media', // Cho phép tải cả ảnh và audio/video
+                    file_picker_callback: (cb, value, meta) => {
+                        const input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        // Xác định loại file dựa trên TinyMCE
+                        if (meta.filetype === 'image') {
+                            input.setAttribute('accept', 'image/*');
+                        } else if (meta.filetype === 'media') {
+                            input.setAttribute('accept', 'audio/*,video/*');
+                        }
+                        input.addEventListener('change', (e) => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            const storageRef = storage.ref();
+                            // Tạo tên file độc nhất (dùng timestamp + tên gốc)
+                            const fileName = `blog_assets/${new Date().getTime()}_${file.name}`;
+                            const fileRef = storageRef.child(fileName);
+                            const uploadTask = fileRef.put(file);
+                            // Theo dõi tiến trình tải
+                            uploadTask.on('state_changed',
+                                (snapshot) => {
+                                    // (Tùy chọn: Ba có thể thêm code hiển thị % tải lên ở đây)
+                                    console.log('Đang tải lên: ' + snapshot.bytesTransferred + ' / ' + snapshot.totalBytes);
+                                },
+                                (error) => {
+                                    console.error("Lỗi tải file lên Storage:", error);
+                                    alert("Tải file thất bại: " + error.message);
+                                },
+                                () => {
+                                    // Tải thành công! Lấy link
+                                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                        console.log('Tải file thành công:', downloadURL);
+                                        // Trả link về cho TinyMCE, nó tự chèn thẻ <img> hoặc <audio>
+                                        cb(downloadURL, { title: file.name });
+                                    });
+                                }
+                            );
+                        });
+                        input.click();
+                    }
+                }).then(() => {
+                    // 4. Nếu là "Sửa" bài, đổ dữ liệu cũ vào
+                    if (postData) {
+                        blogEditorTitle.value = postData.title;
+                        blogEditorTags.value = postData.tags ? postData.tags.join(', ') : '';
+                        tinymce.get('blog-editor-textarea').setContent(postData.content);
+                        blogEditorPostId.value = postData.id; // Lưu ID để biết là Sửa
+                    } else {
+                        tinymce.get('blog-editor-textarea').setContent('<p>Ba gõ nội dung vào đây...</p>');
+                    }
+                });
+                // 5. Hiện cái phòng (modal) lên
+                blogEditorModal.classList.remove('hidden');
+            }
+            // --- GIAI ĐOẠN 3: HÀM LƯU BÀI VIẾT (VÀO FIRESTORE) ---
+            async function saveBlogPost() {
+                const title = blogEditorTitle.value.trim();
+                const content = tinymce.get('blog-editor-textarea').getContent();
+                const tagsString = blogEditorTags.value.trim();
+                const postId = blogEditorPostId.value; // Lấy ID (nếu là Sửa)
+                if (!title || !content) {
+                    alert("Ba ơi, ba phải gõ Tiêu đề và Nội dung chứ!");
+                    return;
+                }
+                // Biến chuỗi "excel, vba, ai" thành mảng ["excel", "vba", "ai"]
+                const tagsArray = tagsString.split(',')
+                    .map(tag => tag.trim()) // Xóa khoảng trắng
+                    .filter(tag => tag.length > 0); // Xóa tag rỗng
+                blogEditorSaveBtn.disabled = true;
+                blogEditorSaveBtn.textContent = 'Đang lưu...';
+                try {
+                    if (postId) {
+                        // --- TRƯỜNG HỢP 1: SỬA BÀI VIẾT ---
+                        const postRef = blogPostsRef.doc(postId);
+                        await postRef.update({
+                            title: title,
+                            content: content,
+                            tags: tagsArray,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        console.log("Đã cập nhật bài viết:", postId);
+                    } else {
+                        // --- TRƯỜNG HỢP 2: TẠO BÀI MỚI ---
+                        await blogPostsRef.add({
+                            title: title,
+                            content: content,
+                            tags: tagsArray,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            authorId: auth.currentUser.uid // (Tùy chọn: lưu ai là tác giả)
+                        });
+                        console.log("Đã tạo bài viết mới!");
+                    }
+                    // Tắt "phòng soạn thảo"
+                    blogEditorModal.classList.add('hidden');
+                    tinymce.get('blog-editor-textarea').destroy(); // Hủy để dọn dẹp
+                    // Tải lại danh sách bài viết để thấy bài mới
+                    loadBlogPosts();
+                } catch (error) {
+                    console.error("Lỗi khi lưu bài viết:", error);
+                    alert("Lưu bài thất bại: " + error.message);
+                } finally {
+                    blogEditorSaveBtn.disabled = false;
+                    blogEditorSaveBtn.textContent = 'Lưu bài viết';
+                }
+            }
+            // --- GIAI ĐOẠN 3: HÀM XÓA BÀI VIẾT ---
+            async function deleteBlogPost(postId, postTitle) {
+                if (!confirm(`Ba có chắc chắn muốn XÓA bài viết "${postTitle}" không? Xóa là mất luôn đó nha!`)) {
+                    return;
+                }
+                try {
+                    await blogPostsRef.doc(postId).delete();
+                    console.log("Đã xóa bài viết:", postId);
+                    // (Nâng cao: Con chưa làm code xóa file trong Storage,
+                    //  ba con mình làm sau để tránh code phức tạp nha)
+                    // Tải lại danh sách bài
+                    loadBlogPosts();
+                } catch (error) {
+                    console.error("Lỗi khi xóa bài viết:", error);
+                    alert("Xóa bài thất bại: " + error.message);
+                }
+            }
+            // --- HÀM 5: HÀM HIỂN THỊ BÀI VIẾT (READER MODAL) ---
+            function openReaderModal(post) {
+                // 1. Đổ dữ liệu vào Modal
+                blogReaderTitle.textContent = post.title || 'Bài viết không có tiêu đề';
+                blogReaderBody.innerHTML = post.content || '<p class="text-center text-gray-500">Nội dung đang được cập nhật.</p>';
+                // 2. Xử lý Hashtag
+                let tagsHTML = '';
+                if (post.tags && post.tags.length > 0) {
+                    tagsHTML = post.tags.map(tag =>
+                        `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`
+                    ).join(' ');
+                }
+                blogReaderTags.innerHTML = tagsHTML;
+                // 3. Hiển thị cửa sổ
+                blogReaderModal.classList.remove('hidden');
+            }
+            // --- GIAI ĐOẠN 4: "NỐI DÂY ĐIỆN" (EVENT LISTENERS) ---
+            function initBlogEventListeners() {
+                // Nối điện cho 2 nút HỦY và LƯU trong "phòng soạn thảo"
+                blogEditorCancelBtn.addEventListener('click', () => {
+                    if (confirm("Ba có chắc muốn hủy không? Mất hết đó nha.")) {
+                        blogEditorModal.classList.add('hidden');
+                        tinymce.get('blog-editor-textarea').destroy();
+                    }
+                });
+                // === NỐI ĐIỆN CHO NÚT ĐÓNG (CỬA SỔ ĐỌC) ===
+                blogReaderCloseBtn.addEventListener('click', () => {
+                    blogReaderModal.classList.add('hidden'); // Ẩn cửa sổ đọc đi
+                });
+                blogEditorSaveBtn.addEventListener('click', saveBlogPost);
+                // Nối điện cho nút [+] TẠO BÀI MỚI
+                blogCreateNewBtn.addEventListener('click', () => {
+                    openBlogEditor(null); // Mở phòng trống
+                });
+                // Nối điện cho các nút [Sửa] và [Xóa] và [Tag]
+                // (Dùng kỹ thuật "event delegation" vì các nút này được "vẽ" ra)
+                blogPostsList.addEventListener('click', (e) => {
+                    const target = e.target;
+                    // Bấm nút [Xóa]
+                    if (target.classList.contains('blog-delete-btn')) {
+                        const postId = target.dataset.id;
+                        const postTitle = target.closest('.blog-post-card').querySelector('h3').textContent;
+                        deleteBlogPost(postId, postTitle);
+                    }
+                    // Bấm nút [Sửa]
+                    else if (target.classList.contains('blog-edit-btn')) {
+                        const postId = target.dataset.id;
+                        // Lấy dữ liệu từ Firestore để đảm bảo "tươi" nhất
+                        blogPostsRef.doc(postId).get().then((doc) => {
+                            if (doc.exists) {
+                                const postData = doc.data();
+                                postData.id = doc.id; // Gắn ID vào
+                                openBlogEditor(postData); // Mở phòng và đổ data
+                            } else {
+                                alert("Không tìm thấy bài viết để sửa!");
+                            }
+                        });
+                    }
+                    // Bấm vào 1 cái Hashtag
+                    else if (target.classList.contains('blog-tag-link')) {
+                        const tag = target.textContent;
+                        alert("Ba muốn con lọc theo tag '" + tag + "' đúng không? Con Mỡ xin lỗi, con chưa làm chức năng này... (Con sẽ làm ở Giai đoạn 5 nha ba!)");
+                        // Tạm thời chưa làm: loadBlogPostsByTag(tag);
+                    }
+                });
+            }
+            // --- GIAI ĐOẠN 4: HÀM KHỞI ĐỘNG BLOG KHI BA LÀ ADMIN ---
+            // Mình sẽ gọi hàm này bên trong hàm updateUI
+            function initializeAdminBlogFeatures() {
+                if (window.isAdmin && blogAdminControls) {
+                    // 1. Hiện nút "[+] Tạo bài viết mới"
+                    blogAdminControls.classList.remove('hidden');
+                    // 2. "Nối điện" 1 lần duy nhất
+                    if (!window.blogAdminInitialized) {
+                        initBlogEventListeners();
+                        window.blogAdminInitialized = true; // Đánh dấu đã nối điện
+                    }
+                }
+            }
+            // --- GIAI ĐOẠN 2 (Cải tiến): Nối điện cho tab "My Research" ---
+            const navMyResearch = document.getElementById('nav-my-research');
+            if (navMyResearch) {
+                navMyResearch.addEventListener('click', () => {
+                    // Khi bấm vào tab, LUÔN LUÔN tải lại bài viết
+                    // (Để nó cập nhật nút Sửa/Xóa sau khi ba login/logout)
+                    loadBlogPosts();
+                    // Và kiểm tra xem có nên hiện nút [Tạo] không
+                    initializeAdminBlogFeatures();
+                });
+            }
+            /* ============================================================
             /* ============================================================
             === BỘ NÃO BADMINTON SCHEDULER (BẢN NÂNG CẤP AUTONUMERIC) ===
             ============================================================
@@ -498,67 +955,58 @@
             const monthYearHeader = document.getElementById('calendar-month-year');
             const prevMonthBtn = document.getElementById('calendar-prev-month');
             const nextMonthBtn = document.getElementById('calendar-next-month');
-
             const totalDepositedEl = document.getElementById('badminton-total-deposited');
             const addDepositInput = document.getElementById('badminton-add-deposit');
             const submitDepositBtn = document.getElementById('badminton-submit-deposit');
             const totalDaysEl = document.getElementById('badminton-total-days');
             const totalCostEl = document.getElementById('badminton-total-cost');
             const remainingBalanceEl = document.getElementById('badminton-remaining-balance');
-
             let currentDate = new Date();
-            let currentMonthData = {}; 
+            let currentMonthData = {};
             let currentFund = {
                 totalDeposited: 0,
                 totalCostEver: 0,
                 totalDaysEver: 0
             };
-
             // --- 2. Hàm "Vẽ Lịch" (NÂNG CẤP AUTONUMERIC) ---
             async function renderCalendar(month, year) {
                 console.log(`Đang vẽ lịch cho: ${month + 1}/${year}`);
                 calendarGrid.innerHTML = ''; // Xóa lịch cũ
                 monthYearHeader.textContent = `Tháng ${month + 1} / ${year}`;
-                
                 await loadMonthData(month, year);
-
                 let firstDayOfMonth = new Date(year, month, 1).getDay();
-                let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1; 
+                let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
                 let daysInMonth = new Date(year, month + 1, 0).getDate();
-
                 // A. Vẽ các ô "mờ" của tháng trước
                 for (let i = 0; i < startDay; i++) {
                     calendarGrid.innerHTML += `<div class="calendar-day not-in-month"></div>`;
                 }
-
                 // B. Vẽ các ô ngày của tháng này
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const dayData = currentMonthData[dateString] || {};
                     const isPresent = dayData.present || false;
                     const cost = dayData.cost || '';
-
                     let dayHtml = `
-                        <div class="calendar-day">
-                            <span class="day-number">${day}</span>
-                            <button 
-                                class="day-toggle ${isPresent ? 'active' : ''}" 
-                                data-date="${dateString}"
-                                data-old-present="${isPresent}">
-                                ●
-                            </button>
-                            <input 
-                                type="text"  
-                                class="day-cost-input" 
-                                placeholder="_" 
-                                value="${cost}"
-                                data-date="${dateString}"
-                                data-old-cost="${cost || 0}">
-                        </div>
-                    `;
+<div class="calendar-day">
+<span class="day-number">${day}</span>
+<button 
+class="day-toggle ${isPresent ? 'active' : ''}" 
+data-date="${dateString}"
+data-old-present="${isPresent}">
+●
+</button>
+<input 
+type="text"  
+class="day-cost-input" 
+placeholder="_" 
+value="${cost}"
+data-date="${dateString}"
+data-old-cost="${cost || 0}">
+</div>
+`;
                     calendarGrid.innerHTML += dayHtml;
                 }
-                
                 // C. Khởi động "Hàng hiệu"
                 const inputs = calendarGrid.querySelectorAll('.day-cost-input');
                 inputs.forEach(input => {
@@ -566,16 +1014,14 @@
                         decimalCharacter: ',',
                         digitGroupSeparator: '.',
                         decimalPlaces: 0,
-                        minimumValue: '-999999999', 
+                        minimumValue: '-999999999',
                         maximumValue: '999999999',
                     });
-                    input.autoNumericInstance = anInput; 
+                    input.autoNumericInstance = anInput;
                 });
-
                 // D. Cập nhật ô "Tổng tiền sân (tháng này)"
                 calculateThisMonthCost();
             }
-
             // --- 3. Hàm "Tính toán" ---
             function calculateThisMonthCost() {
                 let thisMonthCost = 0;
@@ -586,14 +1032,11 @@
             }
             function updateSummaryUI() {
                 const remaining = currentFund.totalDeposited - currentFund.totalCostEver;
-                
                 totalDepositedEl.textContent = `${currentFund.totalDeposited.toLocaleString('vi-VN')} đ`;
                 totalDaysEl.textContent = `${currentFund.totalDaysEver} ngày`;
                 remainingBalanceEl.textContent = `${remaining.toLocaleString('vi-VN')} đ`;
-                
                 calculateThisMonthCost();
             }
-
             // --- 4. Hàm "Nói chuyện với Firestore" ---
             function loadFundData() {
                 const fundRef = db.collection("badminton_fund").doc("global");
@@ -612,39 +1055,32 @@
             }
             async function loadMonthData(month, year) {
                 const monthString = String(month + 1).padStart(2, '0');
-                const queryKey = `${year}-${monthString}`; 
-
+                const queryKey = `${year}-${monthString}`;
                 const scheduleRef = db.collection("badminton_schedule");
                 const snapshot = await scheduleRef
                     .where(firebase.firestore.FieldPath.documentId(), '>=', queryKey)
-                    .where(firebase.firestore.FieldPath.documentId(), '<', `${queryKey}-32`) 
+                    .where(firebase.firestore.FieldPath.documentId(), '<', `${queryKey}-32`)
                     .get();
-
-                currentMonthData = {}; 
+                currentMonthData = {};
                 snapshot.forEach(doc => {
                     currentMonthData[doc.id] = doc.data();
                 });
                 console.log(`Đã tải data cho ${queryKey}:`, currentMonthData);
             }
-            
             // Hàm Lưu data (BẢN SỬA LỖI LOGIC "LẠC QUAN" CUỐI CÙNG)
             // Hàm Lưu data (BẢN SỬA LỖI LOGIC "LẠC QUAN" CUỐI CÙNG)
             async function saveData(dateString, isPresent, newCost, oldIsPresent, oldCost) { // <<< SỬA 1: Nhận newCost (dạng SỐ)
                 const dayRef = db.collection("badminton_schedule").doc(dateString);
                 const fundRef = db.collection("badminton_fund").doc("global");
-
                 // === BƯỚC 1: TÍNH TOÁN TRƯỚC ===
-                
                 // const newCost = AutoNumeric.getNumber(costString); // <<< SỬA 2: Bỏ dòng lỗi này đi
-
                 const costDiff = newCost - Number(oldCost || 0);
                 let dayDiff = 0;
                 if (isPresent && !oldIsPresent) {
-                    dayDiff = 1; 
+                    dayDiff = 1;
                 } else if (!isPresent && oldIsPresent) {
-                    dayDiff = -1; 
+                    dayDiff = -1;
                 }
-
                 // === BƯỚC 2: CẬP NHẬT GIAO DIỆN "LẠC QUAN" ===
                 // (Phần này đã đúng, nó gọi updateSummaryUI)
                 if (costDiff !== 0 || dayDiff !== 0) {
@@ -652,25 +1088,21 @@
                     currentMonthData[dateString] = { present: isPresent, cost: newCost };
                     currentFund.totalCostEver += costDiff;
                     currentFund.totalDaysEver += dayDiff;
-                    
                     // 2. "Vẽ" lại UI NGAY LẬP TỨC
-                    updateSummaryUI(); 
+                    updateSummaryUI();
                 } else {
                     // Nếu k sửa gì, chỉ cập nhật cache
                     currentMonthData[dateString] = { present: isPresent, cost: newCost };
                 }
-
                 // === BƯỚC 3: GỬI LỆNH LƯU LÊN FIREBASE (CHẠY NGẦM) ===
                 const batch = db.batch();
                 batch.set(dayRef, { present: isPresent, cost: newCost }, { merge: true });
-
                 if (costDiff !== 0 || dayDiff !== 0) {
                     batch.update(fundRef, {
                         totalCostEver: firebase.firestore.FieldValue.increment(costDiff),
                         totalDaysEver: firebase.firestore.FieldValue.increment(dayDiff)
                     });
                 }
-
                 try {
                     await batch.commit();
                     console.log(`Đã lưu data (chạy ngầm) ngày ${dateString} và cập nhật Quỹ!`);
@@ -678,31 +1110,25 @@
                     console.error("Lỗi khi lưu data (chạy ngầm):", error);
                 }
             }
-
             // Hàm Nộp Quỹ (BẢN "LẠC QUAN" CHUẨN + SỐ ÂM)
             // Hàm Nộp Quỹ (BẢN "LẠC QUAN" CHUẨN + SỐ ÂM)
             async function submitDeposit() {
                 const amount = addDepositInput.autoNumericInstance.getNumber();
-                
                 if (isNaN(amount) || amount === 0) {
                     alert("Ba gõ số tiền (âm hoặc dương) vào đi ạ!");
                     return;
                 }
-                
                 // === BƯỚC 1: CẬP NHẬT GIAO DIỆN "LẠC QUAN" ===
                 currentFund.totalDeposited += amount;
                 updateSummaryUI(); // DÒNG NÀY CẬP NHẬT 4 Ô TỔNG KẾT
-                
                 // === BƯỚC 2: Xóa ô input ===
                 addDepositInput.autoNumericInstance.clear();
-
                 // === BƯỚC 3: GỬI LỆNH LƯU LÊN FIREBASE (CHẠY NGẦM) ===
                 const fundRef = db.collection("badminton_fund").doc("global");
                 try {
                     await fundRef.update({
                         totalDeposited: firebase.firestore.FieldValue.increment(amount)
                     });
-                    
                     if (amount > 0) {
                         console.log(`Nộp quỹ (chạy ngầm) thành công: ${amount}`);
                     } else {
@@ -712,7 +1138,6 @@
                     console.error("Lỗi khi nộp quỹ (chạy ngầm):", error);
                 }
             }
-
             // --- 5. Gán Sự kiện (Event Listeners) ---
             prevMonthBtn.addEventListener('click', () => {
                 currentDate.setMonth(currentDate.getMonth() - 1);
@@ -723,7 +1148,6 @@
                 renderCalendar(currentDate.getMonth(), currentDate.getFullYear());
             });
             submitDepositBtn.addEventListener('click', submitDeposit);
-
             // DÂY ĐIỆN NÂNG CẤP 1 (CLICK ●)
             // DÂY ĐIỆN NÂNG CẤP 1 (CLICK ●)
             calendarGrid.addEventListener('click', (e) => {
@@ -731,24 +1155,18 @@
                     const button = e.target;
                     const dateString = button.dataset.date;
                     const input = document.querySelector(`.day-cost-input[data-date="${dateString}"]`);
-                    
                     const oldIsPresent = (button.dataset.oldPresent === 'true');
                     const oldCost = Number(input.dataset.oldCost || 0);
-
-                    button.classList.toggle('active'); 
+                    button.classList.toggle('active');
                     const newIsPresent = button.classList.contains('active');
-                    
                     // === SỬA LỖI NẰM Ở ĐÂY ===
                     // Phải lấy SỐ từ instance AutoNumeric, không lấy CHỮ (string)
-                    const newCostNumber = input.autoNumericInstance.getNumber(); 
-
+                    const newCostNumber = input.autoNumericInstance.getNumber();
                     button.dataset.oldPresent = newIsPresent;
-                    
                     // Truyền con SỐ (newCostNumber) vào hàm saveData
                     saveData(dateString, newIsPresent, newCostNumber, oldIsPresent, oldCost);
                 }
             });
-
             // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
             // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
             calendarGrid.addEventListener('focusout', (e) => {
@@ -756,19 +1174,14 @@
                     const input = e.target;
                     const dateString = input.dataset.date;
                     const button = document.querySelector(`.day-toggle[data-date="${dateString}"]`);
-
                     const oldIsPresent = (button.dataset.oldPresent === 'true');
                     const oldCost = Number(input.dataset.oldCost || 0);
-                    
                     const newIsPresent = button.classList.contains('active');
-                    
                     // === SỬA LỖI NẰM Ở ĐÂY ===
                     // Lấy SỐ (giống như hàm trên)
-                    const newCostNumber = input.autoNumericInstance.getNumber(); 
-
+                    const newCostNumber = input.autoNumericInstance.getNumber();
                     if (newCostNumber !== oldCost) {
                         input.dataset.oldCost = newCostNumber;
-                        
                         // Truyền con SỐ (newCostNumber) vào hàm saveData
                         saveData(dateString, newIsPresent, newCostNumber, oldIsPresent, oldCost);
                     }
@@ -778,16 +1191,12 @@
             === HẾT BỘ NÃO BADMINTON ===
             ============================================================
             */
-            
-            
             // === CODE CŨ CỦA BA (MỠ GỘP VÀO ĐÂY) ===
-
             // --- BỘ ĐẾM TRUY CẬP (CŨ CỦA BA) ---
             async function updateVisitCount() {
                 const counterElement = document.getElementById('visit-counter');
-                if (!counterElement) return; 
-                const docRef = db.collection("stats").doc("global"); 
-                
+                if (!counterElement) return;
+                const docRef = db.collection("stats").doc("global");
                 docRef.update({
                     visits: firebase.firestore.FieldValue.increment(1)
                 }).catch(error => {
@@ -797,7 +1206,6 @@
                         console.error("Lỗi tăng lượt truy cập:", error);
                     }
                 });
-
                 docRef.onSnapshot((doc) => {
                     if (doc.exists) {
                         const count = doc.data().visits;
@@ -808,8 +1216,7 @@
                     counterElement.textContent = 'Lượt truy cập: Không thể tải.';
                 });
             }
-            updateVisitCount(); 
-
+            updateVisitCount();
             // --- Theme Toggle Logic (CŨ CỦA BA) ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -825,19 +1232,15 @@
                 document.documentElement.classList.toggle('dark');
                 localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             });
-
             // --- Navigation Logic (CŨ CỦA BA) ---
             const navLinks = document.querySelectorAll('.nav-link');
             const toolContents = document.querySelectorAll('.tool-content');
-
             function showTool(toolId) {
                 navLinks.forEach(nav => nav.classList.remove('active'));
-
                 const activeLink = document.querySelector(`.nav-link[data-tool="${toolId}"]`);
                 if (activeLink) {
                     activeLink.classList.add('active');
                 }
-
                 let targetFound = false;
                 toolContents.forEach(content => {
                     if (content.id === `tool-${toolId}`) {
@@ -848,23 +1251,22 @@
                         content.classList.add('opacity-0');
                         setTimeout(() => {
                             content.classList.add('hidden');
-                        }, 400); 
+                        }, 400);
                     }
                 });
-
                 if (!targetFound && navLinks.length > 0) {
                     const defaultToolId = navLinks[0].dataset.tool;
-                    if (toolId !== defaultToolId) { 
+                    if (toolId !== defaultToolId) {
                         showTool(defaultToolId);
                     }
                 }
             }
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     const toolId = link.dataset.tool;
                     history.pushState({ toolId: toolId }, '', `#${toolId}`);
-                    showTool(toolId); 
+                    showTool(toolId);
                 });
             });
             window.addEventListener('popstate', (e) => {
@@ -876,7 +1278,6 @@
             });
             const initialToolId = window.location.hash.substring(1) || navLinks[0].dataset.tool;
             showTool(initialToolId);
-
             // --- BG Removal Logic (CŨ CỦA BA) ---
             const bgRemoveInput = document.getElementById('bg-remove-input');
             const bgRemoveFilename = document.getElementById('bg-remove-filename');
@@ -888,7 +1289,7 @@
             const bgRemoveDownloadBtn = document.getElementById('bg-remove-download-btn');
             const bgRemoveStatus = document.getElementById('bg-remove-status');
             let resultBlob = null;
-            if (bgRemoveInput) { 
+            if (bgRemoveInput) {
                 bgRemoveInput.addEventListener('change', () => {
                     const file = bgRemoveInput.files[0];
                     if (file) {
@@ -920,7 +1321,7 @@
                     const formData = new FormData();
                     formData.append('image_file', file);
                     try {
-                        const response = await fetch('/api/photoroom', { 
+                        const response = await fetch('/api/photoroom', {
                             method: 'POST',
                             body: formData,
                         });
@@ -953,8 +1354,7 @@
                         document.body.removeChild(link);
                     }
                 });
-            } 
-            
+            }
             // --- PNG to ICO Logic (CŨ CỦA BA) ---
             const pngFileInput = document.getElementById('png-file-input');
             const pngFilename = document.getElementById('png-filename');
@@ -963,7 +1363,7 @@
             const imagePreview = document.getElementById('image-preview');
             const icoStatus = document.getElementById('ico-status');
             const icoSizeSelect = document.getElementById('ico-size-select');
-            if (pngFileInput) { 
+            if (pngFileInput) {
                 pngFileInput.addEventListener('change', () => {
                     const file = pngFileInput.files[0];
                     if (file) {
@@ -1038,15 +1438,14 @@
                     }
                     return new Uint8Array(buffer);
                 }
-            } 
-
+            }
             // --- Base64 Logic (CŨ CỦA BA) ---
             const base64Input = document.getElementById('base64-input');
             const base64Output = document.getElementById('base64-output');
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
             const base64Status = document.getElementById('base64-status');
-            if (base64Input) { 
+            if (base64Input) {
                 function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
                 function safeAtob(str) { try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; } }
                 encodeBtn.addEventListener('click', () => {
@@ -1074,18 +1473,16 @@
                     base64Status.textContent = decodeCount > 0 ? `Giải mã thành công qua ${decodeCount} lớp.` : 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
                     setTimeout(() => { base64Status.textContent = '' }, 4000);
                 });
-            } 
-
+            }
             // --- My Apps Logic (CŨ CỦA BA) ---
             const appsListContainer = document.getElementById('apps-list');
             const appsLoader = document.getElementById('apps-loader');
             const appsEmptyState = document.getElementById('apps-empty-state');
-            if (appsListContainer) { 
+            if (appsListContainer) {
                 db.collection("my_apps").onSnapshot((querySnapshot) => {
                     appsLoader.classList.add('hidden');
                     const appCards = appsListContainer.querySelectorAll('.app-card');
                     appCards.forEach(card => card.remove());
-
                     if (querySnapshot.empty) {
                         appsEmptyState.classList.remove('hidden');
                     } else {
@@ -1098,25 +1495,25 @@
                                 iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
                             }
                             const appCardHTML = `
-                                <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                    <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
-                                        ${iconHTML}
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
-                                        <p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                            <span>Số lượt tải: </span>
-                                            <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
-                                        </div>
-                                    </div>
-                                    <div class="w-full sm:w-auto flex-shrink-0">
-                                        <button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                            <span>Tải về</span>
-                                        </button>
-                                    </div>
-                                </div>`;
+<div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+<div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+${iconHTML}
+</div>
+<div class="flex-grow">
+<h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
+<p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
+<div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+<span>Số lượt tải: </span>
+<span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
+</div>
+</div>
+<div class="w-full sm:w-auto flex-shrink-0">
+<button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+<span>Tải về</span>
+</button>
+</div>
+</div>`;
                             appsListContainer.insertAdjacentHTML('beforeend', appCardHTML);
                         });
                     }
@@ -1146,25 +1543,24 @@
                         });
                     }
                 });
-            } 
-
+            }
         }); // Hết DOMContentLoaded
     </script>
-
     <script>
         let daPhatNhacLanDau = false;
-        document.addEventListener('click', function() {
+        document.addEventListener('click', function () {
             if (!daPhatNhacLanDau) {
                 let fileNhac = document.getElementById('nhac-nen-cua-ba');
-                if (fileNhac) { 
-                    fileNhac.volume = 0.15; 
+                if (fileNhac) {
+                    fileNhac.volume = 0.15;
                     fileNhac.play().catch(error => {
                         console.log("Trình duyệt chặn tự động phát nhạc:", error);
                     });
-                    daPhatNhacLanDau = true; 
+                    daPhatNhacLanDau = true;
                 }
             }
         });
     </script>
 </body>
+
 </html>
