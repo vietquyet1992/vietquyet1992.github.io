@@ -316,6 +316,11 @@ html:not(.dark) footer .text-gray-400 {
 html:not(.dark) #admin-name {
     color: #111827 !important;
 }
+
+html.dark #admin-name {
+    color: #F3F4F6 !important;
+}
+
 /* === MIẾNG VÁ CỦA MỠ (SỬA LỖI LIGHT MODE) === */
 
 /* 1. Sửa nền 2 ô Base64 (từ xám đặc -> trong suốt) */
@@ -452,6 +457,7 @@ html:not(.dark) #tool-badminton-scheduler .md\:grid-cols-2 > div {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+
 /* 2. Ép chữ số ngày (1, 2, 3...) thành xám đậm */
 html:not(.dark) .day-number {
     color: #374151 !important; /* text-gray-700 */
@@ -491,14 +497,8 @@ html.dark .calendar-day.not-in-month {
 html.dark .day-cost-input {
     background-color: rgba(30, 41, 59, 0.5) !important; /* dark:bg-gray-800/50 */
 }
-/* === MỠ THÊM: "TÚT TÁT" LẦN CUỐI (SÁNG + TỐI) === */
 
 /* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
-
-/* 1. Sửa ô "Nộp thêm..." (từ xám đặc -> kính mờ) */
-/* === MỠ VÁ LỖI: Ô "NỘP THÊM" (LIGHT MODE) === */
-
-/* 1. Sửa ô "Nộp thêm..." (từ "tàng hình" -> xám siêu nhạt) */
 html:not(.dark) #badminton-add-deposit {
     /* Đổi từ nền kính (trắng trong) sang nền xám RẤT NHẠT */
     background-color: rgba(243, 244, 246, 0.7) !important; /* bg-gray-100/70 */
@@ -531,7 +531,7 @@ html.dark .calendar-day.not-in-month {
 /* 3. Cho nút ● (active) "NỔI BẬT" (Nền vàng + CHỮ ĐEN) */
 html.dark .day-toggle.active {
     background-color: #FBBF24 !important; /* Nền vàng (bg-amber-400) */
-    color: #111827 !important; /* CHỮ ĐEN THUI (text-black) */
+    color: #F3F4F6 !important;
     box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
 }
 
@@ -539,4 +539,68 @@ html.dark .day-toggle.active {
 html.dark .day-cost-input {
     background-color: rgba(30, 41, 59, 0.5) !important; /* dark:bg-gray-800/50 */
     border-color: rgba(55, 65, 81, 0.7) !important; /* dark:border-gray-700/70 */
+    color: #F3F4F6 !important;
+}
+
+
+
+/* =========================================== */
+/* === MỠ VÁ LỖI GIAO DIỆN TỐI (BADMINON) === */
+/* =========================================== */
+
+/* Sửa lỗi 1: Màu nền 4 ô tóm tắt bị lạc quẻ 
+  Con dùng #1e293b (là màu slate-800) để nó tiệp màu nền.
+*/
+.dark #tool-badminton-scheduler .grid[class*="lg:grid-cols-4"] > div {
+    background-color: #1e293b !important;
+}
+
+/* Sửa lỗi 1.1: Màu nền ô input "Nộp thêm..." 
+  Con dùng #334155 (là màu slate-700) cho nó nổi lên 1 xíu.
+*/
+.dark #badminton-add-deposit {
+    background-color: #334155 !important;
+}
+
+/* Sửa lỗi 2: Chữ số tiền và dấu ● trong lịch bị đen 
+  Con bắt nó thành màu trắng (#f1f5f9) khi ở nền tối.
+*/
+.dark .calendar-day {
+    color: #f1f5f9; /* (slate-100) */
+}
+
+/* Sửa lỗi 2.1: Chữ trong ô input (50.000) và chữ "Tiền..." 
+  Con cũng bắt nó thành màu trắng sáng luôn.
+*/
+.dark .day-cost-input {
+    color: #f8fafc; /* (slate-50) */
+    background-color: #334155; /* (slate-700) */
+}
+.dark .day-cost-input::placeholder {
+    color: #94a3b8; /* (slate-400) */
+}
+
+
+
+/* =========================================== */
+/* === MỠ VÁ LỖI SỐ 4 (Phiên bản "XỊN" - min-height) === */
+/* =========================================== */
+
+/* 1. Set MỘT CHIỀU CAO TỐI THIỂU cho ô lịch */
+/* Ba chỉ cần sửa 1 SỐ 80px ở đây là xong! */
+.calendar-day {
+   min-height: 80px !important;  /* <--- LINH HỒN LÀ SỐ NÀY! */
+   
+   /* Mấy cái này con thêm để nó tự dàn hàng cho đẹp */
+   padding: 0.25rem !important; /* Vẫn giữ padding mỏng */
+   display: flex; /* Bắt nó dàn layout */
+   flex-direction: column; /* Dàn theo chiều dọc */
+   justify-content: space-between; /* Đẩy nội dung ra 2 cực */
+}
+
+/* 2. Ép ô input co giãn (nhưng không vượt quá) */
+.day-cost-input {
+    font-size: 0.75rem !important; /* Giữ chữ nhỏ */
+    padding: 0.25rem !important; /* Giữ padding nhỏ */
+    /* margin-top: auto; Xóa dòng này, dùng justify-content ở trên hay hơn */
 }
