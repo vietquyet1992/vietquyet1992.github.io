@@ -219,58 +219,74 @@
             const navResearch = document.getElementById('nav-my-research');
             
             // Hàm mới để check quyền Admin (Hỏi Firestore)
+/* === BA XÓA updateUI và checkAdminStatus CŨ... === */
+/* === VÀ THAY BẰNG 2 HÀM "TRÂU BÒ" NÀY === */
+
+// Hàm check Admin (sửa lại 1 chút cho an toàn)
 async function checkAdminStatus(user) {
     if (!user) {
         updateUI(null, false); // Không có user, là Guest
         return;
     }
 
-    // 1. Lấy email của user đã login
-    const userEmail = user.email;
-
-    // 2. Query Firestore xem email này có trong "sổ" admins không
     try {
-        const adminDocRef = db.collection("admins").doc(userEmail);
+        const adminDocRef = db.collection("admins").doc(user.email);
         const adminDoc = await adminDocRef.get();
 
         if (adminDoc.exists) {
-            // 3. Nếu TỒN TẠI -> Đây là Admin
-            console.log("Admin đã đăng nhập:", userEmail);
+            console.log("Admin đã đăng nhập:", user.email);
             updateUI(user, true); // true = là admin
         } else {
-            // 4. Nếu KHÔNG TỒN TẠI -> User lạ
-            console.log("User lạ đăng nhập, không có quyền:", userEmail);
+            console.log("User lạ đăng nhập, không có quyền:", user.email);
             updateUI(user, false); // false = không phải admin
         }
     } catch (error) {
         console.error("Lỗi khi check admin:", error);
-        updateUI(user, false); // Mặc định là guest nếu có lỗi
+        updateUI(user, false); 
     }
 }
 
-// Hàm updateUI (sửa lại 1 chút)
-function updateUI(user, isAdmin) { // Thêm 1 tham số 'isAdmin'
+// Hàm updateUI (VIẾT LẠI HOÀN TOÀN - "TRÂU BÒ" HƠN)
+function updateUI(user, isAdmin) {
+    
+    // === TUYỆT CHIÊU CỦA MỠ: ===
+    // Tìm lại element MỖI LẦN chạy, không tin biến cũ nữa!
+    const gView = document.getElementById('guest-view');
+    const aView = document.getElementById('admin-view');
+    const navD = document.getElementById('nav-my-diary');
+    const navR = document.getElementById('nav-my-research');
+
+    // Check xem có tìm thấy không (phòng hờ)
+    if (!gView || !aView || !navD || !navR) {
+        console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
+        return;
+    }
+    
+    // === Logic như cũ ===
     if (user && isAdmin) {
         // Là Admin
-        guestView.classList.add('hidden');
-        adminView.classList.add('show');
-        navDiary.classList.remove('hidden');
-        navResearch.classList.remove('hidden');
+        gView.classList.add('hidden');
+        aView.classList.add('show');
+        navD.classList.remove('hidden');
+        navR.classList.remove('hidden');
         
-        document.getElementById('admin-avatar').src = user.photoURL || 'images/favicon.png';
-        document.getElementById('admin-name').textContent = user.displayName || "Chào Admin!";
+        // Cập nhật thông tin admin
+        const adminAvatar = document.getElementById('admin-avatar');
+        const adminName = document.getElementById('admin-name');
+        if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
+        if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
+        
     } else {
         // Là Guest
-        guestView.classList.remove('hidden');
-        adminView.classList.add('hidden');
-        adminView.classList.remove('show');
-        navDiary.classList.add('hidden');
-        navResearch.classList.add('hidden');
+        gView.classList.remove('hidden');
+        aView.classList.add('hidden');
+        aView.classList.remove('show');
+        navD.classList.add('hidden');
+        navR.classList.add('hidden');
 
         // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
         if (user && !isAdmin) {
-             // Tự động logout họ luôn cho an toàn
-             signOut(); 
+             signOut(); // Tự động logout họ luôn
              alert("Tài khoản này không có quyền Admin!");
         }
     }
