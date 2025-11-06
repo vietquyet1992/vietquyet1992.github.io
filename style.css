@@ -298,3 +298,37 @@ html:not(.dark) footer .text-gray-500 {
 html:not(.dark) footer .text-gray-400 {
     color: #4B5563 !important;
 }
+
+
+/* === CSS MỠ THÊM CHO MODAL VÀ AUTH === */
+
+/* Bắt buộc modal phải hiện, bất chấp hidden của Tailwind */
+#role-selection-modal.show {
+    display: flex !important;
+}
+
+/* Bắt buộc view phải hiện, bất chấp hidden của Tailwind */
+#admin-view.show {
+    display: block !important;
+}
+
+/* Ép chữ của Admin View cho đúng ý ba */
+html:not(.dark) #admin-name {
+    color: #111827 !important;
+}
+/* === MIẾNG VÁ CỦA MỠ (SỬA LỖI LIGHT MODE) === */
+
+/* 1. Sửa nền 2 ô Base64 (từ xám đặc -> trong suốt) */
+html:not(.dark) #base64-input,
+html:not(.dark) #base64-output {
+    /* Dùng nền trắng trong mờ để nó ăn vào nền kính */
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    /* Ép chữ gõ vào cũng phải đen thui cho dễ đọc */
+    color: #111827 !important; 
+}
+
+/* 2. Sửa tên Admin (từ mờ -> Đen thui) */
+html:not(.dark) #admin-name {
+    /* Ép nó thành màu đen (#111827) cho rõ! */
+    color: #111827 !important; 
+}
