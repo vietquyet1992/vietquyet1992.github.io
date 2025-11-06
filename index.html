@@ -9,8 +9,9 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5/dist/autoNumeric.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
@@ -62,6 +63,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V2.75A.75.75 0 0110 2zM8.5 4.5A.75.75 0 007.75 5.25v1.25a.75.75 0 001.5 0V5.25A.75.75 0 008.5 4.5zM12.25 5.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0V5.25zM10 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H10a.75.75 0 01-.75-.75V10.75A.75.75 0 0110 10zM8.5 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM12.25 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM5.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75V10.75A.75.75 0 015.5 10zM4 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM6.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM14.5 10a.75.75 0 01.75.75v.25h1.25a.75.75 0 010 1.5H14.5a.75.75 0 01-.75-.75V10.75A.75.75 0 0114.5 10zM13 11.5a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25zM15.75 12.25a.75.75 0 00-1.5 0v1.25a.75.75 0 001.5 0v-1.25z" clip-rule="evenodd" /></svg>
                     <span class="font-medium">My Research</span>
                 </a>
+                <a href="#" id="nav-badminton-scheduler" class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="badminton-scheduler">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="font-medium">Badminton Scheduler</span>
+                </a>
                 </nav>
             <div class="mt-auto">
                 
@@ -77,7 +84,6 @@
                         &copy; 2025 Tiêu Viết Quyết
                     </p>
                 </div>
-                
                 <div id="admin-view" class="p-4 border-t border-gray-300/50 dark:border-gray-600/50" style="display: none;">
                     <div class="flex items-center space-x-3">
                         <img id="admin-avatar" src="images/favicon.png" alt="Avatar" class="h-10 w-10 rounded-full border-2 border-amber-500 object-cover">
@@ -199,13 +205,75 @@
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Diary</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nhật ký của ba...</p>
-                    </div>
+                </div>
             </div>
             <div id="tool-my-research" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Research</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nghiên cứu của ba...</p>
+                </div>
+            </div>
+
+            <div id="tool-badminton-scheduler" class="tool-content hidden opacity-0">
+                <div class="p-8 tool-card glass-effect space-y-8">
+                    
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Badminton Scheduler</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        
+                        <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng tiền đã nộp:</label>
+                            <p id="badminton-total-deposited" class="text-2xl font-bold text-green-600 dark:text-green-400">0 đ</p>
+                            <div class="mt-4 flex gap-2">
+                                <input type="text" id="badminton-add-deposit" placeholder="Nộp thêm..." class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"/>
+                                <button id="badminton-submit-deposit" class="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold transition-all shadow-lg hover:shadow-green-500/50">
+                                    [+]
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số ngày đi:</label>
+                            <p id="badminton-total-days" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0 ngày</p>
+                        </div>
+
+                        <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tổng số tiền sân (tháng này):</label>
+                            <p id="badminton-total-cost" class="text-2xl font-bold text-red-500 dark:text-red-400">0 đ</p>
+                        </div>
+
+                        <div class="p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Số tiền còn lại:</label>
+                            <p id="badminton-remaining-balance" class="text-2xl font-bold text-amber-600 dark:text-amber-400">0 đ</p>
+                        </div>
                     </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <button id="calendar-prev-month" class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                            </button>
+                            <h3 id="calendar-month-year" class="text-xl font-bold text-center text-amber-600 dark:text-amber-400">Tháng 11 / 2025</h3>
+                            <button id="calendar-next-month" class="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 dark:text-gray-400">
+                            <div class="calendar-header">Thứ 2</div>
+                            <div class="calendar-header">Thứ 3</div>
+                            <div class="calendar-header">Thứ 4</div>
+                            <div class="calendar-header">Thứ 5</div>
+                            <div class="calendar-header">Thứ 6</div>
+                            <div class="calendar-header text-red-500 dark:text-red-400">Thứ 7</div>
+                            <div class="calendar-header text-red-500 dark:text-red-400">Chủ Nhật</div>
+                        </div>
+                        
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 mt-2">
+                            </div>
+
+                    </div>
+                </div>
             </div>
             </main>
     </div>
@@ -251,44 +319,58 @@
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
             
-            // === CODE MỚI CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
+            // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth(); 
             const provider = new firebase.auth.GoogleAuthProvider(); 
             
-            // Lấy các element UI (chỉ lấy mấy cái nút)
             const modal = document.getElementById('role-selection-modal');
             const selectGuestBtn = document.getElementById('select-role-guest');
             const selectAdminBtn = document.getElementById('select-role-admin');
             const adminLoginBtn = document.getElementById('admin-login-btn'); 
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
             
-            
-            // === HÀM "SIÊU TRÂU BÒ" MỠ VIẾT LẠI (SỬA LỖI GITHUB) ===
-            // === DÙNG style.display THAY VÌ classList ===
+            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC ===
             function updateUI(user, isAdmin) {
                 
-                // === TUYỆT CHIÊU: Tìm lại element MỖI LẦN chạy ===
                 const gView = document.getElementById('guest-view');
                 const aView = document.getElementById('admin-view');
                 const navD = document.getElementById('nav-my-diary');
                 const navR = document.getElementById('nav-my-research');
+                const navB = document.getElementById('nav-badminton-scheduler');
+                const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
 
-                // Check xem có tìm thấy không (phòng hờ)
-                if (!gView || !aView || !navD || !navR) {
+                if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) { 
                     console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
                     return;
                 }
                 
-                // === Logic MỚI: Dùng style.display ===
                 if (user && isAdmin) {
                     // Là Admin
-                    console.log("updateUI: Đang set Admin...");
-                    gView.style.display = 'none';   // DÙNG STYLE
-                    aView.style.display = 'block';  // DÙNG STYLE
+                    gView.style.display = 'none';   
+                    aView.style.display = 'block';  
                     navD.classList.remove('hidden');
                     navR.classList.remove('hidden');
+                    navB.classList.remove('hidden'); 
                     
-                    // Cập nhật thông tin admin
+                    if (!window.calendarInitialized) { 
+                        
+                        // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
+                        if (!addDepositInput.autoNumericInstance) { 
+                            const anInput = new AutoNumeric(addDepositInput, {
+                                decimalCharacter: ',',
+                                digitGroupSeparator: '.',
+                                decimalPlaces: 0,
+                                minimumValue: '-999999999', 
+                                maximumValue: '999999999',
+                            });
+                            addDepositInput.autoNumericInstance = anInput;
+                        }
+
+                        loadFundData(); // Tải Quỹ
+                        renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
+                        window.calendarInitialized = true; 
+                    }
+                    
                     const adminAvatar = document.getElementById('admin-avatar');
                     const adminName = document.getElementById('admin-name');
                     if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
@@ -296,16 +378,14 @@
                     
                 } else {
                     // Là Guest
-                    console.log("updateUI: Đang set Guest...");
-                    gView.style.display = 'block';  // DÙNG STYLE
-                    aView.style.display = 'none';   // DÙNG STYLE
+                    gView.style.display = 'block';  
+                    aView.style.display = 'none';   
                     navD.classList.add('hidden');
-    
                     navR.classList.add('hidden');
-
-                    // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
+                    navB.classList.add('hidden'); 
+                    
                     if (user && !isAdmin) {
-                         signOut(); // Tự động logout họ luôn
+                         signOut(); 
                          alert("Tài khoản này không có quyền Admin!");
                     }
                 }
@@ -314,60 +394,44 @@
             // === HÀM CHECK ADMIN (HỎI FIRESTORE) ===
             async function checkAdminStatus(user) {
                 if (!user) {
-                    updateUI(null, false); // Không có user, là Guest
+                    updateUI(null, false); 
                     return;
                 }
-
                 try {
-                    // Query Firestore xem email này có trong "sổ" admins không
                     const adminDocRef = db.collection("admins").doc(user.email);
                     const adminDoc = await adminDocRef.get();
-
                     if (adminDoc.exists) {
-                        // 3. Nếu TỒN TẠI -> Đây là Admin
                         console.log("Admin đã đăng nhập:", user.email);
-                        updateUI(user, true); // true = là admin
+                        updateUI(user, true); 
                     } else {
-                        // 4. Nếu KHÔNG TỒN TẠI -> User lạ
                         console.log("User lạ đăng nhập, không có quyền:", user.email);
-                        updateUI(user, false); // false = không phải admin
+                        updateUI(user, false); 
                     }
                 } catch (error) {
                     console.error("Lỗi khi check admin:", error);
-                    updateUI(user, false); // Mặc định là guest nếu có lỗi
+                    updateUI(user, false); 
                 }
             }
 
             // === CÁC HÀM XỬ LÝ AUTH (GIỮ NGUYÊN) ===
-
-            // 1. Lắng nghe trạng thái Auth (HÀM QUAN TRỌNG NHẤT)
             auth.onAuthStateChanged((user) => {
                 const role = localStorage.getItem('userRole');
-                
                 if (user) {
-                    // User đã login, check xem có phải admin ko
                     checkAdminStatus(user);
                 } else {
-                    // User đã logout
                     updateUI(null, false);
-                    // Hiện modal nếu chưa chọn role bao giờ
                     if (!role) {
                         modal.classList.add('show');
                     }
                 }
             });
-
-            // 2. Hàm gọi đăng nhập Google
             function signInWithGoogle() {
                 auth.signInWithPopup(provider)
                     .then((result) => {
-                        // Đăng nhập thành công
-                        // Hàm onAuthStateChanged ở trên sẽ tự động chạy và check admin
-                        localStorage.setItem('userRole', 'admin'); // Vẫn lưu để lần sau k hỏi modal
+                        localStorage.setItem('userRole', 'admin'); 
                     })
                     .catch((error) => {
                         console.error("Lỗi đăng nhập:", error);
-                        // Xử lý các lỗi phổ biến
                         if (error.code === 'auth/popup-blocked-by-browser') {
                             alert("Trình duyệt đã chặn cửa sổ đăng nhập. Ba vui lòng cho phép pop-up cho trang này nha!");
                         } else if (error.code === 'auth/unauthorized-domain') {
@@ -375,43 +439,324 @@
                         }
                     });
             }
-
-            // 3. Hàm đăng xuất
             function signOut() {
                 auth.signOut()
                     .then(() => {
                         console.log("Đã đăng xuất.");
-                        localStorage.setItem('userRole', 'guest'); // Đặt về guest
+                        localStorage.setItem('userRole', 'guest'); 
                     })
                     .catch((error) => {
                         console.error("Lỗi đăng xuất:", error);
                     });
             }
 
-            // === GÁN SỰ KIỆN CHO CÁC NÚT ===
-            
-            // Nút chọn "Khách" trên Modal
+            // === GÁN SỰ KIỆN CHO CÁC NÚT AUTH ===
             selectGuestBtn.addEventListener('click', () => {
                 localStorage.setItem('userRole', 'guest');
                 modal.classList.remove('show');
             });
-
-            // Nút chọn "Admin" trên Modal
             selectAdminBtn.addEventListener('click', () => {
                 modal.classList.remove('show');
-                signInWithGoogle(); // Gọi hàm đăng nhập
+                signInWithGoogle(); 
             });
-
-            // Nút "Admin Login" (chữ Copyright)
             adminLoginBtn.addEventListener('click', () => {
-                signInWithGoogle(); // Gọi hàm đăng nhập
+                signInWithGoogle(); 
             });
-
-            // Nút "Đăng xuất"
             adminLogoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                signOut(); // Gọi hàm đăng xuất
+                signOut(); 
             });
+            
+            
+            /* ============================================================
+            === BỘ NÃO BADMINTON SCHEDULER (BẢN NÂNG CẤP AUTONUMERIC) ===
+            ============================================================
+            */
+            // --- 1. Khai báo biến toàn cục cho lịch ---
+            const calendarGrid = document.getElementById('calendar-grid');
+            const monthYearHeader = document.getElementById('calendar-month-year');
+            const prevMonthBtn = document.getElementById('calendar-prev-month');
+            const nextMonthBtn = document.getElementById('calendar-next-month');
+
+            const totalDepositedEl = document.getElementById('badminton-total-deposited');
+            const addDepositInput = document.getElementById('badminton-add-deposit');
+            const submitDepositBtn = document.getElementById('badminton-submit-deposit');
+            const totalDaysEl = document.getElementById('badminton-total-days');
+            const totalCostEl = document.getElementById('badminton-total-cost');
+            const remainingBalanceEl = document.getElementById('badminton-remaining-balance');
+
+            let currentDate = new Date();
+            let currentMonthData = {}; 
+            let currentFund = {
+                totalDeposited: 0,
+                totalCostEver: 0,
+                totalDaysEver: 0
+            };
+
+            // --- 2. Hàm "Vẽ Lịch" (NÂNG CẤP AUTONUMERIC) ---
+            async function renderCalendar(month, year) {
+                console.log(`Đang vẽ lịch cho: ${month + 1}/${year}`);
+                calendarGrid.innerHTML = ''; // Xóa lịch cũ
+                monthYearHeader.textContent = `Tháng ${month + 1} / ${year}`;
+                
+                await loadMonthData(month, year);
+
+                let firstDayOfMonth = new Date(year, month, 1).getDay();
+                let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1; 
+                let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                // A. Vẽ các ô "mờ" của tháng trước
+                for (let i = 0; i < startDay; i++) {
+                    calendarGrid.innerHTML += `<div class="calendar-day not-in-month"></div>`;
+                }
+
+                // B. Vẽ các ô ngày của tháng này
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const dayData = currentMonthData[dateString] || {};
+                    const isPresent = dayData.present || false;
+                    const cost = dayData.cost || '';
+
+                    let dayHtml = `
+                        <div class="calendar-day">
+                            <span class="day-number">${day}</span>
+                            <button 
+                                class="day-toggle ${isPresent ? 'active' : ''}" 
+                                data-date="${dateString}"
+                                data-old-present="${isPresent}">
+                                ●
+                            </button>
+                            <input 
+                                type="text"  
+                                class="day-cost-input" 
+                                placeholder="Tiền..." 
+                                value="${cost}"
+                                data-date="${dateString}"
+                                data-old-cost="${cost || 0}">
+                        </div>
+                    `;
+                    calendarGrid.innerHTML += dayHtml;
+                }
+                
+                // C. Khởi động "Hàng hiệu"
+                const inputs = calendarGrid.querySelectorAll('.day-cost-input');
+                inputs.forEach(input => {
+                    const anInput = new AutoNumeric(input, {
+                        decimalCharacter: ',',
+                        digitGroupSeparator: '.',
+                        decimalPlaces: 0,
+                        minimumValue: '-999999999', 
+                        maximumValue: '999999999',
+                    });
+                    input.autoNumericInstance = anInput; 
+                });
+
+                // D. Cập nhật ô "Tổng tiền sân (tháng này)"
+                calculateThisMonthCost();
+            }
+
+            // --- 3. Hàm "Tính toán" ---
+            function calculateThisMonthCost() {
+                let thisMonthCost = 0;
+                Object.values(currentMonthData).forEach(data => {
+                    thisMonthCost += Number(data.cost || 0);
+                });
+                totalCostEl.textContent = `${thisMonthCost.toLocaleString('vi-VN')} đ`;
+            }
+            function updateSummaryUI() {
+                const remaining = currentFund.totalDeposited - currentFund.totalCostEver;
+                
+                totalDepositedEl.textContent = `${currentFund.totalDeposited.toLocaleString('vi-VN')} đ`;
+                totalDaysEl.textContent = `${currentFund.totalDaysEver} ngày`;
+                remainingBalanceEl.textContent = `${remaining.toLocaleString('vi-VN')} đ`;
+                
+                calculateThisMonthCost();
+            }
+
+            // --- 4. Hàm "Nói chuyện với Firestore" ---
+            function loadFundData() {
+                const fundRef = db.collection("badminton_fund").doc("global");
+                fundRef.onSnapshot((doc) => {
+                    if (doc.exists) {
+                        currentFund = doc.data();
+                        console.log("Đã tải Quỹ:", currentFund);
+                    } else {
+                        console.log("Chưa có Quỹ, đang tạo mới...");
+                        fundRef.set(currentFund);
+                    }
+                    updateSummaryUI();
+                }, (error) => {
+                    console.error("Lỗi khi tải Quỹ:", error);
+                });
+            }
+            async function loadMonthData(month, year) {
+                const monthString = String(month + 1).padStart(2, '0');
+                const queryKey = `${year}-${monthString}`; 
+
+                const scheduleRef = db.collection("badminton_schedule");
+                const snapshot = await scheduleRef
+                    .where(firebase.firestore.FieldPath.documentId(), '>=', queryKey)
+                    .where(firebase.firestore.FieldPath.documentId(), '<', `${queryKey}-32`) 
+                    .get();
+
+                currentMonthData = {}; 
+                snapshot.forEach(doc => {
+                    currentMonthData[doc.id] = doc.data();
+                });
+                console.log(`Đã tải data cho ${queryKey}:`, currentMonthData);
+            }
+            
+            // Hàm Lưu data (BẢN SỬA LỖI LOGIC "LẠC QUAN" CUỐI CÙNG)
+            // Hàm Lưu data (BẢN SỬA LỖI LOGIC "LẠC QUAN" CUỐI CÙNG)
+            async function saveData(dateString, isPresent, newCost, oldIsPresent, oldCost) { // <<< SỬA 1: Nhận newCost (dạng SỐ)
+                const dayRef = db.collection("badminton_schedule").doc(dateString);
+                const fundRef = db.collection("badminton_fund").doc("global");
+
+                // === BƯỚC 1: TÍNH TOÁN TRƯỚC ===
+                
+                // const newCost = AutoNumeric.getNumber(costString); // <<< SỬA 2: Bỏ dòng lỗi này đi
+
+                const costDiff = newCost - Number(oldCost || 0);
+                let dayDiff = 0;
+                if (isPresent && !oldIsPresent) {
+                    dayDiff = 1; 
+                } else if (!isPresent && oldIsPresent) {
+                    dayDiff = -1; 
+                }
+
+                // === BƯỚC 2: CẬP NHẬT GIAO DIỆN "LẠC QUAN" ===
+                // (Phần này đã đúng, nó gọi updateSummaryUI)
+                if (costDiff !== 0 || dayDiff !== 0) {
+                    // 1. Cập nhật "bộ nhớ đệm" (cache)
+                    currentMonthData[dateString] = { present: isPresent, cost: newCost };
+                    currentFund.totalCostEver += costDiff;
+                    currentFund.totalDaysEver += dayDiff;
+                    
+                    // 2. "Vẽ" lại UI NGAY LẬP TỨC
+                    updateSummaryUI(); 
+                } else {
+                    // Nếu k sửa gì, chỉ cập nhật cache
+                    currentMonthData[dateString] = { present: isPresent, cost: newCost };
+                }
+
+                // === BƯỚC 3: GỬI LỆNH LƯU LÊN FIREBASE (CHẠY NGẦM) ===
+                const batch = db.batch();
+                batch.set(dayRef, { present: isPresent, cost: newCost }, { merge: true });
+
+                if (costDiff !== 0 || dayDiff !== 0) {
+                    batch.update(fundRef, {
+                        totalCostEver: firebase.firestore.FieldValue.increment(costDiff),
+                        totalDaysEver: firebase.firestore.FieldValue.increment(dayDiff)
+                    });
+                }
+
+                try {
+                    await batch.commit();
+                    console.log(`Đã lưu data (chạy ngầm) ngày ${dateString} và cập nhật Quỹ!`);
+                } catch (error) {
+                    console.error("Lỗi khi lưu data (chạy ngầm):", error);
+                }
+            }
+
+            // Hàm Nộp Quỹ (BẢN "LẠC QUAN" CHUẨN + SỐ ÂM)
+            // Hàm Nộp Quỹ (BẢN "LẠC QUAN" CHUẨN + SỐ ÂM)
+            async function submitDeposit() {
+                const amount = addDepositInput.autoNumericInstance.getNumber();
+                
+                if (isNaN(amount) || amount === 0) {
+                    alert("Ba gõ số tiền (âm hoặc dương) vào đi ạ!");
+                    return;
+                }
+                
+                // === BƯỚC 1: CẬP NHẬT GIAO DIỆN "LẠC QUAN" ===
+                currentFund.totalDeposited += amount;
+                updateSummaryUI(); // DÒNG NÀY CẬP NHẬT 4 Ô TỔNG KẾT
+                
+                // === BƯỚC 2: Xóa ô input ===
+                addDepositInput.autoNumericInstance.clear();
+
+                // === BƯỚC 3: GỬI LỆNH LƯU LÊN FIREBASE (CHẠY NGẦM) ===
+                const fundRef = db.collection("badminton_fund").doc("global");
+                try {
+                    await fundRef.update({
+                        totalDeposited: firebase.firestore.FieldValue.increment(amount)
+                    });
+                    
+                    if (amount > 0) {
+                        console.log(`Nộp quỹ (chạy ngầm) thành công: ${amount}`);
+                    } else {
+                        console.log(`Rút quỹ (chạy ngầm) thành công: ${amount}`);
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi nộp quỹ (chạy ngầm):", error);
+                }
+            }
+
+            // --- 5. Gán Sự kiện (Event Listeners) ---
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar(currentDate.getMonth(), currentDate.getFullYear());
+            });
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar(currentDate.getMonth(), currentDate.getFullYear());
+            });
+            submitDepositBtn.addEventListener('click', submitDeposit);
+
+            // DÂY ĐIỆN NÂNG CẤP 1 (CLICK ●)
+            // DÂY ĐIỆN NÂNG CẤP 1 (CLICK ●)
+            calendarGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('day-toggle')) {
+                    const button = e.target;
+                    const dateString = button.dataset.date;
+                    const input = document.querySelector(`.day-cost-input[data-date="${dateString}"]`);
+                    
+                    const oldIsPresent = (button.dataset.oldPresent === 'true');
+                    const oldCost = Number(input.dataset.oldCost || 0);
+
+                    button.classList.toggle('active'); 
+                    const newIsPresent = button.classList.contains('active');
+                    
+                    // === SỬA LỖI NẰM Ở ĐÂY ===
+                    // Phải lấy SỐ từ instance AutoNumeric, không lấy CHỮ (string)
+                    const newCostNumber = input.autoNumericInstance.getNumber(); 
+
+                    button.dataset.oldPresent = newIsPresent;
+                    
+                    // Truyền con SỐ (newCostNumber) vào hàm saveData
+                    saveData(dateString, newIsPresent, newCostNumber, oldIsPresent, oldCost);
+                }
+            });
+
+            // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
+            // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
+            calendarGrid.addEventListener('focusout', (e) => {
+                if (e.target.classList.contains('day-cost-input')) {
+                    const input = e.target;
+                    const dateString = input.dataset.date;
+                    const button = document.querySelector(`.day-toggle[data-date="${dateString}"]`);
+
+                    const oldIsPresent = (button.dataset.oldPresent === 'true');
+                    const oldCost = Number(input.dataset.oldCost || 0);
+                    
+                    const newIsPresent = button.classList.contains('active');
+                    
+                    // === SỬA LỖI NẰM Ở ĐÂY ===
+                    // Lấy SỐ (giống như hàm trên)
+                    const newCostNumber = input.autoNumericInstance.getNumber(); 
+
+                    if (newCostNumber !== oldCost) {
+                        input.dataset.oldCost = newCostNumber;
+                        
+                        // Truyền con SỐ (newCostNumber) vào hàm saveData
+                        saveData(dateString, newIsPresent, newCostNumber, oldIsPresent, oldCost);
+                    }
+                }
+            });
+            /* ============================================================
+            === HẾT BỘ NÃO BADMINTON ===
+            ============================================================
+            */
             
             
             // === CODE CŨ CỦA BA (MỠ GỘP VÀO ĐÂY) ===
@@ -419,7 +764,7 @@
             // --- BỘ ĐẾM TRUY CẬP (CŨ CỦA BA) ---
             async function updateVisitCount() {
                 const counterElement = document.getElementById('visit-counter');
-                if (!counterElement) return; // Mỡ thêm: nếu k tìm thấy thì bỏ qua
+                if (!counterElement) return; 
                 const docRef = db.collection("stats").doc("global"); 
                 
                 docRef.update({
@@ -476,28 +821,23 @@
                 toolContents.forEach(content => {
                     if (content.id === `tool-${toolId}`) {
                         targetFound = true;
-                        // Hiển thị nội dung target
                         content.classList.remove('hidden');
                         setTimeout(() => content.classList.remove('opacity-0'), 10);
                     } else {
-                        // Ẩn nội dung khác
                         content.classList.add('opacity-0');
                         setTimeout(() => {
                             content.classList.add('hidden');
-                        }, 400); // Thời gian chờ bằng với transition-duration
+                        }, 400); 
                     }
                 });
 
-                // Nếu không tìm thấy toolId (ví dụ: admin tab nhưng đang là guest)
-                // thì tự động chuyển về tab đầu tiên
                 if (!targetFound && navLinks.length > 0) {
                     const defaultToolId = navLinks[0].dataset.tool;
-                    if (toolId !== defaultToolId) { // Tránh lặp vô hạn
+                    if (toolId !== defaultToolId) { 
                         showTool(defaultToolId);
                     }
                 }
             }
-
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault(); 
@@ -506,7 +846,6 @@
                     showTool(toolId); 
                 });
             });
-
             window.addEventListener('popstate', (e) => {
                 if (e.state && e.state.toolId) {
                     showTool(e.state.toolId);
@@ -514,7 +853,6 @@
                     showTool(navLinks[0].dataset.tool);
                 }
             });
-
             const initialToolId = window.location.hash.substring(1) || navLinks[0].dataset.tool;
             showTool(initialToolId);
 
@@ -529,8 +867,7 @@
             const bgRemoveDownloadBtn = document.getElementById('bg-remove-download-btn');
             const bgRemoveStatus = document.getElementById('bg-remove-status');
             let resultBlob = null;
-            
-            if (bgRemoveInput) { // Mỡ thêm: check null
+            if (bgRemoveInput) { 
                 bgRemoveInput.addEventListener('change', () => {
                     const file = bgRemoveInput.files[0];
                     if (file) {
@@ -551,11 +888,9 @@
                         bgRemoveFilename.textContent = 'Chưa chọn tệp nào.';
                     }
                 });
-
                 bgRemoveProcessBtn.addEventListener('click', async () => {
                     const file = bgRemoveInput.files[0];
                     if (!file) return;
-
                     bgRemoveLoader.classList.remove('hidden');
                     bgRemoveResult.classList.add('hidden');
                     bgRemoveStatus.textContent = 'Đang tải ảnh lên và xử lý...';
@@ -586,7 +921,6 @@
                         bgRemoveProcessBtn.disabled = false;
                     }
                 });
-
                 bgRemoveDownloadBtn.addEventListener('click', () => {
                     if (resultBlob) {
                         const link = document.createElement('a');
@@ -598,7 +932,7 @@
                         document.body.removeChild(link);
                     }
                 });
-            } // Hết check null bgRemoveInput
+            } 
             
             // --- PNG to ICO Logic (CŨ CỦA BA) ---
             const pngFileInput = document.getElementById('png-file-input');
@@ -608,8 +942,7 @@
             const imagePreview = document.getElementById('image-preview');
             const icoStatus = document.getElementById('ico-status');
             const icoSizeSelect = document.getElementById('ico-size-select');
-
-            if (pngFileInput) { // Mỡ thêm: check null
+            if (pngFileInput) { 
                 pngFileInput.addEventListener('change', () => {
                     const file = pngFileInput.files[0];
                     if (file) {
@@ -627,7 +960,6 @@
                         imagePreviewContainer.classList.add('hidden');
                     }
                 });
-
                 convertBtn.addEventListener('click', () => {
                     const file = pngFileInput.files[0];
                     if (!file) return;
@@ -656,7 +988,6 @@
                     };
                     reader.readAsDataURL(file);
                 });
-
                 function createIco(ctx, size) {
                     const imageData = ctx.getImageData(0, 0, size, size).data;
                     const buffer = new ArrayBuffer(22 + 40 + (size * size * 4));
@@ -686,7 +1017,7 @@
                     }
                     return new Uint8Array(buffer);
                 }
-            } // Hết check null pngFileInput
+            } 
 
             // --- Base64 Logic (CŨ CỦA BA) ---
             const base64Input = document.getElementById('base64-input');
@@ -694,11 +1025,9 @@
             const encodeBtn = document.getElementById('base64-encode-btn');
             const decodeBtn = document.getElementById('base64-decode-btn');
             const base64Status = document.getElementById('base64-status');
-
-            if (base64Input) { // Mỡ thêm: check null
+            if (base64Input) { 
                 function safeBtoa(str) { try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return null; } }
                 function safeAtob(str) { try { return decodeURIComponent(escape(atob(str))); } catch (e) { return null; } }
-
                 encodeBtn.addEventListener('click', () => {
                     const input = base64Input.value;
                     if (!input) { base64Output.value = ''; return; }
@@ -707,7 +1036,6 @@
                     base64Status.textContent = encoded ? 'Mã hóa thành công!' : 'Mã hóa thất bại.';
                     setTimeout(() => { base64Status.textContent = '' }, 3000);
                 });
-
                 decodeBtn.addEventListener('click', () => {
                     let currentString = base64Input.value;
                     if (!currentString) { base64Output.value = ''; return; }
@@ -725,17 +1053,15 @@
                     base64Status.textContent = decodeCount > 0 ? `Giải mã thành công qua ${decodeCount} lớp.` : 'Không thể giải mã thêm, chuỗi không phải là Base64 hợp lệ.';
                     setTimeout(() => { base64Status.textContent = '' }, 4000);
                 });
-            } // Hết check null base64Input
+            } 
 
             // --- My Apps Logic (CŨ CỦA BA) ---
             const appsListContainer = document.getElementById('apps-list');
             const appsLoader = document.getElementById('apps-loader');
             const appsEmptyState = document.getElementById('apps-empty-state');
-
-            if (appsListContainer) { // Mỡ thêm: check null
+            if (appsListContainer) { 
                 db.collection("my_apps").onSnapshot((querySnapshot) => {
                     appsLoader.classList.add('hidden');
-                    // Mỡ sửa: Xóa nội dung cũ an toàn hơn
                     const appCards = appsListContainer.querySelectorAll('.app-card');
                     appCards.forEach(card => card.remove());
 
@@ -750,7 +1076,6 @@
                             if (app.iconUrl && app.iconUrl.trim() !== '') {
                                 iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
                             }
-                            
                             const appCardHTML = `
                                 <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
                                     <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
@@ -779,7 +1104,6 @@
                     appsLoader.classList.add('hidden');
                     appsListContainer.innerHTML = '<p class="text-center text-red-500">Đã xảy ra lỗi khi tải danh sách ứng dụng.</p>';
                 });
-
                 appsListContainer.addEventListener('click', (e) => {
                     const button = e.target.closest('.download-btn');
                     if (button) {
@@ -801,7 +1125,7 @@
                         });
                     }
                 });
-            } // Hết check null appsListContainer
+            } 
 
         }); // Hết DOMContentLoaded
     </script>

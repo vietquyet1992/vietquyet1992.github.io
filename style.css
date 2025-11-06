@@ -332,3 +332,211 @@ html:not(.dark) #admin-name {
     /* Ép nó thành màu đen (#111827) cho rõ! */
     color: #111827 !important; 
 }
+
+/* === MỠ THÊM: CSS CHO BADMINTON SCHEDULER === */
+
+/* Tiêu đề Thứ (T2, T3...) */
+.calendar-header {
+    padding: 8px 4px;
+    background-color: rgba(229, 231, 235, 0.5); /* bg-gray-200/50 */
+    border-radius: 6px;
+}
+html.dark .calendar-header {
+    background-color: rgba(55, 65, 81, 0.5); /* dark:bg-gray-700/50 */
+}
+
+/* 1 ô ngày trong lịch */
+.calendar-day {
+    min-height: 120px;
+    padding: 8px;
+    border: 1px solid rgba(229, 231, 235, 0.7); /* border-gray-200/70 */
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: background-color 0.2s;
+}
+html.dark .calendar-day {
+    border-color: rgba(75, 85, 99, 0.7); /* dark:border-gray-600/70 */
+    background-color: rgba(30, 41, 59, 0.3);
+}
+
+/* Ô ngày của tháng khác (bị mờ đi) */
+.calendar-day.not-in-month {
+    background-color: rgba(243, 244, 246, 0.3); /* bg-gray-100/30 */
+    opacity: 0.6;
+}
+html.dark .calendar-day.not-in-month {
+    background-color: rgba(30, 41, 59, 0.3); /* dark:bg-gray-800/30 */
+}
+
+/* Số ngày (1, 2, 3...) */
+.day-number {
+    font-weight: 600; /* semibold */
+    color: #4B5563; /* text-gray-600 */
+}
+html.dark .day-number {
+    color: #D1D5DB; /* dark:text-gray-300 */
+}
+
+/* Nút bấm Có mặt (chấm ●) */
+.day-toggle {
+    width: 100%;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1;
+    color: transparent; /* Ban đầu trong suốt */
+    background-color: rgba(229, 231, 235, 0.5); /* bg-gray-200/50 */
+    transition: all 0.2s;
+}
+html.dark .day-toggle {
+    background-color: rgba(55, 65, 81, 0.5); /* dark:bg-gray-700/50 */
+}
+.day-toggle:hover {
+    background-color: rgba(209, 213, 219, 0.7); /* hover:bg-gray-300/70 */
+}
+html.dark .day-toggle:hover {
+    background-color: rgba(75, 85, 99, 0.7); /* dark:hover:bg-gray-600/70 */
+}
+
+/* Nút ● khi được BẬT (active) */
+.day-toggle.active {
+    color: #111827; /* text-black */
+    background-color: #FBBF24; /* bg-amber-400 */
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+}
+html.dark .day-toggle.active {
+    color: #F3F4F6; /* dark:text-gray-100 */
+}
+
+/* Ô gõ tiền sân */
+.day-cost-input {
+    width: 100%;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem; /* text-sm */
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(229, 231, 235, 0.5); /* border-gray-200/50 */
+}
+html.dark .day-cost-input {
+    background-color: rgba(55, 65, 81, 0.5); /* dark:bg-gray-700/50 */
+    border-color: rgba(75, 85, 99, 0.5); /* dark:border-gray-600/50 */
+}
+.day-cost-input:focus {
+    outline: 2px solid #F59E0B; /* ring-amber-500 */
+    outline-offset: 0;
+}
+
+/* Ẩn mấy cái mũi tên tăng/giảm của ô input số */
+.day-cost-input::-webkit-outer-spin-button,
+.day-cost-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.day-cost-input[type=number] {
+  -moz-appearance: textfield;
+  /* MỠ THÊM DÒNG NÀY CHO NÓ HẾT CẢNH BÁO NÈ BA */
+  appearance: textfield;
+}
+/* === MỠ THÊM: "TÚT TÁT" GIAO DIỆN LỊCH CẦU LÔNG === */
+
+/* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
+
+/* 1. Biến 4 ô Tổng kết "lạc quẻ" thành 4 thẻ "kính mờ" */
+html:not(.dark) #tool-badminton-scheduler .md\:grid-cols-2 > div {
+    background-color: rgba(255, 255, 255, 0.6) !important; /* Nền kính */
+    border: 1px solid rgba(255, 255, 255, 0.8) !important; /* Viền kính */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 2. Ép chữ số ngày (1, 2, 3...) thành xám đậm */
+html:not(.dark) .day-number {
+    color: #374151 !important; /* text-gray-700 */
+}
+
+/* 3. Ép chữ placeholder "Tiền..." thành xám đậm */
+html:not(.dark) .day-cost-input::placeholder {
+    color: #6B7280 !important; /* text-gray-500 */
+}
+
+/* 4. Ép chữ ba gõ vào (50000) thành màu đen */
+html:not(.dark) .day-cost-input {
+    color: #111827 !important; /* text-black */
+}
+
+/* 5. Ép nút nộp quỹ [+] thành màu xanh lá (nó đang bị mờ) */
+html:not(.dark) #badminton-submit-deposit {
+    color: white !important;
+}
+
+
+/* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
+
+/* 1. Cho nền lịch "nổi khối" lên 1 chút */
+html.dark .calendar-day {
+    /* Tăng độ sáng nền 1 xíu so với nền tool-card */
+    background-color: rgba(55, 65, 81, 0.3) !important; /* dark:bg-gray-700/30 */
+}
+
+/* 2. Cho ô ngày của tháng khác "chìm" xuống */
+html.dark .calendar-day.not-in-month {
+    background-color: rgba(30, 41, 59, 0.3) !important; /* dark:bg-gray-800/30 */
+    opacity: 0.5;
+}
+
+/* 3. Cho ô input "Tiền..." có nền tối hơn 1 chút */
+html.dark .day-cost-input {
+    background-color: rgba(30, 41, 59, 0.5) !important; /* dark:bg-gray-800/50 */
+}
+/* === MỠ THÊM: "TÚT TÁT" LẦN CUỐI (SÁNG + TỐI) === */
+
+/* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
+
+/* 1. Sửa ô "Nộp thêm..." (từ xám đặc -> kính mờ) */
+/* === MỠ VÁ LỖI: Ô "NỘP THÊM" (LIGHT MODE) === */
+
+/* 1. Sửa ô "Nộp thêm..." (từ "tàng hình" -> xám siêu nhạt) */
+html:not(.dark) #badminton-add-deposit {
+    /* Đổi từ nền kính (trắng trong) sang nền xám RẤT NHẠT */
+    background-color: rgba(243, 244, 246, 0.7) !important; /* bg-gray-100/70 */
+    /* Cho cái viền nó đậm hơn 1 xíu để thấy rõ là 1 cái ô */
+    border-color: rgba(209, 213, 219, 0.7) !important; /* border-gray-300/70 */
+    color: #111827 !important; /* Chữ gõ vào đen thui */
+}
+
+/* 2. Sửa placeholder "Nộp thêm..." (đang bị mờ) */
+html:not(.dark) #badminton-add-deposit::placeholder {
+    color: #6B7280 !important; /* text-gray-500 */
+}
+
+
+/* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
+
+/* 1. Cho nền lịch "NỔI KHỐI" hơn */
+html.dark .calendar-day {
+    /* Tăng độ sáng nền 1 xíu so với nền tool-card */
+    background-color: rgba(75, 85, 99, 0.25) !important; /* dark:bg-gray-600/25 */
+    border-color: rgba(75, 85, 99, 0.6) !important; /* dark:border-gray-600/60 */
+}
+
+/* 2. Cho ô ngày của tháng khác "CHÌM" xuống */
+html.dark .calendar-day.not-in-month {
+    background-color: rgba(30, 41, 59, 0.3) !important; /* dark:bg-gray-800/30 */
+    opacity: 0.5;
+}
+
+/* 3. Cho nút ● (active) "NỔI BẬT" (Nền vàng + CHỮ ĐEN) */
+html.dark .day-toggle.active {
+    background-color: #FBBF24 !important; /* Nền vàng (bg-amber-400) */
+    color: #111827 !important; /* CHỮ ĐEN THUI (text-black) */
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+}
+
+/* 4. Cho ô input "Tiền..." (trong lịch) tối hơn 1 xíu */
+html.dark .day-cost-input {
+    background-color: rgba(30, 41, 59, 0.5) !important; /* dark:bg-gray-800/50 */
+    border-color: rgba(55, 65, 81, 0.7) !important; /* dark:border-gray-700/70 */
+}
