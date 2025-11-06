@@ -104,7 +104,18 @@
                             <input type="file" id="bg-remove-input" accept="image/png, image/jpeg" class="hidden"/>
                         </div>
                         <div id="bg-remove-previews" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
-                            </div>
+                             <div>
+                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh gốc:</p>
+                                <img id="bg-remove-original" class="w-full rounded-lg border border-gray-200/50 dark:border-gray-700/50"/>
+                             </div>
+                             <div>
+                                <p class="text-sm font-medium mb-2 dark:text-gray-300">Đã tách nền:</p>
+                                <div class="w-full aspect-video rounded-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center bg-gray-100/50 dark:bg-gray-700/50" style="background-image: repeating-conic-gradient(#d1d5db80 0 25%, #e5e7eb80 0 50%); background-size: 16px 16px;">
+                                    <img id="bg-remove-result" class="hidden max-w-full max-h-full"/>
+                                    <div id="bg-remove-loader" class="loader hidden"></div>
+                                </div>
+                             </div>
+                        </div>
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
                             <button id="bg-remove-process-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tách nền</button>
                             <button id="bg-remove-download-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Tải xuống kết quả</button>
@@ -118,15 +129,61 @@
                 <div class="p-8 tool-card glass-effect">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Chuyển đổi PNG sang ICO</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Tải lên tệp PNG và chọn kích thước để tạo tệp ICO (biểu tượng trang web).</p>
+                    
+                    <div class="space-y-4">
+                        
+                        <div class="flex items-center space-x-4">
+                            <label for="png-file-input" class="cursor-pointer bg-gray-300 text-gray-500 dark:bg-gray-600/50 dark:text-gray-400 py-2 px-4 rounded-lg transition duration-300 shadow-none">
+                                Chọn tệp...
+                            </label>
+                            <span id="png-filename" class="text-sm text-gray-500 dark:text-gray-300">Chưa chọn tệp nào.</span>
+                            <input type="file" id="png-file-input" accept="image/png" class="hidden"/>
+                        </div>
+
+                        <div id="image-preview-container" class="mt-4 hidden">
+                            <p class="text-sm font-medium mb-2 dark:text-gray-300">Ảnh xem trước:</p>
+                            <img id="image-preview" class="max-w-xs max-h-32 rounded-lg border border-gray-200/50 dark:border-gray-700/50" />
+                        </div>
+                        <div>
+                            <label for="ico-size-select" class="block font-medium mb-2 dark:text-gray-300">Chọn kích thước:</label>
+                            <select id="ico-size-select" class="w-full sm:w-auto p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                                <option value="16">16x16 pixels</option>
+                                <option value="32" selected>32x32 pixels</option>
+                                <option value="48">48x48 pixels</option>
+                                <option value="64">64x64 pixels</option>
+                                <option value="128">128x128 pixels</option>
+                            </select>
+                        </div>
+                        <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
+                                                            disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+                                                            dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+                                                            shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
+                        <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
+                    </div>
                     </div>
             </div>
 
             <div id="tool-base64" class="tool-content hidden opacity-0">
-                <div class="p-8 tool-card glass-effect">
-                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+            <div class="p-8 tool-card glass-effect">
+                <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Mã hóa & Giải mã Base64</h2>
+                <p class="text-gray-800 dark:text-gray-300 mb-6">Mã hóa (1 lần) hoặc giải mã (nhiều lớp) chuỗi văn bản của bạn.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label for="base64-input" class="font-medium dark:text-gray-300">Đầu vào:</label>
+                        <textarea id="base64-input" rows="8" class="w-full p-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
                     </div>
-            </div>
+                    <div class="space-y-2">
+                        <label for="base64-output" class="font-medium dark:text-gray-300">Kết quả:</label>
+                        <textarea id="base64-output" rows="8" readonly class="w-full p-3 bg-gray-100/50 dark:bg-slate-800/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg cursor-not-allowed"></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                    <button id="base64-encode-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Mã hóa (Encode)</button>
+                    <button id="base64-decode-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-blue-500/50">Giải mã (Decode)</button>
+                </div>
+                <div id="base64-status" class="text-sm mt-4"></div>
+                </div>
+        </div>
             
             <div id="tool-my-apps" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect">
@@ -197,134 +254,129 @@
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
             
-            // === CODE MỚI CỦA MỠ (CÁCH 2) ===
-            const auth = firebase.auth(); // Khởi tạo dịch vụ AUTH
-            const provider = new firebase.auth.GoogleAuthProvider(); // Chọn nhà cung cấp Google
-
+            // === CODE MỚI CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
+            const auth = firebase.auth(); 
+            const provider = new firebase.auth.GoogleAuthProvider(); 
             
-
-            // Lấy các element UI
+            // Lấy các element UI (chỉ lấy mấy cái nút)
             const modal = document.getElementById('role-selection-modal');
             const selectGuestBtn = document.getElementById('select-role-guest');
             const selectAdminBtn = document.getElementById('select-role-admin');
-            
-            // *** MỠ SỬA LẠI CHỖ NÀY: Nút login giờ là chữ Copyright ***
             const adminLoginBtn = document.getElementById('admin-login-btn'); 
-            
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
-
-            const guestView = document.getElementById('guest-view');
-            const adminView = document.getElementById('admin-view');
-            const navDiary = document.getElementById('nav-my-diary');
-            const navResearch = document.getElementById('nav-my-research');
             
-            // Hàm mới để check quyền Admin (Hỏi Firestore)
-/* === BA XÓA updateUI và checkAdminStatus CŨ... === */
-/* === VÀ THAY BẰNG 2 HÀM "TRÂU BÒ" NÀY === */
+            // === HÀM "TRÂU BÒ" MỠ VIẾT LẠI (SỬA LỖI GITHUB) ===
+            // Hàm updateUI (VIẾT LẠI HOÀN TOÀN - TỰ TÌM ELEMENT MỖI LẦN CHẠY)
+            function updateUI(user, isAdmin) {
+                
+                // === TUYỆT CHIÊU: Tìm lại element MỖI LẦN chạy ===
+                const gView = document.getElementById('guest-view');
+                const aView = document.getElementById('admin-view');
+                const navD = document.getElementById('nav-my-diary');
+                const navR = document.getElementById('nav-my-research');
 
-// Hàm check Admin (sửa lại 1 chút cho an toàn)
-async function checkAdminStatus(user) {
-    if (!user) {
-        updateUI(null, false); // Không có user, là Guest
-        return;
-    }
-
-    try {
-        const adminDocRef = db.collection("admins").doc(user.email);
-        const adminDoc = await adminDocRef.get();
-
-        if (adminDoc.exists) {
-            console.log("Admin đã đăng nhập:", user.email);
-            updateUI(user, true); // true = là admin
-        } else {
-            console.log("User lạ đăng nhập, không có quyền:", user.email);
-            updateUI(user, false); // false = không phải admin
-        }
-    } catch (error) {
-        console.error("Lỗi khi check admin:", error);
-        updateUI(user, false); 
-    }
-}
-
-// Hàm updateUI (VIẾT LẠI HOÀN TOÀN - "TRÂU BÒ" HƠN)
-function updateUI(user, isAdmin) {
-    
-    // === TUYỆT CHIÊU CỦA MỠ: ===
-    // Tìm lại element MỖI LẦN chạy, không tin biến cũ nữa!
-    const gView = document.getElementById('guest-view');
-    const aView = document.getElementById('admin-view');
-    const navD = document.getElementById('nav-my-diary');
-    const navR = document.getElementById('nav-my-research');
-
-    // Check xem có tìm thấy không (phòng hờ)
-    if (!gView || !aView || !navD || !navR) {
-        console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
-        return;
-    }
-    
-    // === Logic như cũ ===
-    if (user && isAdmin) {
-        // Là Admin
-        gView.classList.add('hidden');
-        aView.classList.add('show');
-        navD.classList.remove('hidden');
-        navR.classList.remove('hidden');
-        
-        // Cập nhật thông tin admin
-        const adminAvatar = document.getElementById('admin-avatar');
-        const adminName = document.getElementById('admin-name');
-        if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
-        if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
-        
-    } else {
-        // Là Guest
-        gView.classList.remove('hidden');
-        aView.classList.add('hidden');
-        aView.classList.remove('show');
-        navD.classList.add('hidden');
-        navR.classList.add('hidden');
-
-        // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
-        if (user && !isAdmin) {
-             signOut(); // Tự động logout họ luôn
-             alert("Tài khoản này không có quyền Admin!");
-        }
-    }
-}
-
-                // Hàm onAuthStateChanged (Hàm "lắng nghe" chính)
-                auth.onAuthStateChanged((user) => {
-                    const role = localStorage.getItem('userRole');
+                // Check xem có tìm thấy không (phòng hờ)
+                if (!gView || !aView || !navD || !navR) {
+                    console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
+                    return;
+                }
+                
+                // === Logic như cũ ===
+                if (user && isAdmin) {
+                    // Là Admin
+                    gView.classList.add('hidden');
+                    aView.classList.add('show');
+                    navD.classList.remove('hidden');
+                    navR.classList.remove('hidden');
                     
-                    if (user) {
-                        // User đã login, check xem có phải admin ko
-                        checkAdminStatus(user);
-                    } else {
-                        // User đã logout
-                        updateUI(null, false);
-                        // Hiện modal nếu chưa chọn role bao giờ
-                        if (!role) {
-                            modal.classList.add('show');
-                        }
-                    }
-                });
+                    // Cập nhật thông tin admin
+                    const adminAvatar = document.getElementById('admin-avatar');
+                    const adminName = document.getElementById('admin-name');
+                    if(adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
+                    if(adminName) adminName.textContent = user.displayName || "Chào Admin!";
+                    
+                } else {
+                    // Là Guest
+                    gView.classList.remove('hidden');
+                    aView.classList.add('hidden');
+                    aView.classList.remove('show');
+                    navD.classList.add('hidden');
+                    navR.classList.add('hidden');
 
-                // Hàm signInWithGoogle (Không cần sửa nhiều)
-                function signInWithGoogle() {
-                    auth.signInWithPopup(provider)
-                        .then((result) => {
-                            // Đăng nhập thành công
-                            // Hàm onAuthStateChanged ở trên sẽ tự động chạy và check admin
-                            localStorage.setItem('userRole', 'admin'); // Vẫn lưu để lần sau k hỏi modal
-                        })
-                        .catch((error) => {
-                            console.error("Lỗi đăng nhập:", error);
-                        });
+                    // Nếu user tồn tại (đã login) nhưng KHÔNG phải admin
+                    if (user && !isAdmin) {
+                         signOut(); // Tự động logout họ luôn
+                         alert("Tài khoản này không có quyền Admin!");
+                    }
+                }
+            }
+
+            // === HÀM CHECK ADMIN (HỎI FIRESTORE) ===
+            async function checkAdminStatus(user) {
+                if (!user) {
+                    updateUI(null, false); // Không có user, là Guest
+                    return;
                 }
 
-            
+                try {
+                    // Query Firestore xem email này có trong "sổ" admins không
+                    const adminDocRef = db.collection("admins").doc(user.email);
+                    const adminDoc = await adminDocRef.get();
 
-            // Hàm đăng xuất
+                    if (adminDoc.exists) {
+                        // 3. Nếu TỒN TẠI -> Đây là Admin
+                        console.log("Admin đã đăng nhập:", user.email);
+                        updateUI(user, true); // true = là admin
+                    } else {
+                        // 4. Nếu KHÔNG TỒN TẠI -> User lạ
+                        console.log("User lạ đăng nhập, không có quyền:", user.email);
+                        updateUI(user, false); // false = không phải admin
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi check admin:", error);
+                    updateUI(user, false); // Mặc định là guest nếu có lỗi
+                }
+            }
+
+            // === CÁC HÀM XỬ LÝ AUTH (GIỮ NGUYÊN) ===
+
+            // 1. Lắng nghe trạng thái Auth (HÀM QUAN TRỌNG NHẤT)
+            auth.onAuthStateChanged((user) => {
+                const role = localStorage.getItem('userRole');
+                
+                if (user) {
+                    // User đã login, check xem có phải admin ko
+                    checkAdminStatus(user);
+                } else {
+                    // User đã logout
+                    updateUI(null, false);
+                    // Hiện modal nếu chưa chọn role bao giờ
+                    if (!role) {
+                        modal.classList.add('show');
+                    }
+                }
+            });
+
+            // 2. Hàm gọi đăng nhập Google
+            function signInWithGoogle() {
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        // Đăng nhập thành công
+                        // Hàm onAuthStateChanged ở trên sẽ tự động chạy và check admin
+                        localStorage.setItem('userRole', 'admin'); // Vẫn lưu để lần sau k hỏi modal
+                    })
+                    .catch((error) => {
+                        console.error("Lỗi đăng nhập:", error);
+                        // Xử lý các lỗi phổ biến
+                        if (error.code === 'auth/popup-blocked-by-browser') {
+                            alert("Trình duyệt đã chặn cửa sổ đăng nhập. Ba vui lòng cho phép pop-up cho trang này nha!");
+                        } else if (error.code === 'auth/unauthorized-domain') {
+                            alert("Lỗi: Tên miền này chưa được đăng ký với Firebase!");
+                        }
+                    });
+            }
+
+            // 3. Hàm đăng xuất
             function signOut() {
                 auth.signOut()
                     .then(() => {
@@ -336,11 +388,7 @@ function updateUI(user, isAdmin) {
                     });
             }
 
-            // === XỬ LÝ LOGIC CHÍNH ===
-            
-            
-
-            // 2. Gán sự kiện cho các nút
+            // === GÁN SỰ KIỆN CHO CÁC NÚT ===
             
             // Nút chọn "Khách" trên Modal
             selectGuestBtn.addEventListener('click', () => {
@@ -354,7 +402,7 @@ function updateUI(user, isAdmin) {
                 signInWithGoogle(); // Gọi hàm đăng nhập
             });
 
-            // *** MỠ SỬA LẠI CHỖ NÀY: Nút login giờ là chữ Copyright ***
+            // Nút "Admin Login" (chữ Copyright)
             adminLoginBtn.addEventListener('click', () => {
                 signInWithGoogle(); // Gọi hàm đăng nhập
             });
