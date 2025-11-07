@@ -761,7 +761,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const titleEl = document.createElement('h3');
                         titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
                         titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
-                        titleEl.addEventListener('click', () => { openReaderModal(postData); });
+                        titleEl.addEventListener('click', () => { openReaderModal({ id: postId, ...postData }); });
                         postCard.appendChild(titleEl);
                         const dateEl = document.createElement('p');
                         dateEl.className = 'text-xs text-gray-500 dark:text-gray-400 mb-4';
@@ -772,7 +772,12 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
                         postCard.appendChild(summaryEl);
                         if (postData.tags && postData.tags.length > 0) {
-                            const tagsHTML = postData.tags.map(tag => `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`).join(' ');
+                            const tagsHTML = postData.tags.map(tag =>
+                                // (Sửa dòng này, thêm 2 class mới)
+                                `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">
+        ${tag}
+    </span>`
+                            ).join(' ');
                             const tagsDiv = document.createElement('div');
                             tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
                             tagsDiv.innerHTML = tagsHTML;
@@ -981,8 +986,140 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     blogReaderTags.innerHTML = '';
                 }
 
+                // (Dán vào khoảng dòng 944, ngay trước "4. Mở Cửa sổ!")
+
+                // === GẮN DÂY ĐIỆN CHO TAG TRONG CỬA SỔ ĐỌC ===
+                if (!blogReaderTags.hasTagListener) { // (Thêm .hasTagListener để không gắn lặp)
+                    blogReaderTags.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('blog-tag-link')) {
+                            const tagName = e.target.textContent.trim();
+
+                            // Xóa các thanh "Đang lọc" cũ nếu có
+                            document.querySelectorAll('#blog-filter-status').forEach(el => el.remove());
+
+                            blogReaderModal.classList.add('hidden'); // Đóng cửa sổ
+                            fetchBlogPostsByTag(tagName); // Lọc
+                        }
+                    });
+                    blogReaderTags.hasTagListener = true;
+                }
+                // === HẾT DÂY ĐIỆN ===
+
                 // 4. Mở Cửa sổ!
                 blogReaderModal.classList.remove('hidden');
+
+                // 4. Mở Cửa sổ!
+                blogReaderModal.classList.remove('hidden');
+            }
+
+            // === HÀM MỚI (LỌC THEO TAG - CẦN INDEX!) ===
+            async function fetchBlogPostsByTag(tagName) {
+                console.log(`Đang lọc bài viết theo tag: "${tagName}"...`);
+
+                // 1. Dọn dẹp giao diện
+                blogLoadingState.classList.remove('hidden'); // Bật "Đang tải..."
+                blogEmptyState.classList.add('hidden');
+                blogPostsList.innerHTML = '';
+                blogPaginationControls.classList.add('hidden'); // Ẩn phân trang
+
+                // 2. Tạo giao diện "Đang lọc"
+                const filterStatusEl = document.createElement('div');
+                filterStatusEl.id = 'blog-filter-status'; // (Mỡ thêm ID để xóa)
+                filterStatusEl.className = 'p-4 bg-amber-100 dark:bg-amber-900/50 rounded-lg mb-6 flex justify-between items-center';
+                filterStatusEl.innerHTML = `
+        <span class="font-medium text-amber-800 dark:text-amber-200">
+            Đang lọc theo tag: <strong class="text-lg">${tagName}</strong>
+        </span>
+        <button id="blog-clear-filter-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">
+            &times; Xóa bộ lọc
+        </button>
+    `;
+                // Chèn vào *trước* danh sách bài viết
+                blogPostsList.before(filterStatusEl);
+
+                // Gắn sự kiện cho nút "Xóa bộ lọc"
+                document.getElementById('blog-clear-filter-btn').addEventListener('click', () => {
+                    filterStatusEl.remove(); // Xóa cái thanh "Đang lọc"
+                    blogEmptyState.textContent = 'Chưa có bài viết nào.'; // (Trả lại chữ cũ)
+                    loadBlogPosts(); // Tải lại như cũ
+                });
+
+                // 3. Truy vấn Firestore (Cần Index!)
+                try {
+                    const query = blogPostsRef
+                        .where("tags", "array-contains", tagName) // <-- CHIÊU "PRO" LÀ ĐÂY!
+                        .orderBy("createdAt", "desc");
+
+                    const querySnapshot = await query.get();
+                    blogLoadingState.classList.add('hidden'); // Tắt "Đang tải..."
+
+                    if (querySnapshot.empty) {
+                        blogEmptyState.classList.remove('hidden');
+                        // (Đổi chữ cho ba dễ biết)
+                        blogEmptyState.textContent = `Không tìm thấy bài viết nào có tag "${tagName}".`;
+                        return;
+                    }
+
+                    // 4. "Vẽ" kết quả (Copy y chang hàm fetchBlogPage)
+                    querySnapshot.forEach((doc) => {
+                        const postData = doc.data();
+                        const postId = doc.id;
+                        const postCard = document.createElement('div');
+                        postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg';
+
+                        const titleEl = document.createElement('h3');
+                        titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
+                        titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
+                        // (Gọi hàm đã thống nhất)
+                        titleEl.addEventListener('click', () => { openReaderModal({ id: postId, ...postData }); });
+                        postCard.appendChild(titleEl);
+
+                        const dateEl = document.createElement('p');
+                        dateEl.className = 'text-xs text-gray-500 dark:text-gray-400 mb-4';
+                        dateEl.textContent = postData.createdAt ? new Date(postData.createdAt.seconds * 1000).toLocaleString('vi-VN') : '...';
+                        postCard.appendChild(dateEl);
+
+                        const summaryEl = document.createElement('p');
+                        summaryEl.className = 'text-gray-700 dark:text-gray-300 mt-4';
+                        summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
+                        postCard.appendChild(summaryEl);
+
+                        if (postData.tags && postData.tags.length > 0) {
+                            const tagsHTML = postData.tags.map(tag => `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`).join(' ');
+                            const tagsDiv = document.createElement('div');
+                            tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
+                            tagsDiv.innerHTML = tagsHTML;
+                            postCard.appendChild(tagsDiv);
+                        }
+
+                        if (window.isAdmin) {
+                            const adminButtonsHTML = `
+                <div class="mt-4 flex gap-2">
+                    <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                    <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                </div>`;
+                            const adminDiv = document.createElement('div');
+                            adminDiv.innerHTML = adminButtonsHTML;
+                            postCard.appendChild(adminDiv);
+                        }
+                        blogPostsList.appendChild(postCard);
+                    });
+
+                } catch (error) {
+                    console.error("Lỗi khi lọc tag:", error);
+                    blogLoadingState.classList.add('hidden');
+
+                    // ĐÂY LÀ "THẦN CHÚ" BÁO LỖI INDEX
+                    if (error.code === 'failed-precondition') {
+                        blogPostsList.innerHTML = `<p class="text-center text-red-500 p-4 bg-red-100 dark:bg-red-900/50 rounded-lg">
+                <b>Lỗi "đụng nóc" Firestore!</b><br>
+                Ba ơi, ba cần tạo "Chỉ mục" (Index) thì mới lọc tag được! <br>
+                <span class="text-xs">(Lỗi: ${error.message})</span>
+            </p>`;
+                    } else {
+                        blogPostsList.innerHTML = `<p class="text-center text-red-500">Lọc tag thất bại.</p>`;
+                    }
+                }
             }
 
             // === HÀM "MẤT TÍCH" MỠ VIẾT BÙ CHO BA ===
@@ -1009,6 +1146,20 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     blogPostsList.addEventListener('click', async (e) => {
                         const target = e.target;
                         const postId = target.dataset.id;
+
+                        // === MỠ THÊM "DÂY ĐIỆN TAG" VÀO ĐÂY ===
+                        if (target.classList.contains('blog-tag-link')) {
+                            e.preventDefault(); // Ngăn hành vi lạ
+                            const tagName = target.textContent.trim();
+                            console.log("Ba click vào tag:", tagName);
+
+                            // Xóa các thanh "Đang lọc" cũ nếu có
+                            document.querySelectorAll('#blog-filter-status').forEach(el => el.remove());
+
+                            fetchBlogPostsByTag(tagName); // Gọi hàm lọc mới
+                            return; // Click tag thì thôi, không làm gì nữa
+                        }
+                        // === HẾT DÂY ĐIỆN TAG ===
 
                         // Bấm nút [Sửa]
                         if (target.classList.contains('blog-edit-btn') && postId) {
