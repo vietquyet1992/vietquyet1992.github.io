@@ -657,11 +657,17 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             const blogReaderBody = document.getElementById('blog-reader-body');
             const blogReaderCloseBtn = document.getElementById('blog-reader-close-btn');
             let isBlogInitialized = false; // Biến này để mình chỉ load 1 lần
+
+
             // --- GIAI ĐOẠN 2: HÀM TẢI VÀ "VẼ" BÀI VIẾT ---
+
+
+            // --- GIAI ĐOẠN 2: HÀM TẢI VÀ "VẼ" BÀI VIẾT ---
+            // === PHIÊN BẢN SẠCH SẼ 100% (FIX HẾT LỖI ẨU CỦA MỠ) ===
             function loadBlogPosts() {
                 blogLoadingState.classList.remove('hidden');
                 blogEmptyState.classList.add('hidden');
-                blogPostsList.querySelectorAll('.blog-post-card').forEach(card => card.remove());
+                blogPostsList.innerHTML = ''; // Dọn sạch list
                 blogPostsRef.orderBy("createdAt", "desc").limit(10)
                     .get()
                     .then((querySnapshot) => {
@@ -670,40 +676,55 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                             blogEmptyState.classList.remove('hidden');
                         } else {
                             querySnapshot.forEach((doc) => {
-                                const post = doc.data();
+                                const postData = doc.data();
                                 const postId = doc.id;
-                                let adminButtonsHTML = '';
-                                if (window.isAdmin) {
-                                    adminButtonsHTML = `
-<div class="mt-4 flex gap-2">
-<button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
-<button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
-</div>
-`;
-                                }
-                                // Tách tags ra để hiển thị (nếu có)
-                                let tagsHTML = '';
-                                if (post.tags && post.tags.length > 0) {
-                                    tagsHTML = post.tags.map(tag =>
+                                // 1. Tạo cái card cha
+                                const postCard = document.createElement('div');
+                                postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg';
+                                // 2. Tạo Tiêu đề H3
+                                const titleEl = document.createElement('h3');
+                                titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
+                                titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
+                                // Gắn sự kiện "xịn"
+                                titleEl.addEventListener('click', () => {
+                                    openReaderModal(postData);
+                                });
+                                postCard.appendChild(titleEl);
+                                // 3. Tạo ngày tháng
+                                const dateEl = document.createElement('p');
+                                dateEl.className = 'text-xs text-gray-500 dark:text-gray-400 mb-4';
+                                dateEl.textContent = new Date(postData.createdAt.seconds * 1000).toLocaleString('vi-VN');
+                                postCard.appendChild(dateEl);
+                                // 4. Tạo Tóm tắt
+                                const summaryEl = document.createElement('p');
+                                summaryEl.className = 'text-gray-700 dark:text-gray-300 mt-4';
+                                summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
+                                postCard.appendChild(summaryEl);
+                                // 5. Tạo Tags
+                                if (postData.tags && postData.tags.length > 0) {
+                                    const tagsHTML = postData.tags.map(tag =>
                                         `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`
                                     ).join(' ');
-                                    tagsHTML = `<div class="mt-4 flex flex-wrap gap-2">${tagsHTML}</div>`;
+                                    const tagsDiv = document.createElement('div');
+                                    tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
+                                    tagsDiv.innerHTML = tagsHTML;
+                                    postCard.appendChild(tagsDiv);
                                 }
-                                const postCardHTML = `
-<div class="blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg">
-<h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors"
-onclick='openReaderModal(${JSON.stringify(post)})'>
-${post.title || 'Bài viết không có tiêu đề'}
-</h3>
-<p class="text-xs text-gray-500 dark:text-gray-400 mb-4">${new Date(post.createdAt.seconds * 1000).toLocaleString('vi-VN')}</p>
-<div class="prose dark:prose-invert max-w-none cursor-pointer" onclick='openReaderModal(${JSON.stringify(post)})'>
-${post.content || ''}
-</div>
-${tagsHTML}
-${adminButtonsHTML}
-</div>
-`;
-                                blogPostsList.insertAdjacentHTML('beforeend', postCardHTML);
+                                // 6. Tạo nút Admin
+                                if (window.isAdmin) {
+                                    // Chỗ này Mỡ thụt lề cho ba thấy rõ code HTML nè
+                                    const adminButtonsHTML = `
+                                    <div class="mt-4 flex gap-2">
+                                        <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                                        <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                                 </div>
+                                    `;
+                                    const adminDiv = document.createElement('div');
+                                    adminDiv.innerHTML = adminButtonsHTML;
+                                    postCard.appendChild(adminDiv);
+                                }
+                                // 7. Gắn cái card hoàn chỉnh vào danh sách
+                                blogPostsList.appendChild(postCard);
                             });
                         }
                     })
@@ -713,6 +734,8 @@ ${adminButtonsHTML}
                         blogPostsList.innerHTML = '<p class="text-center text-red-500">Không thể tải bài viết. Đã có lỗi xảy ra.</p>';
                     });
             }
+
+
             // --- GIAI ĐOẠN 3: HÀM MỞ "PHÒNG SOẠN THẢO" (TinyMCE) ---
             function openBlogEditor(postData = null) {
                 // 1. Dọn dẹp phòng
@@ -788,6 +811,8 @@ ${adminButtonsHTML}
                 blogEditorModal.classList.remove('hidden');
             }
             // --- GIAI ĐOẠN 3: HÀM LƯU BÀI VIẾT (VÀO FIRESTORE) ---
+            // --- GIAI ĐOẠN 3: HÀM LƯU BÀI VIẾT (VÀO FIRESTORE) ---
+            // === PHIÊN BẢN CÓ TÓM TẮT TỰ ĐỘNG (THEO CÁCH 2) ===
             async function saveBlogPost() {
                 const title = blogEditorTitle.value.trim();
                 const content = tinymce.get('blog-editor-textarea').getContent();
@@ -797,6 +822,21 @@ ${adminButtonsHTML}
                     alert("Ba ơi, ba phải gõ Tiêu đề và Nội dung chứ!");
                     return;
                 }
+
+                // --- MỠ THÊM ĐOẠN NÀY ĐỂ TẠO TÓM TẮT ---
+                // 1. Lấy nội dung dạng CHỮ THƯỜNG (lột sạch HTML)
+                let summary = tinymce.get('blog-editor-textarea').getContent({ format: 'text' });
+                // 2. Dọn dẹp khoảng trắng
+                summary = summary.replace(/\s+/g, ' ').trim();
+                // 3. Cắt lấy 200 chữ và thêm "..."
+                if (summary.length > 200) {
+                    summary = summary.substring(0, 200) + '...';
+                } else if (summary.length === 0 && content.length > 0) {
+                    // (Phòng hờ ba chỉ chèn ảnh/video mà không có chữ)
+                    summary = '[Bài viết chứa nội dung đa phương tiện...]';
+                }
+                // --- HẾT PHẦN MỠ THÊM ---
+
                 // Biến chuỗi "excel, vba, ai" thành mảng ["excel", "vba", "ai"]
                 const tagsArray = tagsString.split(',')
                     .map(tag => tag.trim()) // Xóa khoảng trắng
@@ -810,6 +850,7 @@ ${adminButtonsHTML}
                         await postRef.update({
                             title: title,
                             content: content,
+                            summary: summary, // <--- MỠ THÊM TRƯỜNG MỚI
                             tags: tagsArray,
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -819,6 +860,7 @@ ${adminButtonsHTML}
                         await blogPostsRef.add({
                             title: title,
                             content: content,
+                            summary: summary, // <--- MỠ THÊM TRƯỜNG MỚI
                             tags: tagsArray,
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                             authorId: auth.currentUser.uid // (Tùy chọn: lưu ai là tác giả)
@@ -838,7 +880,7 @@ ${adminButtonsHTML}
                     blogEditorSaveBtn.textContent = 'Lưu bài viết';
                 }
             }
-            // --- GIAI ĐOẠN 3: HÀM XÓA BÀI VIẾT ---
+
             async function deleteBlogPost(postId, postTitle) {
                 if (!confirm(`Ba có chắc chắn muốn XÓA bài viết "${postTitle}" không? Xóa là mất luôn đó nha!`)) {
                     return;
