@@ -972,3 +972,63 @@ html.dark .sticky-close-btn-injected:hover {
     padding-left: 15% !important;
     padding-right: 15% !important;
 }
+
+/* ================================== */
+/* ===  GÓI NÂNG CẤP 6 "CA" CỦA BA MỠ  === */
+/* ===  (Dán ở cuối file style.css)   === */
+/* ================================== */
+
+/* --- 1. (Ca Nền Tối) "Vớt" NGÀY GIỜ cho sáng lên --- */
+html.dark .blog-post-card .text-xs {
+    color: #E5E7EB !important; /* Vớt lên Gray-200 (sáng rõ) */
+}
+
+/* --- 2. (Ca Nền Tối + Sáng) "Độ" Nút Sửa/Xóa thành "Nút Mini" --- */
+/* (Con Mỡ làm luôn cho Nền Sáng, vì nó cũng xấu!) */
+.blog-edit-btn, .blog-delete-btn {
+    color: #FFFFFF !important;            /* Chữ Trắng */
+    padding: 4px 10px !important;         /* py-1 px-2.5 (cho nó mập) */
+    border-radius: 6px !important;        /* rounded-md */
+    font-size: 0.75rem !important;        /* text-xs */
+    font-weight: 500 !important;          /* medium */
+    text-decoration: none !important;     /* Bỏ gạch chân */
+    transition: background-color 0.2s;
+    border: none !important;              /* Bỏ viền (nếu có) */
+}
+
+/* Nút [Sửa] */
+.blog-edit-btn {
+    background-color: #3B82F6 !important; /* Nền Blue-500 */
+}
+.blog-edit-btn:hover {
+    background-color: #2563EB !important; /* Hover Blue-600 */
+}
+
+/* Nút [Xóa] */
+.blog-delete-btn {
+    background-color: #EF4444 !important; /* Nền Red-500 */
+}
+.blog-delete-btn:hover {
+    background-color: #DC2626 !important; /* Hover Red-600 */
+}
+
+
+/* --- 3. (Ca Nền Tối) Nền Card -> "TRONG SUỐT" + Viền Sáng --- */
+html.dark .blog-post-card {
+    background-color: rgba(0, 0, 0, 0.2) !important; /* bg-black/20 */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Viền trắng mờ 15% */
+}
+
+
+/* --- 4. (Ca Nền Sáng) Nền Card -> "THẺ NỔI" (Trắng + Bóng mờ) --- */
+html:not(.dark) .blog-post-card {
+    background-color: #FFFFFF !important; /* Nền trắng tinh */
+    border: 1px solid rgba(0, 0, 0, 0.05) !important; /* Viền siêu mờ */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* Bóng mờ "nổi" */
+}
+
+
+/* --- 5. (Ca Nền Sáng) Fix Hover Tiêu đề -> "TÍM/CHÀM" --- */
+html:not(.dark) .blog-post-card h3:hover {
+    color: #4F46E5 !important; /* Màu Tím/Chàm (Indigo-600) */
+}
