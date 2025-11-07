@@ -1032,3 +1032,36 @@ html:not(.dark) .blog-post-card {
 html:not(.dark) .blog-post-card h3:hover {
     color: #4F46E5 !important; /* Màu Tím/Chàm (Indigo-600) */
 }
+
+
+/* ================================== */
+/* ===  VÁ LỖI NÚT [SỬA][XÓA] (Bản V8 "Ép Góc Siêu Chuẩn") === */
+/* ================================== */
+
+/* 1. "Ghim" cái card cha lại (Giữ nguyên) */
+.blog-post-card {
+    position: relative !important;
+}
+
+/* 2. "Phóng" 2 cái nút con lên góc trên-phải (Bản "Chuẩn") */
+/* "Tóm" đúng cái div nào "CÓ CHỨA" (has) nút .blog-edit-btn */
+.blog-post-card div:has(>.blog-edit-btn) {
+    position: absolute !important;
+    top: 1.5rem !important;    /* 24px (canh y chang padding p-6) */
+    
+    /* === "CÔNG TẮC" MỚI (CHUẨN 100%) === */
+    right: 1.5rem !important;   /* Cách lề phải 24px (thay vì 0) */
+    padding-right: 0 !important; /* KHÔNG đẩy lề bên trong nữa */
+    
+    /* === "ÉP" 2 NÚT LẠI GẦN NHAU === */
+    gap: 0.25rem !important;  /* 4px (thay vì 8px) */
+    
+    margin-top: 0 !important; /* Hủy cái mt-4 (margin-top) cũ đi */
+    width: auto !important;   /* Bắt nó "co" lại, đừng "banh" 100% */
+}
+
+/* 3. "Bắt" cái Tiêu đề (h3) phải "né" (Giữ nguyên) */
+.blog-post-card h3 {
+    /* "Chừa" 1 khoảng lề 140px bên phải cho 2 cái nút */
+    padding-right: 140px !important; 
+}
