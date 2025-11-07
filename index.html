@@ -952,6 +952,38 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 }
             }
 
+            // === HÀM "MẤT TÍCH" SỐ 2 (MỞ CỬA SỔ ĐỌC) ===
+            // (Con Mỡ quên viết hàm này, ba tha lỗi con!)
+            function openReaderModal(postData) {
+                if (!blogReaderModal || !blogReaderTitle || !blogReaderTags || !blogReaderBody) {
+                    console.error("Lỗi: Không tìm thấy các bộ phận của Cửa sổ đọc!");
+                    return;
+                }
+
+                // 1. Gắn Tiêu đề
+                blogReaderTitle.textContent = postData.title || 'Bài viết không có tiêu đề';
+
+                // 2. Gắn Nội dung
+                // (Con Mỡ dùng .innerHTML để nó "vẽ" được bảng, code, hình ảnh... nha ba)
+                blogReaderBody.innerHTML = postData.content || '<p>Nội dung đang được cập nhật...</p>';
+
+                // 3. Gắn Hashtags
+                blogReaderTags.innerHTML = ''; // Xóa tag cũ
+                if (postData.tags && postData.tags.length > 0) {
+                    const tagsHTML = postData.tags.map(tag =>
+                        `<span class="text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full">
+                ${tag}
+            </span>`
+                    ).join(' ');
+                    blogReaderTags.innerHTML = tagsHTML;
+                } else {
+                    // Nếu không có tag thì mình không hiện gì cho "sạch"
+                    blogReaderTags.innerHTML = '';
+                }
+
+                // 4. Mở Cửa sổ!
+                blogReaderModal.classList.remove('hidden');
+            }
 
             // === HÀM "MẤT TÍCH" MỠ VIẾT BÙ CHO BA ===
             // (Gắn dây điện cho các nút của Admin)
