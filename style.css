@@ -806,61 +806,94 @@ html.dark .day-cost-input {
 }
 
 /* =========================================== */
-/* === MỠ "ĐẠI PHẪU THUẬT" CỬA SỔ ĐỌC (V3) === */
+/* === MỠ "PHẪU THUẬT" CỬA SỔ ĐỌC (V5) === */
+/* (Bản "MẮT THẦN" - Đập đi xây lại) */
 /* =========================================== */
 
-/* 1. "XÓA SẠCH" THANH HEADER CŨ! */
+/* 1. "XÓA SẠCH" THANH HEADER CŨ! (Giữ nguyên) */
 #blog-reader-content header {
     display: none !important; 
-    /* "Biến mất" (Đúng Kịch bản 2) */
 }
 
-/* 2. "TÚT TÁT" CHO CÁI TIÊU ĐỀ MỚI (SẼ NẰM TRONG BÀI VIẾT) */
-/* (Mình tạo 2 class mới để JS nó "gọi" vô) */
+/* 2. "BIẾN MẤT" CẢ THANH FOOTER (Thanh xám) */
+/* (Con Mỡ "xóa sổ" nó luôn!) */
+#blog-reader-content footer {
+    display: none !important;
+}
+
+/* 3. "TÚT TÁT" TIÊU ĐỀ MỚI (Giữ nguyên) */
 .in-article-title {
-    font-size: 1.875rem !important; /* text-3xl (Con giữ chữ to cho ba) */
-    font-weight: 700 !important; /* bold */
-    line-height: 1.2 !important;
-    color: #F59E0B !important; /* Màu "thương hiệu" (Dark Mode) */
-    margin-bottom: 12px !important; /* mt-3 */
+    font-size: 1.875rem !important; 
+    font-weight: 700 !important;
+    color: #F59E0B !important; 
+    margin-bottom: 12px !important; 
 }
 html:not(.dark) .in-article-title {
-    color: #4F46E5 !important; /* Màu "thương hiệu" (Light Mode) */
+    color: #4F46E5 !important;
 }
-
 .in-article-tags {
-    margin-bottom: 24px !important; /* mb-6 (Cách nội dung) */
-    padding-bottom: 16px !important; /* pb-4 (Cách nội dung) */
+    margin-bottom: 24px !important; 
+    padding-bottom: 16px !important;
     border-bottom: 1px solid rgba(128, 128, 128, 0.2) !important;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* Dãn cách các tag */
+    gap: 8px;
 }
 
-
-/* 3. "DẠT" FOOTER (CHỨA NÚT ĐÓNG) QUA PHẢI */
-#blog-reader-content footer {
-    padding: 8px 16px !important; /* Vẫn "bóp" mỏng (p-2 px-4) */
-    display: flex !important;
-    justify-content: flex-end !important; /* "Dạt" qua phải! */
+/* 4. "ĐỊNH VỊ" NÚT "ĐÓNG" LƠ LỬNG (Ghim) */
+/* (Con "ghim" nó vào cái Article (khung cuộn)) */
+#blog-reader-content article {
+    /* Bắt buộc phải có "relative" để "ghim" nút */
+    position: relative !important; 
 }
+/* (Giờ con Mỡ "tạo" 1 cái nút "giả") */
+.sticky-close-btn-injected {
+    position: sticky !important;
+    bottom: 16px !important; /* Cách đáy 16px */
+    right: 0px !important;  /* Cách lề phải 0px (nó nằm trong padding) */
+    z-index: 100;
+    
+    /* "Mượn" style của nút cũ */
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #374151; /* text-gray-700 */
+    font-weight: 700;
+    padding: 4px 20px !important; /* "Bóp" (py-1 px-5) */
+    border-radius: 8px; /* rounded-lg */
+    font-size: 0.875rem !important; /* text-sm */
+    
+    /* Phải "float" để nó "dạt" qua phải */
+    float: right !important;
+    clear: both; /* Chống bị "trôi" */
 
-/* 4. "BÓP" VÀ "TÀNG HÌNH" NÚT ĐÓNG */
-#blog-reader-close-btn {
-    padding-top: 4px !important;    /* Vẫn "bóp" nút (py-1) */
-    padding-bottom: 4px !important; 
-    font-size: 0.875rem !important; /* Vẫn "bóp" chữ (text-sm) */
-
-    /* "TÀNG HÌNH" (Ẩn lúc đầu) */
+    /* "TÀNG HÌNH" */
     opacity: 0 !important;
-    transform: translateY(10px) !important; /* Hiệu ứng "trồi" lên */
-    pointer-events: none !important; /* Không cho bấm lúc ẩn */
+    transform: translateY(20px) !important;
+    pointer-events: none !important;
     transition: all 0.3s ease !important;
 }
+/* Style cho Dark Mode */
+html.dark .sticky-close-btn-injected {
+    background-color: #374151; /* dark:bg-gray-700 */
+    color: #D1D5DB; /* dark:text-gray-300 */
+}
+/* Hiệu ứng Hover */
+.sticky-close-btn-injected:hover {
+    background-color: #d1d5db; /* hover:bg-gray-300 */
+}
+html.dark .sticky-close-btn-injected:hover {
+    background-color: #4b5563; /* dark:hover:bg-gray-600 */
+}
 
-/* 5. CLASS "HIỆN HÌNH" (Khi cuộn tới đáy) */
-#blog-reader-close-btn.show {
+/* 5. CLASS "HIỆN HÌNH" (Khi "mắt thần" thấy) */
+.sticky-close-btn-injected.show {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    pointer-events: auto !important; /* Cho bấm lại */
+    pointer-events: auto !important;
+}
+
+/* 6. "MẮT THẦN" (Vô hình) */
+.article-end-sentinel {
+    height: 1px;
+    width: 100%;
+    display: block;
 }

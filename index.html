@@ -679,9 +679,12 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             const blogEditorPostId = document.getElementById('blog-editor-post-id');
             // Biến cho CỬA SỔ ĐỌC (READER MODAL)
             const blogReaderModal = document.getElementById('blog-reader-modal');
-            const blogReaderTitle = document.getElementById('blog-reader-title');
-            const blogReaderTags = document.getElementById('blog-reader-tags');
             const blogReaderBody = document.getElementById('blog-reader-body');
+            // === MỠ THÊM 3 "TAY" MỚI ===
+            const blogReaderArticle = document.querySelector('#blog-reader-content article'); // "TAY" GẮN NÚT
+            let stickyCloseButton = null; // "TAY" ĐIỀU KHIỂN NÚT
+            let blogObserver = null; // "MẮT THẦN"
+            // === HẾT ===
             const blogReaderCloseBtn = document.getElementById('blog-reader-close-btn');
             let isBlogInitialized = false;
             // BIẾN TOÀN CỤC CHO PHÂN TRANG (PAGINATION)
@@ -957,76 +960,93 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 }
             }
 
-            // === HÀM "MẤT TÍCH" SỐ 2 (MỞ CỬA SỔ ĐỌC) ===
-            // (Con Mỡ quên viết hàm này, ba tha lỗi con!)
-            // === HÀM "ĐẠI PHẪU THUẬT" V3 (GỘP HEADER + SCROLL) ===
+            // === HÀM "ĐẠI PHẪU THUẬT" V5 ("MẮT THẦN") ===
             function openReaderModal(postData) {
-                if (!blogReaderModal || !blogReaderBody || !blogReaderCloseBtn) {
-                    console.error("Lỗi: Mất bộ phận Cửa sổ đọc!");
+                if (!blogReaderModal || !blogReaderBody || !blogReaderArticle) {
+                    console.error("Lỗi: Mất bộ phận Cửa sổ đọc (V5)!");
                     return;
                 }
 
-                // 1. "GỘP" Tiêu đề và Tags
+                // 1. "GỘP" Tiêu đề và Tags (Giữ nguyên)
                 let tagsHTML = '';
                 if (postData.tags && postData.tags.length > 0) {
                     tagsHTML = postData.tags.map(tag =>
                         `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">
-                    ${tag}
-                </span>`
+                ${tag}
+            </span>`
                     ).join(' ');
                 }
-
-                // (Tạo 1 cái header "giả" bằng class CSS mình mới tạo)
                 const headerHTML = `
-            <div class="in-article-header">
-                <h2 class="in-article-title">${postData.title || 'Bài viết không có tiêu đề'}</h2>
-                <div class="in-article-tags">
-                    ${tagsHTML || 'Chưa gắn tag'}
-                </div>
+        <div class="in-article-header">
+            <h2 class="in-article-title">${postData.title || 'Bài viết không có tiêu đề'}</h2>
+            <div class="in-article-tags">
+                ${tagsHTML || 'Chưa gắn tag'}
             </div>
-        `;
+        </div>
+    `;
 
-                // 2. "BƠM" (Gộp header + nội dung) vào khu vực cuộn
-                blogReaderBody.innerHTML = headerHTML + (postData.content || '<p>Nội dung đang cập nhật...</p>');
+                // 2. "BƠM" (Gộp header + nội dung + "MẮT THẦN")
+                blogReaderBody.innerHTML = headerHTML +
+                    (postData.content || '<p>Nội dung đang cập nhật...</p>') +
+                    '<div class="article-end-sentinel"></div>'; // Gắn "Mắt thần" ở đáy
 
-                // 3. RESET (Bắt buộc phải reset)
-                blogReaderBody.scrollTop = 0; // Luôn cuộn lên đầu khi mở bài mới
-                blogReaderCloseBtn.classList.remove('show'); // Ẩn nút "Đóng"
+                // 3. TẠO NÚT "ĐÓNG" (Chỉ 1 lần duy nhất)
+                if (!stickyCloseButton) {
+                    console.log("Tạo nút 'Đóng' lơ lửng (1 lần)");
+                    stickyCloseButton = document.createElement('button');
+                    stickyCloseButton.className = 'sticky-close-btn-injected'; // Gọi CSS "V5"
+                    stickyCloseButton.textContent = 'Đóng';
 
-                // 4. GẮN DÂY ĐIỆN SCROLL (Chỉ 1 lần)
-                if (!blogReaderBody.hasScrollListener) {
-                    console.log("Gắn dây điện Scroll (1 lần duy nhất)");
-                    blogReaderBody.addEventListener('scroll', () => {
-                        // (Check xem đã cuộn tới đáy chưa, "ăn gian" 20px)
-                        const isAtBottom = (blogReaderBody.scrollHeight - blogReaderBody.scrollTop - blogReaderBody.clientHeight) < 20;
+                    // "Gắn" nút "Đóng" vào khu vực cuộn (Article)
+                    blogReaderArticle.appendChild(stickyCloseButton);
 
-                        if (isAtBottom) {
-                            blogReaderCloseBtn.classList.add('show'); // Hiện
-                        } else {
-                            blogReaderCloseBtn.classList.remove('show'); // Ẩn
-                        }
+                    // Gắn "dây điện" HỦY DIỆT cho nút
+                    stickyCloseButton.addEventListener('click', () => {
+                        blogReaderModal.classList.add('hidden'); // Đóng cửa sổ
+                        stickyCloseButton.classList.remove('show'); // Tự "tàng hình"
+                        if (blogObserver) blogObserver.disconnect(); // Tắt "mắt thần"
+                        blogReaderBody.innerHTML = ''; // Xóa bài viết
                     });
-                    blogReaderBody.hasScrollListener = true;
                 }
 
-                // 5. GẮN DÂY ĐIỆN TAG (Chỉ 1 lần)
-                // (Con Mỡ chuyển nó vô đây cho "chắc ăn" luôn)
+                // 4. RESET (Bắt buộc phải reset)
+                blogReaderBody.scrollTop = 0; // Cuộn lên đầu
+                stickyCloseButton.classList.remove('show'); // Ẩn nút "Đóng"
+
+                // 5. GẮN DÂY ĐIỆN "MẮT THẦN" (Chỉ 1 lần)
+                if (!blogObserver) {
+                    console.log("Khởi động 'Mắt thần' (1 lần)");
+                    const options = {
+                        root: blogReaderArticle, // "Mắt thần" nhìn bên trong khu "Article"
+                        rootMargin: '0px 0px 0px 0px',
+                        threshold: 0.1 // Thấy 10% là "la làng"
+                    };
+                    blogObserver = new IntersectionObserver(handleObserver, options);
+                }
+                // (Bắt "Mắt thần" "canh" cái đáy bài)
+                const sentinel = blogReaderBody.querySelector('.article-end-sentinel');
+                if (sentinel) blogObserver.observe(sentinel);
+
+                // 6. GẮN DÂY ĐIỆN TAG (Giữ nguyên)
                 if (!blogReaderBody.hasTagListener) {
                     blogReaderBody.addEventListener('click', (e) => {
                         if (e.target.classList.contains('blog-tag-link')) {
                             const tagName = e.target.textContent.trim();
-                            document.querySelectorAll('#blog-filter-status').forEach(el => el.remove());
                             blogReaderModal.classList.add('hidden');
-                            blogReaderCloseBtn.classList.remove('show'); // Reset nút đóng
+                            stickyCloseButton.classList.remove('show');
+                            if (blogObserver) blogObserver.disconnect();
                             fetchBlogPostsByTag(tagName); // Lọc
                         }
                     });
                     blogReaderBody.hasTagListener = true;
                 }
 
-                // 6. Mở Cửa sổ!
+                // 7. Mở Cửa sổ!
                 blogReaderModal.classList.remove('hidden');
             }
+
+
+
 
             // === HÀM MỚI (LỌC THEO TAG - CẦN INDEX!) ===
             async function fetchBlogPostsByTag(tagName) {
@@ -1135,6 +1155,21 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     } else {
                         blogPostsList.innerHTML = `<p class="text-center text-red-500">Lọc tag thất bại.</p>`;
                     }
+                }
+            }
+
+
+            // === HÀM "MẮT THẦN" (V5) ===
+            function handleObserver(entries) {
+                if (!stickyCloseButton) return; // Nếu chưa có nút thì thôi
+
+                const entry = entries[0];
+                if (entry.isIntersecting) {
+                    // "Mắt thần" THẤY đáy bài -> Hiện nút
+                    stickyCloseButton.classList.add('show');
+                } else {
+                    // "Mắt thần" MẤT DẤU đáy bài -> Ẩn nút
+                    stickyCloseButton.classList.remove('show');
                 }
             }
 
@@ -1844,18 +1879,8 @@ ${iconHTML}
                 });
             }
 
-            
-            // 3. Nút Đóng cửa sổ đọc
-            if (blogReaderCloseBtn) {
-                blogReaderCloseBtn.addEventListener('click', () => {
-                    blogReaderModal.classList.add('hidden');
-                    blogReaderBody.innerHTML = ''; // Xóa nội dung cũ
 
-                    // === MỠ THÊM DÒNG NÀY ĐỂ RESET NÚT ===
-                    blogReaderCloseBtn.classList.remove('show');
-                });
-            }
-            // === HẾT DÂY ĐIỆN CỦA MỠ ===
+            
         }); // Hết DOMContentLoaded
     </script>
     <script>
