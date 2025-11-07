@@ -804,3 +804,35 @@ html.dark .day-cost-input {
     background-color: #374151;
     /* bg-gray-700 */
 }
+
+/* =========================================== */
+/* === MỠ "BÓP" CỬA SỔ ĐỌC (BẢN "SIÊU ÉP") === */
+/* =========================================== */
+
+/* 1. "Bóp" Header (chứa Tiêu đề) kịch sàn (12px) */
+#blog-reader-content header {
+    padding: 12px 16px !important; 
+}
+
+/* 2. "Bóp" Tiêu đề (từ 3xl -> 2xl) */
+#blog-reader-title {
+    font-size: 1.5rem !important; /* 24px (text-2xl) */
+}
+
+/* 3. "Bóp" khoảng cách của Tags (từ mt-4 -> mt-2) */
+#blog-reader-tags {
+    margin-top: 8px !important; /* 8px (mt-2) */
+}
+
+/* 4. "Bóp" Footer (chứa nút Đóng) kịch sàn (8px) */
+#blog-reader-content footer {
+    padding: 8px 16px !important; 
+}
+
+/* 5. "BÓP" CÁI NÚT (THỦ PHẠM CHÍNH!) */
+/* (Con "đè" py-3 của Tailwind thành py-1) */
+#blog-reader-close-btn {
+    padding-top: 4px !important;    /* py-1 */
+    padding-bottom: 4px !important; /* py-1 */
+    font-size: 0.875rem !important; /* text-sm (cho nó nhỏ chữ luôn) */
+}
