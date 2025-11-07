@@ -7,10 +7,10 @@
     <title>TVQ's World</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5/dist/autoNumeric.min.js"></script>
     <script src="tinymce/tinymce.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -300,9 +300,26 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         </button>
                     </div>
                     <div id="blog-posts-list" class="space-y-6">
-                        <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang tải bài viết...</p>
-                        <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">Chưa có bài viết nào.</p>
-                    </div>
+                                                <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang
+                            tải bài viết...</p>
+                                                <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">
+                            Chưa có bài viết nào.</p>
+                                            </div>
+
+                                                            <div id="blog-pagination-controls"
+                        class="hidden flex items-center justify-between mt-8">
+                                                <button id="blog-prev-btn"
+                            class="bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-2 px-6 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                        &larr; Trang trước
+                                                    </button>
+                                                <span id="blog-page-indicator"
+                            class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 / 1</span>
+                                                <button id="blog-next-btn"
+                            class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                        Trang sau &rarr;
+                                                    </button>
+                                            </div>
+
                 </div>
             </div>
             <div id="tool-badminton-scheduler" class="tool-content hidden opacity-0">
@@ -632,12 +649,22 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 e.preventDefault();
                 signOut();
             });
+
+
+
+
+
+
             /* ============================================================
-            === BỘ NÃO BLOG "MY RESEARCH" (HOÀN CHỈNH GĐ 2, 3, 4) ===
+            === BỘ NÃO BLOG "MY RESEARCH" (GĐ 6 - "KẾ TOÁN" PRO) ===
+            ===       (Bản "TỔNG VỆ SINH" - Fix mọi lỗi)               ===
             ============================================================
             */
             // --- 1. Khai báo biến toàn cục cho Blog ---
             const blogPostsRef = db.collection("blog_posts");
+            // "SỔ KẾ TOÁN" CỦA BA CON MÌNH
+            const blogMetadataRef = db.collection("blog_metadata").doc("stats");
+
             const blogAdminControls = document.getElementById('blog-admin-controls');
             const blogCreateNewBtn = document.getElementById('blog-create-new-btn');
             const blogPostsList = document.getElementById('blog-posts-list');
@@ -650,103 +677,147 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             const blogEditorSaveBtn = document.getElementById('blog-editor-save-btn');
             const blogEditorCancelBtn = document.getElementById('blog-editor-cancel-btn');
             const blogEditorPostId = document.getElementById('blog-editor-post-id');
-            // === KHAI BÁO BIẾN CHO CỬA SỔ ĐỌC (READER MODAL) ===
+            // Biến cho CỬA SỔ ĐỌC (READER MODAL)
             const blogReaderModal = document.getElementById('blog-reader-modal');
             const blogReaderTitle = document.getElementById('blog-reader-title');
             const blogReaderTags = document.getElementById('blog-reader-tags');
             const blogReaderBody = document.getElementById('blog-reader-body');
             const blogReaderCloseBtn = document.getElementById('blog-reader-close-btn');
-            let isBlogInitialized = false; // Biến này để mình chỉ load 1 lần
+            let isBlogInitialized = false;
+            // BIẾN TOÀN CỤC CHO PHÂN TRANG (PAGINATION)
+            const blogPaginationControls = document.getElementById('blog-pagination-controls');
+            const blogPrevBtn = document.getElementById('blog-prev-btn');
+            const blogNextBtn = document.getElementById('blog-next-btn');
+            const blogPageIndicator = document.getElementById('blog-page-indicator');
+            let blogPageSize = 5; // Ba muốn 5 hay 10 thì sửa số này
+            let blogCurrentPage = 1;
+            let blogTotalPages = 1;
+            let blogTotalPosts = 0;
+            let blogPageMocks = [null]; // Mảng "mốc" (dấu trang)
+            let isLoadingBlog = false;
 
-
-            // --- GIAI ĐOẠN 2: HÀM TẢI VÀ "VẼ" BÀI VIẾT ---
-
-
-            // --- GIAI ĐOẠN 2: HÀM TẢI VÀ "VẼ" BÀI VIẾT ---
-            // === PHIÊN BẢN SẠCH SẼ 100% (FIX HẾT LỖI ẨU CỦA MỠ) ===
-            function loadBlogPosts() {
+            // --- HÀM "ĐẦU TÀU": LẬT "SỔ KẾ TOÁN" (HẾT LỖI .count()) ---
+            async function loadBlogPosts() {
+                if (isLoadingBlog) return;
+                isLoadingBlog = true;
                 blogLoadingState.classList.remove('hidden');
                 blogEmptyState.classList.add('hidden');
-                blogPostsList.innerHTML = ''; // Dọn sạch list
-                blogPostsRef.orderBy("createdAt", "desc").limit(10)
-                    .get()
-                    .then((querySnapshot) => {
+                blogPostsList.innerHTML = '';
+                blogPaginationControls.classList.add('hidden');
+                try {
+                    // 1. Lật "Sổ Kế toán"
+                    const metaDoc = await blogMetadataRef.get();
+                    if (metaDoc.exists) {
+                        blogTotalPosts = metaDoc.data().totalPosts || 0;
+                    } else {
+                        blogTotalPosts = 0; // Nếu sổ không có, coi như là 0
+                    }
+
+                    if (blogTotalPosts === 0) {
                         blogLoadingState.classList.add('hidden');
-                        if (querySnapshot.empty) {
-                            blogEmptyState.classList.remove('hidden');
-                        } else {
-                            querySnapshot.forEach((doc) => {
-                                const postData = doc.data();
-                                const postId = doc.id;
-                                // 1. Tạo cái card cha
-                                const postCard = document.createElement('div');
-                                postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg';
-                                // 2. Tạo Tiêu đề H3
-                                const titleEl = document.createElement('h3');
-                                titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
-                                titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
-                                // Gắn sự kiện "xịn"
-                                titleEl.addEventListener('click', () => {
-                                    openReaderModal(postData);
-                                });
-                                postCard.appendChild(titleEl);
-                                // 3. Tạo ngày tháng
-                                const dateEl = document.createElement('p');
-                                dateEl.className = 'text-xs text-gray-500 dark:text-gray-400 mb-4';
-                                dateEl.textContent = new Date(postData.createdAt.seconds * 1000).toLocaleString('vi-VN');
-                                postCard.appendChild(dateEl);
-                                // 4. Tạo Tóm tắt
-                                const summaryEl = document.createElement('p');
-                                summaryEl.className = 'text-gray-700 dark:text-gray-300 mt-4';
-                                summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
-                                postCard.appendChild(summaryEl);
-                                // 5. Tạo Tags
-                                if (postData.tags && postData.tags.length > 0) {
-                                    const tagsHTML = postData.tags.map(tag =>
-                                        `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`
-                                    ).join(' ');
-                                    const tagsDiv = document.createElement('div');
-                                    tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
-                                    tagsDiv.innerHTML = tagsHTML;
-                                    postCard.appendChild(tagsDiv);
-                                }
-                                // 6. Tạo nút Admin
-                                if (window.isAdmin) {
-                                    // Chỗ này Mỡ thụt lề cho ba thấy rõ code HTML nè
-                                    const adminButtonsHTML = `
-                                    <div class="mt-4 flex gap-2">
-                                        <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
-                                        <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
-                                 </div>
-                                    `;
-                                    const adminDiv = document.createElement('div');
-                                    adminDiv.innerHTML = adminButtonsHTML;
-                                    postCard.appendChild(adminDiv);
-                                }
-                                // 7. Gắn cái card hoàn chỉnh vào danh sách
-                                blogPostsList.appendChild(postCard);
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Lỗi khi tải bài viết: ", error);
-                        blogLoadingState.classList.add('hidden');
-                        blogPostsList.innerHTML = '<p class="text-center text-red-500">Không thể tải bài viết. Đã có lỗi xảy ra.</p>';
-                    });
+                        blogEmptyState.classList.remove('hidden');
+                        isLoadingBlog = false;
+                        return;
+                    }
+                    // 2. Tính toán
+                    blogTotalPages = Math.ceil(blogTotalPosts / blogPageSize);
+                    blogCurrentPage = 1;
+                    blogPageMocks = [null]; // Reset mảng "mốc"
+                    // 3. Tải trang đầu tiên
+                    await fetchBlogPage(); // Tải trang 1
+                } catch (error) {
+                    console.error("Lỗi khi lật 'Sổ Kế toán':", error);
+                    blogLoadingState.classList.add('hidden');
+                    blogPostsList.innerHTML = "<p class='text-center text-red-500'>\"Không thể đọc 'Sổ Kế toán'. Đã có lỗi.\"</p>";
+                } finally {
+                    isLoadingBlog = false;
+                }
             }
 
+            // --- HÀM "CỐT LÕI" 1: TẢI BÀI VIẾT THEO TRANG ---
+            async function fetchBlogPage() {
+                blogLoadingState.classList.remove('hidden');
+                blogPostsList.innerHTML = '';
+                blogPaginationControls.classList.add('hidden');
+                try {
+                    const startAfterMoc = blogPageMocks[blogCurrentPage - 1];
+                    let query = blogPostsRef.orderBy("createdAt", "desc");
+                    if (startAfterMoc) {
+                        query = query.startAfter(startAfterMoc);
+                    }
+                    query = query.limit(blogPageSize);
+                    const querySnapshot = await query.get();
+                    blogLoadingState.classList.add('hidden');
+                    if (querySnapshot.empty) {
+                        blogEmptyState.classList.remove('hidden');
+                        return;
+                    }
+                    // "Vẽ" 5 bài viết
+                    querySnapshot.forEach((doc) => {
+                        const postData = doc.data();
+                        const postId = doc.id;
+                        const postCard = document.createElement('div');
+                        postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg';
+                        const titleEl = document.createElement('h3');
+                        titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
+                        titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
+                        titleEl.addEventListener('click', () => { openReaderModal(postData); });
+                        postCard.appendChild(titleEl);
+                        const dateEl = document.createElement('p');
+                        dateEl.className = 'text-xs text-gray-500 dark:text-gray-400 mb-4';
+                        dateEl.textContent = new Date(postData.createdAt.seconds * 1000).toLocaleString('vi-VN');
+                        postCard.appendChild(dateEl);
+                        const summaryEl = document.createElement('p');
+                        summaryEl.className = 'text-gray-700 dark:text-gray-300 mt-4';
+                        summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
+                        postCard.appendChild(summaryEl);
+                        if (postData.tags && postData.tags.length > 0) {
+                            const tagsHTML = postData.tags.map(tag => `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`).join(' ');
+                            const tagsDiv = document.createElement('div');
+                            tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
+                            tagsDiv.innerHTML = tagsHTML;
+                            postCard.appendChild(tagsDiv);
+                        }
+                        if (window.isAdmin) {
+                            const adminButtonsHTML = `
+                            <div class="mt-4 flex gap-2">
+                                <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                                <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                            </div>`;
+                            const adminDiv = document.createElement('div');
+                            adminDiv.innerHTML = adminButtonsHTML;
+                            postCard.appendChild(adminDiv);
+                        }
+                        blogPostsList.appendChild(postCard);
+                    });
+                    // LƯU "MỐC" (dấu trang)
+                    const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+                    blogPageMocks[blogCurrentPage] = lastDoc;
+                    updatePaginationUI();
+                } catch (error) {
+                    console.error("Lỗi khi tải trang " + blogCurrentPage, error);
+                    blogLoadingState.classList.add('hidden');
+                    blogPostsList.innerHTML = '<p class="text-center text-red-500">Tải trang thất bại.</p>';
+                } finally {
+                    blogPaginationControls.classList.remove('hidden');
+                }
+            }
 
-            // --- GIAI ĐOẠN 3: HÀM MỞ "PHÒNG SOẠN THẢO" (TinyMCE) ---
+            // --- HÀM "CỐT LÕI" 2: CẬP NHẬT NÚT BẤM (UI) ---
+            function updatePaginationUI() {
+                blogPageIndicator.textContent = `Trang ${blogCurrentPage} / ${blogTotalPages}`;
+                blogPrevBtn.disabled = (blogCurrentPage === 1);
+                blogNextBtn.disabled = (blogCurrentPage === blogTotalPages);
+            }
+
+            // --- HÀM MỞ "PHÒNG SOẠN THẢO" (TinyMCE) ---
             function openBlogEditor(postData = null) {
-                // 1. Dọn dẹp phòng
                 blogEditorTitle.value = '';
                 blogEditorTags.value = '';
-                blogEditorPostId.value = ''; // ID ẩn
-                // 2. Hủy TinyMCE cũ (nếu có) để tránh lỗi
+                blogEditorPostId.value = '';
                 if (tinymce.get('blog-editor-textarea')) {
                     tinymce.get('blog-editor-textarea').destroy();
                 }
-                // 3. Khởi tạo "Bộ Gõ Xịn"
                 tinymce.init({
                     selector: '#blog-editor-textarea',
                     license_key: 'gpl',
@@ -755,40 +826,25 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     skin: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "oxide-dark" : "oxide",
                     content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "dark" : "default",
                     height: 400,
-                    // --- PHÉP THUẬT TẢI ẢNH/FILE LÊN KHO STORAGE ---
-                    file_picker_types: 'image media', // Cho phép tải cả ảnh và audio/video
+                    file_picker_types: 'image media',
                     file_picker_callback: (cb, value, meta) => {
                         const input = document.createElement('input');
                         input.setAttribute('type', 'file');
-                        // Xác định loại file dựa trên TinyMCE
-                        if (meta.filetype === 'image') {
-                            input.setAttribute('accept', 'image/*');
-                        } else if (meta.filetype === 'media') {
-                            input.setAttribute('accept', 'audio/*,video/*');
-                        }
+                        if (meta.filetype === 'image') { input.setAttribute('accept', 'image/*'); }
+                        else if (meta.filetype === 'media') { input.setAttribute('accept', 'audio/*,video/*'); }
                         input.addEventListener('change', (e) => {
                             const file = e.target.files[0];
                             if (!file) return;
                             const storageRef = storage.ref();
-                            // Tạo tên file độc nhất (dùng timestamp + tên gốc)
                             const fileName = `blog_assets/${new Date().getTime()}_${file.name}`;
                             const fileRef = storageRef.child(fileName);
                             const uploadTask = fileRef.put(file);
-                            // Theo dõi tiến trình tải
                             uploadTask.on('state_changed',
-                                (snapshot) => {
-                                    // (Tùy chọn: Ba có thể thêm code hiển thị % tải lên ở đây)
-                                    console.log('Đang tải lên: ' + snapshot.bytesTransferred + ' / ' + snapshot.totalBytes);
-                                },
-                                (error) => {
-                                    console.error("Lỗi tải file lên Storage:", error);
-                                    alert("Tải file thất bại: " + error.message);
-                                },
+                                (snapshot) => { console.log('Đang tải lên: ' + snapshot.bytesTransferred + ' / ' + snapshot.totalBytes); },
+                                (error) => { console.error("Lỗi tải file lên Storage:", error); alert("Tải file thất bại: " + error.message); },
                                 () => {
-                                    // Tải thành công! Lấy link
                                     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                                         console.log('Tải file thành công:', downloadURL);
-                                        // Trả link về cho TinyMCE, nó tự chèn thẻ <img> hoặc <audio>
                                         cb(downloadURL, { title: file.name });
                                     });
                                 }
@@ -797,81 +853,72 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         input.click();
                     }
                 }).then(() => {
-                    // 4. Nếu là "Sửa" bài, đổ dữ liệu cũ vào
                     if (postData) {
                         blogEditorTitle.value = postData.title;
                         blogEditorTags.value = postData.tags ? postData.tags.join(', ') : '';
                         tinymce.get('blog-editor-textarea').setContent(postData.content);
-                        blogEditorPostId.value = postData.id; // Lưu ID để biết là Sửa
+                        blogEditorPostId.value = postData.id;
                     } else {
                         tinymce.get('blog-editor-textarea').setContent('<p>Ba gõ nội dung vào đây...</p>');
                     }
                 });
-                // 5. Hiện cái phòng (modal) lên
                 blogEditorModal.classList.remove('hidden');
             }
-            // --- GIAI ĐOẠN 3: HÀM LƯU BÀI VIẾT (VÀO FIRESTORE) ---
-            // --- GIAI ĐOẠN 3: HÀM LƯU BÀI VIẾT (VÀO FIRESTORE) ---
-            // === PHIÊN BẢN CÓ TÓM TẮT TỰ ĐỘNG (THEO CÁCH 2) ===
+
+            // --- HÀM LƯU BÀI (GHI VÀO "SỔ KẾ TOÁN") ---
             async function saveBlogPost() {
                 const title = blogEditorTitle.value.trim();
                 const content = tinymce.get('blog-editor-textarea').getContent();
                 const tagsString = blogEditorTags.value.trim();
-                const postId = blogEditorPostId.value; // Lấy ID (nếu là Sửa)
+                const postId = blogEditorPostId.value;
                 if (!title || !content) {
                     alert("Ba ơi, ba phải gõ Tiêu đề và Nội dung chứ!");
                     return;
                 }
-
-                // --- MỠ THÊM ĐOẠN NÀY ĐỂ TẠO TÓM TẮT ---
-                // 1. Lấy nội dung dạng CHỮ THƯỜNG (lột sạch HTML)
+                // Tạo Tóm tắt
                 let summary = tinymce.get('blog-editor-textarea').getContent({ format: 'text' });
-                // 2. Dọn dẹp khoảng trắng
                 summary = summary.replace(/\s+/g, ' ').trim();
-                // 3. Cắt lấy 200 chữ và thêm "..."
                 if (summary.length > 200) {
                     summary = summary.substring(0, 200) + '...';
                 } else if (summary.length === 0 && content.length > 0) {
-                    // (Phòng hờ ba chỉ chèn ảnh/video mà không có chữ)
                     summary = '[Bài viết chứa nội dung đa phương tiện...]';
                 }
-                // --- HẾT PHẦN MỠ THÊM ---
-
-                // Biến chuỗi "excel, vba, ai" thành mảng ["excel", "vba", "ai"]
-                const tagsArray = tagsString.split(',')
-                    .map(tag => tag.trim()) // Xóa khoảng trắng
-                    .filter(tag => tag.length > 0); // Xóa tag rỗng
+                const tagsArray = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
                 blogEditorSaveBtn.disabled = true;
                 blogEditorSaveBtn.textContent = 'Đang lưu...';
                 try {
+                    const postData = {
+                        title: title,
+                        content: content,
+                        summary: summary,
+                        tags: tagsArray,
+                    };
+
+                    // Bắt đầu "Giao dịch" (batch)
+                    const batch = db.batch();
+
                     if (postId) {
-                        // --- TRƯỜNG HỢP 1: SỬA BÀI VIẾT ---
+                        // SỬA BÀI (Không đụng tới sổ Kế toán)
+                        postData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
                         const postRef = blogPostsRef.doc(postId);
-                        await postRef.update({
-                            title: title,
-                            content: content,
-                            summary: summary, // <--- MỠ THÊM TRƯỜNG MỚI
-                            tags: tagsArray,
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
+                        batch.update(postRef, postData);
                         console.log("Đã cập nhật bài viết:", postId);
                     } else {
-                        // --- TRƯỜNG HỢP 2: TẠO BÀI MỚI ---
-                        await blogPostsRef.add({
-                            title: title,
-                            content: content,
-                            summary: summary, // <--- MỠ THÊM TRƯỜNG MỚI
-                            tags: tagsArray,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            authorId: auth.currentUser.uid // (Tùy chọn: lưu ai là tác giả)
-                        });
+                        // TẠO BÀI MỚI (Phải +1 vô sổ)
+                        postData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                        postData.authorId = auth.currentUser.uid;
+                        const newPostRef = blogPostsRef.doc(); // Tạo 1 ref mới
+                        batch.set(newPostRef, postData); // 1. Lưu bài viết
+                        // 2. "Ghi sổ" (+1)
+                        batch.set(blogMetadataRef, { totalPosts: firebase.firestore.FieldValue.increment(1) }, { merge: true });
                         console.log("Đã tạo bài viết mới!");
                     }
-                    // Tắt "phòng soạn thảo"
+
+                    await batch.commit(); // Chạy "Giao dịch"
+
                     blogEditorModal.classList.add('hidden');
-                    tinymce.get('blog-editor-textarea').destroy(); // Hủy để dọn dẹp
-                    // Tải lại danh sách bài viết để thấy bài mới
-                    loadBlogPosts();
+                    tinymce.get('blog-editor-textarea').destroy();
+                    loadBlogPosts(); // Tải lại (Reset)
                 } catch (error) {
                     console.error("Lỗi khi lưu bài viết:", error);
                     alert("Lưu bài thất bại: " + error.message);
@@ -881,113 +928,84 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 }
             }
 
+            // --- HÀM XÓA BÀI (TRỪ "SỔ KẾ TOÁN") ---
             async function deleteBlogPost(postId, postTitle) {
-                if (!confirm(`Ba có chắc chắn muốn XÓA bài viết "${postTitle}" không? Xóa là mất luôn đó nha!`)) {
+                if (!confirm(`Ba có chắc chắn muốn XÓA bài viết "${postTitle}" không?`)) {
                     return;
                 }
                 try {
-                    await blogPostsRef.doc(postId).delete();
-                    console.log("Đã xóa bài viết:", postId);
-                    // (Nâng cao: Con chưa làm code xóa file trong Storage,
-                    //  ba con mình làm sau để tránh code phức tạp nha)
-                    // Tải lại danh sách bài
-                    loadBlogPosts();
+                    // Bắt đầu "Giao dịch"
+                    const batch = db.batch();
+                    // 1. Xóa bài
+                    const postRef = blogPostsRef.doc(postId);
+                    batch.delete(postRef);
+                    // 2. "Ghi sổ" (-1)
+                    batch.update(blogMetadataRef, { totalPosts: firebase.firestore.FieldValue.increment(-1) });
+
+                    await batch.commit(); // Chạy "Giao dịch"
+
+                    console.log("Đã xóa bài viết và cập nhật sổ:", postId);
+                    loadBlogPosts(); // Tải lại (Reset)
                 } catch (error) {
                     console.error("Lỗi khi xóa bài viết:", error);
                     alert("Xóa bài thất bại: " + error.message);
                 }
             }
-            // --- HÀM 5: HÀM HIỂN THỊ BÀI VIẾT (READER MODAL) ---
-            function openReaderModal(post) {
-                // 1. Đổ dữ liệu vào Modal
-                blogReaderTitle.textContent = post.title || 'Bài viết không có tiêu đề';
-                blogReaderBody.innerHTML = post.content || '<p class="text-center text-gray-500">Nội dung đang được cập nhật.</p>';
-                // 2. Xử lý Hashtag
-                let tagsHTML = '';
-                if (post.tags && post.tags.length > 0) {
-                    tagsHTML = post.tags.map(tag =>
-                        `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">${tag}</span>`
-                    ).join(' ');
-                }
-                blogReaderTags.innerHTML = tagsHTML;
-                // 3. Hiển thị cửa sổ
-                blogReaderModal.classList.remove('hidden');
-            }
-            // --- GIAI ĐOẠN 4: "NỐI DÂY ĐIỆN" (EVENT LISTENERS) ---
-            function initBlogEventListeners() {
-                // Nối điện cho 2 nút HỦY và LƯU trong "phòng soạn thảo"
-                blogEditorCancelBtn.addEventListener('click', () => {
-                    if (confirm("Ba có chắc muốn hủy không? Mất hết đó nha.")) {
-                        blogEditorModal.classList.add('hidden');
-                        tinymce.get('blog-editor-textarea').destroy();
-                    }
-                });
-                // === NỐI ĐIỆN CHO NÚT ĐÓNG (CỬA SỔ ĐỌC) ===
-                blogReaderCloseBtn.addEventListener('click', () => {
-                    blogReaderModal.classList.add('hidden'); // Ẩn cửa sổ đọc đi
-                });
-                blogEditorSaveBtn.addEventListener('click', saveBlogPost);
-                // Nối điện cho nút [+] TẠO BÀI MỚI
-                blogCreateNewBtn.addEventListener('click', () => {
-                    openBlogEditor(null); // Mở phòng trống
-                });
-                // Nối điện cho các nút [Sửa] và [Xóa] và [Tag]
-                // (Dùng kỹ thuật "event delegation" vì các nút này được "vẽ" ra)
-                blogPostsList.addEventListener('click', (e) => {
-                    const target = e.target;
-                    // Bấm nút [Xóa]
-                    if (target.classList.contains('blog-delete-btn')) {
-                        const postId = target.dataset.id;
-                        const postTitle = target.closest('.blog-post-card').querySelector('h3').textContent;
-                        deleteBlogPost(postId, postTitle);
-                    }
-                    // Bấm nút [Sửa]
-                    else if (target.classList.contains('blog-edit-btn')) {
-                        const postId = target.dataset.id;
-                        // Lấy dữ liệu từ Firestore để đảm bảo "tươi" nhất
-                        blogPostsRef.doc(postId).get().then((doc) => {
-                            if (doc.exists) {
-                                const postData = doc.data();
-                                postData.id = doc.id; // Gắn ID vào
-                                openBlogEditor(postData); // Mở phòng và đổ data
-                            } else {
-                                alert("Không tìm thấy bài viết để sửa!");
-                            }
-                        });
-                    }
-                    // Bấm vào 1 cái Hashtag
-                    else if (target.classList.contains('blog-tag-link')) {
-                        const tag = target.textContent;
-                        alert("Ba muốn con lọc theo tag '" + tag + "' đúng không? Con Mỡ xin lỗi, con chưa làm chức năng này... (Con sẽ làm ở Giai đoạn 5 nha ba!)");
-                        // Tạm thời chưa làm: loadBlogPostsByTag(tag);
-                    }
-                });
-            }
-            // --- GIAI ĐOẠN 4: HÀM KHỞI ĐỘNG BLOG KHI BA LÀ ADMIN ---
-            // Mình sẽ gọi hàm này bên trong hàm updateUI
+
+
+            // === HÀM "MẤT TÍCH" MỠ VIẾT BÙ CHO BA ===
+            // (Gắn dây điện cho các nút của Admin)
             function initializeAdminBlogFeatures() {
-                if (window.isAdmin && blogAdminControls) {
-                    // 1. Hiện nút "[+] Tạo bài viết mới"
+                console.log("Kích hoạt tính năng Admin Blog (Tạo/Sửa/Xóa)...");
+
+                // 1. Hiện nút "Tạo bài viết mới"
+                if (blogAdminControls) {
                     blogAdminControls.classList.remove('hidden');
-                    // 2. "Nối điện" 1 lần duy nhất
-                    if (!window.blogAdminInitialized) {
-                        initBlogEventListeners();
-                        window.blogAdminInitialized = true; // Đánh dấu đã nối điện
-                    }
+                }
+
+                // 2. Gắn sự kiện cho nút "Tạo bài viết mới"
+                // (Con thêm .hasListener để nó không bị gắn 2 lần)
+                if (blogCreateNewBtn && !blogCreateNewBtn.hasListener) {
+                    blogCreateNewBtn.addEventListener('click', () => {
+                        openBlogEditor(null); // Mở editor rỗng
+                    });
+                    blogCreateNewBtn.hasListener = true;
+                }
+
+                // 3. Gắn sự kiện "cha" cho Sửa/Xóa (Event Delegation)
+                if (blogPostsList && !blogPostsList.hasAdminListener) {
+                    blogPostsList.addEventListener('click', async (e) => {
+                        const target = e.target;
+                        const postId = target.dataset.id;
+
+                        // Bấm nút [Sửa]
+                        if (target.classList.contains('blog-edit-btn') && postId) {
+                            try {
+                                const postDoc = await blogPostsRef.doc(postId).get();
+                                if (postDoc.exists) {
+                                    const postData = { id: postDoc.id, ...postDoc.data() };
+                                    openBlogEditor(postData); // Mở editor với data
+                                } else {
+                                    alert("Lỗi: Không tìm thấy bài viết này!");
+                                }
+                            } catch (error) {
+                                console.error("Lỗi khi lấy bài viết để sửa:", error);
+                                alert("Lỗi khi tải bài viết!");
+                            }
+                        }
+
+                        // Bấm nút [Xóa]
+                        if (target.classList.contains('blog-delete-btn') && postId) {
+                            const postCard = target.closest('.blog-post-card');
+                            const titleEl = postCard ? postCard.querySelector('h3') : null;
+                            const title = titleEl ? titleEl.textContent : 'bài viết này';
+                            deleteBlogPost(postId, title);
+                        }
+                    });
+                    blogPostsList.hasAdminListener = true;
                 }
             }
-            // --- GIAI ĐOẠN 2 (Cải tiến): Nối điện cho tab "My Research" ---
-            const navMyResearch = document.getElementById('nav-my-research');
-            if (navMyResearch) {
-                navMyResearch.addEventListener('click', () => {
-                    // Khi bấm vào tab, LUÔN LUÔN tải lại bài viết
-                    // (Để nó cập nhật nút Sửa/Xóa sau khi ba login/logout)
-                    loadBlogPosts();
-                    // Và kiểm tra xem có nên hiện nút [Tạo] không
-                    initializeAdminBlogFeatures();
-                });
-            }
-            /* ============================================================
+
             /* ============================================================
             === BỘ NÃO BADMINTON SCHEDULER (BẢN NÂNG CẤP AUTONUMERIC) ===
             ============================================================
@@ -1289,6 +1307,14 @@ data-old-cost="${cost || 0}">
                         targetFound = true;
                         content.classList.remove('hidden');
                         setTimeout(() => content.classList.remove('opacity-0'), 10);
+                        // === THẦN CHÚ CỦA MỠ (GỌI HÀM BLOG) ===
+                        // (Mình chỉ tải 1 lần đầu tiên thôi nha ba)
+                        if (toolId === 'my-research' && !window.isBlogInitialized) {
+                            console.log("Lần đầu vào 'My Research', tải blog...");
+                            loadBlogPosts(); // Tải blog lần đầu
+                            window.isBlogInitialized = true; // Đánh dấu đã tải
+                        }
+                        // === HẾT THẦN CHÚ ===
                     } else {
                         content.classList.add('opacity-0');
                         setTimeout(() => {
@@ -1586,6 +1612,47 @@ ${iconHTML}
                     }
                 });
             }
+            // === MỠ GẮN DÂY ĐIỆN CHO CÁC NÚT CHUNG (BLOG) ===
+
+            // 1. Nút Phân Trang (Pagination)
+            if (blogPrevBtn) {
+                blogPrevBtn.addEventListener('click', () => {
+                    if (blogCurrentPage > 1) {
+                        blogCurrentPage--;
+                        fetchBlogPage();
+                    }
+                });
+            }
+            if (blogNextBtn) {
+                blogNextBtn.addEventListener('click', () => {
+                    if (blogCurrentPage < blogTotalPages) {
+                        blogCurrentPage++;
+                        fetchBlogPage();
+                    }
+                });
+            }
+
+            // 2. Nút trong Editor (Lưu / Hủy)
+            if (blogEditorSaveBtn) {
+                blogEditorSaveBtn.addEventListener('click', saveBlogPost);
+            }
+            if (blogEditorCancelBtn) {
+                blogEditorCancelBtn.addEventListener('click', () => {
+                    blogEditorModal.classList.add('hidden');
+                    if (tinymce.get('blog-editor-textarea')) {
+                        tinymce.get('blog-editor-textarea').destroy();
+                    }
+                });
+            }
+
+            // 3. Nút Đóng cửa sổ đọc
+            if (blogReaderCloseBtn) {
+                blogReaderCloseBtn.addEventListener('click', () => {
+                    blogReaderModal.classList.add('hidden');
+                    blogReaderBody.innerHTML = ''; // Xóa nội dung cũ
+                });
+            }
+            // === HẾT DÂY ĐIỆN CỦA MỠ ===
         }); // Hết DOMContentLoaded
     </script>
     <script>
