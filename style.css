@@ -806,33 +806,61 @@ html.dark .day-cost-input {
 }
 
 /* =========================================== */
-/* === MỠ "BÓP" CỬA SỔ ĐỌC (BẢN "SIÊU ÉP") === */
+/* === MỠ "ĐẠI PHẪU THUẬT" CỬA SỔ ĐỌC (V3) === */
 /* =========================================== */
 
-/* 1. "Bóp" Header (chứa Tiêu đề) kịch sàn (12px) */
+/* 1. "XÓA SẠCH" THANH HEADER CŨ! */
 #blog-reader-content header {
-    padding: 12px 16px !important; 
+    display: none !important; 
+    /* "Biến mất" (Đúng Kịch bản 2) */
 }
 
-/* 2. "Bóp" Tiêu đề (từ 3xl -> 2xl) */
-#blog-reader-title {
-    font-size: 1.5rem !important; /* 24px (text-2xl) */
+/* 2. "TÚT TÁT" CHO CÁI TIÊU ĐỀ MỚI (SẼ NẰM TRONG BÀI VIẾT) */
+/* (Mình tạo 2 class mới để JS nó "gọi" vô) */
+.in-article-title {
+    font-size: 1.875rem !important; /* text-3xl (Con giữ chữ to cho ba) */
+    font-weight: 700 !important; /* bold */
+    line-height: 1.2 !important;
+    color: #F59E0B !important; /* Màu "thương hiệu" (Dark Mode) */
+    margin-bottom: 12px !important; /* mt-3 */
+}
+html:not(.dark) .in-article-title {
+    color: #4F46E5 !important; /* Màu "thương hiệu" (Light Mode) */
 }
 
-/* 3. "Bóp" khoảng cách của Tags (từ mt-4 -> mt-2) */
-#blog-reader-tags {
-    margin-top: 8px !important; /* 8px (mt-2) */
+.in-article-tags {
+    margin-bottom: 24px !important; /* mb-6 (Cách nội dung) */
+    padding-bottom: 16px !important; /* pb-4 (Cách nội dung) */
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2) !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Dãn cách các tag */
 }
 
-/* 4. "Bóp" Footer (chứa nút Đóng) kịch sàn (8px) */
+
+/* 3. "DẠT" FOOTER (CHỨA NÚT ĐÓNG) QUA PHẢI */
 #blog-reader-content footer {
-    padding: 8px 16px !important; 
+    padding: 8px 16px !important; /* Vẫn "bóp" mỏng (p-2 px-4) */
+    display: flex !important;
+    justify-content: flex-end !important; /* "Dạt" qua phải! */
 }
 
-/* 5. "BÓP" CÁI NÚT (THỦ PHẠM CHÍNH!) */
-/* (Con "đè" py-3 của Tailwind thành py-1) */
+/* 4. "BÓP" VÀ "TÀNG HÌNH" NÚT ĐÓNG */
 #blog-reader-close-btn {
-    padding-top: 4px !important;    /* py-1 */
-    padding-bottom: 4px !important; /* py-1 */
-    font-size: 0.875rem !important; /* text-sm (cho nó nhỏ chữ luôn) */
+    padding-top: 4px !important;    /* Vẫn "bóp" nút (py-1) */
+    padding-bottom: 4px !important; 
+    font-size: 0.875rem !important; /* Vẫn "bóp" chữ (text-sm) */
+
+    /* "TÀNG HÌNH" (Ẩn lúc đầu) */
+    opacity: 0 !important;
+    transform: translateY(10px) !important; /* Hiệu ứng "trồi" lên */
+    pointer-events: none !important; /* Không cho bấm lúc ẩn */
+    transition: all 0.3s ease !important;
+}
+
+/* 5. CLASS "HIỆN HÌNH" (Khi cuộn tới đáy) */
+#blog-reader-close-btn.show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important; /* Cho bấm lại */
 }

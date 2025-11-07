@@ -959,56 +959,72 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
             // === HÀM "MẤT TÍCH" SỐ 2 (MỞ CỬA SỔ ĐỌC) ===
             // (Con Mỡ quên viết hàm này, ba tha lỗi con!)
+            // === HÀM "ĐẠI PHẪU THUẬT" V3 (GỘP HEADER + SCROLL) ===
             function openReaderModal(postData) {
-                if (!blogReaderModal || !blogReaderTitle || !blogReaderTags || !blogReaderBody) {
-                    console.error("Lỗi: Không tìm thấy các bộ phận của Cửa sổ đọc!");
+                if (!blogReaderModal || !blogReaderBody || !blogReaderCloseBtn) {
+                    console.error("Lỗi: Mất bộ phận Cửa sổ đọc!");
                     return;
                 }
 
-                // 1. Gắn Tiêu đề
-                blogReaderTitle.textContent = postData.title || 'Bài viết không có tiêu đề';
-
-                // 2. Gắn Nội dung
-                // (Con Mỡ dùng .innerHTML để nó "vẽ" được bảng, code, hình ảnh... nha ba)
-                blogReaderBody.innerHTML = postData.content || '<p>Nội dung đang được cập nhật...</p>';
-
-                // 3. Gắn Hashtags
-                blogReaderTags.innerHTML = ''; // Xóa tag cũ
+                // 1. "GỘP" Tiêu đề và Tags
+                let tagsHTML = '';
                 if (postData.tags && postData.tags.length > 0) {
-                    const tagsHTML = postData.tags.map(tag =>
-                        `<span class="text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full">
-                ${tag}
-            </span>`
+                    tagsHTML = postData.tags.map(tag =>
+                        `<span class="blog-tag-link text-xs font-medium bg-amber-200 text-amber-800 dark:bg-amber-700 dark:text-amber-100 py-1 px-2 rounded-full cursor-pointer hover:bg-amber-300 dark:hover:bg-amber-600">
+                    ${tag}
+                </span>`
                     ).join(' ');
-                    blogReaderTags.innerHTML = tagsHTML;
-                } else {
-                    // Nếu không có tag thì mình không hiện gì cho "sạch"
-                    blogReaderTags.innerHTML = '';
                 }
 
-                // (Dán vào khoảng dòng 944, ngay trước "4. Mở Cửa sổ!")
+                // (Tạo 1 cái header "giả" bằng class CSS mình mới tạo)
+                const headerHTML = `
+            <div class="in-article-header">
+                <h2 class="in-article-title">${postData.title || 'Bài viết không có tiêu đề'}</h2>
+                <div class="in-article-tags">
+                    ${tagsHTML || 'Chưa gắn tag'}
+                </div>
+            </div>
+        `;
 
-                // === GẮN DÂY ĐIỆN CHO TAG TRONG CỬA SỔ ĐỌC ===
-                if (!blogReaderTags.hasTagListener) { // (Thêm .hasTagListener để không gắn lặp)
-                    blogReaderTags.addEventListener('click', (e) => {
+                // 2. "BƠM" (Gộp header + nội dung) vào khu vực cuộn
+                blogReaderBody.innerHTML = headerHTML + (postData.content || '<p>Nội dung đang cập nhật...</p>');
+
+                // 3. RESET (Bắt buộc phải reset)
+                blogReaderBody.scrollTop = 0; // Luôn cuộn lên đầu khi mở bài mới
+                blogReaderCloseBtn.classList.remove('show'); // Ẩn nút "Đóng"
+
+                // 4. GẮN DÂY ĐIỆN SCROLL (Chỉ 1 lần)
+                if (!blogReaderBody.hasScrollListener) {
+                    console.log("Gắn dây điện Scroll (1 lần duy nhất)");
+                    blogReaderBody.addEventListener('scroll', () => {
+                        // (Check xem đã cuộn tới đáy chưa, "ăn gian" 20px)
+                        const isAtBottom = (blogReaderBody.scrollHeight - blogReaderBody.scrollTop - blogReaderBody.clientHeight) < 20;
+
+                        if (isAtBottom) {
+                            blogReaderCloseBtn.classList.add('show'); // Hiện
+                        } else {
+                            blogReaderCloseBtn.classList.remove('show'); // Ẩn
+                        }
+                    });
+                    blogReaderBody.hasScrollListener = true;
+                }
+
+                // 5. GẮN DÂY ĐIỆN TAG (Chỉ 1 lần)
+                // (Con Mỡ chuyển nó vô đây cho "chắc ăn" luôn)
+                if (!blogReaderBody.hasTagListener) {
+                    blogReaderBody.addEventListener('click', (e) => {
                         if (e.target.classList.contains('blog-tag-link')) {
                             const tagName = e.target.textContent.trim();
-
-                            // Xóa các thanh "Đang lọc" cũ nếu có
                             document.querySelectorAll('#blog-filter-status').forEach(el => el.remove());
-
-                            blogReaderModal.classList.add('hidden'); // Đóng cửa sổ
+                            blogReaderModal.classList.add('hidden');
+                            blogReaderCloseBtn.classList.remove('show'); // Reset nút đóng
                             fetchBlogPostsByTag(tagName); // Lọc
                         }
                     });
-                    blogReaderTags.hasTagListener = true;
+                    blogReaderBody.hasTagListener = true;
                 }
-                // === HẾT DÂY ĐIỆN ===
 
-                // 4. Mở Cửa sổ!
-                blogReaderModal.classList.remove('hidden');
-
-                // 4. Mở Cửa sổ!
+                // 6. Mở Cửa sổ!
                 blogReaderModal.classList.remove('hidden');
             }
 
@@ -1828,11 +1844,15 @@ ${iconHTML}
                 });
             }
 
+            
             // 3. Nút Đóng cửa sổ đọc
             if (blogReaderCloseBtn) {
                 blogReaderCloseBtn.addEventListener('click', () => {
                     blogReaderModal.classList.add('hidden');
                     blogReaderBody.innerHTML = ''; // Xóa nội dung cũ
+
+                    // === MỠ THÊM DÒNG NÀY ĐỂ RESET NÚT ===
+                    blogReaderCloseBtn.classList.remove('show');
                 });
             }
             // === HẾT DÂY ĐIỆN CỦA MỠ ===
