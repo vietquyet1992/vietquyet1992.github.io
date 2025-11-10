@@ -1,79 +1,99 @@
 // File: /api/photoroom.js
 
+// Cấu hình để chạy function trên Vercel Edge Runtime cho tốc độ nhanh hơn
 export const config = {
-  runtime: 'edge',
+  runtime: 'edge',
 };
 
 export default async function handler(request) {
-  // Chỉ cho phép phương thức POST
-  if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ message: 'Method Not Allowed' }), { 
-        status: 405,
-        headers: { 'Content-Type': 'application/json' }
-    });
-  }
+  // 1. Chỉ cho phép các yêu cầu gửi lên bằng phương thức POST
+  if (request.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405 });
+  }
 
-  try {
-    // Đọc API key từ biến môi trường an toàn trên Vercel
-    const apiKey = process.env.PHOTOROOM_API_KEY;
+  try {
+    // 2. Lấy dữ liệu form được gửi từ trang web, trong đó có file ảnh
+    const formData = await request.formData();
+    const imageFile = formData.get('image_file');
 
-    // === THÊM ĐOẠN KIỂM TRA QUAN TRỌNG NÀY ===
-    // Nếu không tìm thấy API key, trả về lỗi ngay lập tức
-    if (!apiKey) {
-      console.error('PHOTOROOM_API_KEY is not set in Vercel environment variables.');
-      return new Response(JSON.stringify({ message: 'Lỗi cấu hình server: API key chưa được thiết lập.' }), {
-        status: 500, // Lỗi Server
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-    // ==========================================
+    // Báo lỗi nếu không có file nào được gửi lên
+    if (!imageFile) {
+      return new Response(JSON.stringify({ detail: 'Không tìm thấy file ảnh.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
-    // Lấy dữ liệu form gửi lên, trong đó có file ảnh
-    const formData = await request.formData();
-    const imageFile = formData.get('image_file');
+    // 3. Đọc API key bạn đã lưu an toàn trên Vercel Environment Variables
+    const apiKey = process.env.PHOTOROOM_API_KEY;
 
-    if (!imageFile) {
-      return new Response(JSON.stringify({ message: 'Không tìm thấy file ảnh.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    // Báo lỗi nếu bạn chưa cấu hình API key trên Vercel
+    if (!apiKey) {
+      return new Response(JSON.stringify({ detail: 'API key chưa được cấu hình trên server.' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 4. Tạo một FormData mới để gửi file ảnh tới Photoroom
+    const photoRoomFormData = new FormData();
+    photoRoomFormData.append('image_file', imageFile);
+
+    // 5. Chuẩn bị headers để gửi đi
+    const headers = new Headers();
+    headers.append('x-api-key', apiKey);
+
+    // 6. Gọi đến API của Photoroom với file ảnh và API key
+    const response = await fetch('https://sdk.photoroom.com/v1/segment', {
+      method: 'POST',
+      headers: headers,
+      body: photoRoomFormData,
+    });
+
+    // 7. Nếu Photoroom trả về lỗi, gửi thông báo lỗi đó về trang web
+    if (!response.ok) {
+      const errorText = await response.text();
+      return new Response(JSON.stringify({ detail: `Lỗi từ Photoroom: ${errorText}` }), {
+        status: response.status,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // === MÃ SỬA LỖI BẮT ĐẦU ===
+
+    // 8. Nếu thành công, lấy số quota và trả về file ảnh
+
+    // 8.1. Đọc số lượt còn lại từ header của Photoroom (tên header là 'x-credits-remaining')
+    const quotaRemaining = response.headers.get('x-credits-remaining');
+
+    // 8.2. Tạo headers mới để gửi về cho trình duyệt (frontend)
+    const newHeaders = new Headers();
+    newHeaders.append('Content-Type', 'image/png'); // Giữ lại content-type là ảnh
     
-    // Tạo một FormData mới để gửi tới Photoroom
-    const photoRoomFormData = new FormData();
-    photoRoomFormData.append('image_file', imageFile);
+    // 8.3. Thêm số quota vào header mới (nếu tìm thấy)
+    if (quotaRemaining) {
+      // Đặt tên header mới là 'X-My-Quota-Remaining'
+      newHeaders.append('X-My-Quota-Remaining', quotaRemaining);
 
-    // Gọi đến API của Photoroom
-    const response = await fetch('https://sdk.photoroom.com/v1/segment', {
-      method: 'POST',
-      headers: { 'x-api-key': apiKey },
-      body: photoRoomFormData,
-    });
-
-    // Nếu Photoroom báo lỗi, gửi lỗi đó về cho người dùng
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error from Photoroom API: ${response.status}`, errorText);
-      // Trả về một JSON error để frontend dễ xử lý hơn
-      return new Response(JSON.stringify({ detail: `Lỗi từ Photoroom: ${response.status}` }), {
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      // Dòng quan trọng: Cho phép trình duyệt (frontend) đọc được header này
+      // Nếu thiếu dòng này, trình duyệt sẽ "giấu" header này đi vì lý do bảo mật CORS
+      newHeaders.append('Access-Control-Expose-Headers', 'X-My-Quota-Remaining');
     }
 
-    // Nếu thành công, trả về file ảnh đã xử lý cho người dùng
+    // 8.4. Trả về kết quả (ảnh) KÈM theo các header mới
     return new Response(response.body, {
       status: 200,
-      headers: {
-        'Content-Type': 'image/png',
-      },
+      headers: newHeaders, // Sử dụng đối tượng newHeaders đã tạo
     });
+    
+    // === MÃ SỬA LỖI KẾT THÚC ===
 
-  } catch (error) {
-    console.error('Server-side error:', error);
-    return new Response(JSON.stringify({ message: 'Có lỗi không xác định xảy ra trên server.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  } catch (error) {
+    // Xử lý các lỗi ngoài dự kiến khác
+    console.error(error);
+    return new Response(JSON.stringify({ detail: 'Có lỗi không xác định xảy ra trên server.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

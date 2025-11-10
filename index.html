@@ -675,7 +675,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         addDepositInput.autoNumericInstance.options.readOnly(true); // <<< Khóa gõ
                         addDepositInput.autoNumericInstance.clear(); // Xóa số (nếu lỡ gõ)
                     }
-                    addDepositInput.placeholder = 'Chỉ Admin mới nộp quỹ'; // <<< Đổi chữ
+                    addDepositInput.placeholder = "Money doesn't grow on trees!"; // <<< Đổi chữ
                     submitDepositBtn.disabled = true; // <<< Tắt nút [+]
 
                     // 3. Ẩn/Hiện Nav theo cài đặt (Giữ nguyên)
@@ -1933,11 +1933,25 @@ data-old-cost="${cost || 0}">
                             const errorData = await response.json();
                             throw new Error(errorData.detail || `Lỗi HTTP: ${response.status}`);
                         }
+                        // === MÃ MỚI BẮT ĐẦU ===
+                        // 1. Đọc số lượt còn lại từ header mà server gửi về
+                        const quotaRemaining = response.headers.get('X-My-Quota-Remaining');
+                        // === MÃ MỚI KẾT THÚC ===
+
                         resultBlob = await response.blob();
                         const url = URL.createObjectURL(resultBlob);
                         bgRemoveResult.src = url;
                         bgRemoveResult.classList.remove('hidden');
-                        bgRemoveStatus.textContent = 'Tách nền thành công!';
+
+                        // === MÃ MỚI BẮT ĐẦU ===
+                        // 2. Hiển thị thông báo kèm số lượt
+                        if (quotaRemaining) {
+                            bgRemoveStatus.textContent = `Tách nền thành công! (Số lượt API còn lại: ${quotaRemaining})`;
+                        } else {
+                            bgRemoveStatus.textContent = 'Tách nền thành công!';
+                        }
+                        // === MÃ MỚI KẾT THÚC ===
+
                         bgRemoveDownloadBtn.disabled = false;
                     } catch (error) {
                         console.error("Photoroom API error:", error);
