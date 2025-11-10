@@ -227,7 +227,7 @@
         /* Ép thành màu XÁM SIÊU SÁNG (giống App) */
     }
 
-   
+
     /* ------------------------------------------------------------------- */
     /* 10. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ SIDEBAR BÊN TRÁI */
     /* ------------------------------------------------------------------- */
@@ -1033,9 +1033,9 @@
     /* ================================== */
 
     /* --- 1. (Ca Nền Tối) "Vớt" NGÀY GIỜ cho sáng lên --- */
-    html.dark .blog-post-card .text-xs {
+    html.dark .blog-post-card p.text-xs {
         color: #E5E7EB !important;
-        /* Vớt lên Gray-200 (sáng rõ) */
+        /* Sửa xong, luật này sẽ "né" cái tag ra */
     }
 
     /* --- 2. (Ca Nền Tối + Sáng) "Độ" Nút Sửa/Xóa thành "Nút Mini" --- */
