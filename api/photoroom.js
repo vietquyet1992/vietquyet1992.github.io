@@ -1,22 +1,16 @@
-// File: /api/photoroom.js
-
-// Cấu hình để chạy function trên Vercel Edge Runtime cho tốc độ nhanh hơn
+// File: /api/photoroom.js (Bản "Chẩn đoán V4")
 export const config = {
   runtime: 'edge',
 };
 
 export default async function handler(request) {
-  // 1. Chỉ cho phép các yêu cầu gửi lên bằng phương thức POST
   if (request.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 });
   }
 
   try {
-    // 2. Lấy dữ liệu form được gửi từ trang web, trong đó có file ảnh
     const formData = await request.formData();
     const imageFile = formData.get('image_file');
-
-    // Báo lỗi nếu không có file nào được gửi lên
     if (!imageFile) {
       return new Response(JSON.stringify({ detail: 'Không tìm thấy file ảnh.' }), {
         status: 400,
@@ -24,10 +18,7 @@ export default async function handler(request) {
       });
     }
 
-    // 3. Đọc API key bạn đã lưu an toàn trên Vercel Environment Variables
     const apiKey = process.env.PHOTOROOM_API_KEY;
-
-    // Báo lỗi nếu bạn chưa cấu hình API key trên Vercel
     if (!apiKey) {
       return new Response(JSON.stringify({ detail: 'API key chưa được cấu hình trên server.' }), {
         status: 500,
@@ -35,22 +26,19 @@ export default async function handler(request) {
       });
     }
 
-    // 4. Tạo một FormData mới để gửi file ảnh tới Photoroom
     const photoRoomFormData = new FormData();
     photoRoomFormData.append('image_file', imageFile);
-
-    // 5. Chuẩn bị headers để gửi đi
     const headers = new Headers();
     headers.append('x-api-key', apiKey);
 
-    // 6. Gọi đến API của Photoroom với file ảnh và API key
+    // Gọi Photoroom
     const response = await fetch('https://sdk.photoroom.com/v1/segment', {
       method: 'POST',
       headers: headers,
       body: photoRoomFormData,
     });
 
-    // 7. Nếu Photoroom trả về lỗi, gửi thông báo lỗi đó về trang web
+    // Xử lý lỗi
     if (!response.ok) {
       const errorText = await response.text();
       return new Response(JSON.stringify({ detail: `Lỗi từ Photoroom: ${errorText}` }), {
@@ -59,37 +47,41 @@ export default async function handler(request) {
       });
     }
 
-    // === MÃ SỬA LỖI BẮT ĐẦU ===
-
-    // 8. Nếu thành công, lấy số quota và trả về file ảnh
-
-    // 8.1. Đọc số lượt còn lại từ header của Photoroom (tên header là 'x-credits-remaining')
-    const quotaRemaining = response.headers.get('x-credits-remaining');
-
-    // 8.2. Tạo headers mới để gửi về cho trình duyệt (frontend)
-    const newHeaders = new Headers();
-    newHeaders.append('Content-Type', 'image/png'); // Giữ lại content-type là ảnh
+    // === PHẦN CHẨN ĐOÁN MỚI ===
     
-    // 8.3. Thêm số quota vào header mới (nếu tìm thấy)
-    if (quotaRemaining) {
-      // Đặt tên header mới là 'X-My-Quota-Remaining'
-      newHeaders.append('X-My-Quota-Remaining', quotaRemaining);
+    // 1. Lấy quota từ Photoroom
+    const quotaRemaining = response.headers.get('x-credits-remaining');
+    
+    // 2. Tạo headers mới để gửi về trình duyệt
+    const newHeaders = new Headers();
+    newHeaders.append('Content-Type', 'image/png');
+    
+    // 3. Thêm các header DEBUG (luôn luôn thêm)
+    newHeaders.append('X-Debug-Status', 'Code-Moi-Da-Chay-V4'); // "Dấu hiệu" code mới
+    
+    let exposedHeaders = 'X-Debug-Status, X-Debug-Quota'; // Các header cần cho trình duyệt thấy
 
-      // Dòng quan trọng: Cho phép trình duyệt (frontend) đọc được header này
-      // Nếu thiếu dòng này, trình duyệt sẽ "giấu" header này đi vì lý do bảo mật CORS
-      newHeaders.append('Access-Control-Expose-Headers', 'X-My-Quota-Remaining');
+    if (quotaRemaining) {
+      // 4a. Nếu TÌM THẤY quota
+      newHeaders.append('X-My-Quota-Remaining', quotaRemaining);
+      newHeaders.append('X-Debug-Quota', `Tim_Thay_Quota:_${quotaRemaining}`);
+      exposedHeaders += ', X-My-Quota-Remaining'; // Thêm quota vào danh sách
+    } else {
+      // 4b. Nếu KHÔNG TÌM THẤY quota
+      newHeaders.append('X-Debug-Quota', 'Khong_Tim_Thay_Quota_Tu_Photoroom');
     }
 
-    // 8.4. Trả về kết quả (ảnh) KÈM theo các header mới
+    // 5. Luôn cho phép trình duyệt đọc các header debug
+    newHeaders.append('Access-Control-Expose-Headers', exposedHeaders);
+
+    // 6. Trả về
     return new Response(response.body, {
       status: 200,
-      headers: newHeaders, // Sử dụng đối tượng newHeaders đã tạo
+      headers: newHeaders,
     });
-    
-    // === MÃ SỬA LỖI KẾT THÚC ===
+    // === HẾT PHẦN CHẨN ĐOÁN ===
 
   } catch (error) {
-    // Xử lý các lỗi ngoài dự kiến khác
     console.error(error);
     return new Response(JSON.stringify({ detail: 'Có lỗi không xác định xảy ra trên server.' }), {
       status: 500,
