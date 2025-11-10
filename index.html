@@ -1072,8 +1072,28 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     license_key: 'gpl',
                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount fullscreen',
                     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen',
-                    skin: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "oxide-dark" : "oxide",
-                    content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.classList.contains('dark')) ? "dark" : "default",
+                    // === MÃ MỚI: ÉP THEME KINDLE E-INK ===
+                    skin: 'oxide', // 1. Ép giao diện (toolbar) luôn là Sáng
+                    content_css: false, // 2. Vô hiệu hóa CSS "dark"/"default" của TinyMCE
+                    content_style: `
+                        /* 3. Tải Google Font (giống hệt file index.html) */
+                        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                        
+                        /* 4. Áp dụng nền giấy và chữ xám đen */
+                        body {
+                            background-color: #FBF8F0 !important; /* Nền giấy E-Ink */
+                            color: #333333 !important; /* Chữ xám đen mềm */
+                            font-family: 'Inter', sans-serif !important; 
+                            line-height: 1.8 !important; /* Dãn dòng 1.8 cho dễ viết */
+                        }
+
+                        /* 5. Sửa màu link cho đồng bộ */
+                        a {
+                            color: #0056b3 !important;
+                            text-decoration: underline !important;
+                        }
+                    `,
+                    // === HẾT MÃ MỚI ===
                     height: 400,
                     file_picker_types: 'image media',
                     file_picker_callback: (cb, value, meta) => {
@@ -1256,7 +1276,12 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 }
 
                 // 4. RESET (Bắt buộc phải reset)
-                blogReaderBody.scrollTop = 0; // Cuộn lên đầu
+                // Dùng setTimeout(..., 0) để "ép" lệnh cuộn chạy SAU KHI
+                // trình duyệt đã "vẽ" xong nội dung bài viết mới.
+                setTimeout(() => {
+                    blogReaderArticle.scrollTop = 0;
+                }, 0);
+
                 stickyCloseButton.classList.remove('show'); // Ẩn nút "Đóng"
 
                 // 5. GẮN DÂY ĐIỆN "MẮT THẦN" (Chỉ 1 lần)
