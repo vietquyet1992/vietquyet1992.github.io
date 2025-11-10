@@ -315,25 +315,24 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         </button>
                     </div>
                     <div id="blog-posts-list" class="space-y-6">
-                                                <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang
+                        <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang
                             tải bài viết...</p>
-                                                <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">
+                        <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">
                             Chưa có bài viết nào.</p>
-                                            </div>
+                    </div>
 
-                                                            <div id="blog-pagination-controls"
-                        class="hidden flex items-center justify-between mt-8">
-                                                <button id="blog-prev-btn"
+                    <div id="blog-pagination-controls" class="hidden flex items-center justify-between mt-8">
+                        <button id="blog-prev-btn"
                             class="bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-2 px-6 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                                                        &larr; Trang trước
-                                                    </button>
-                                                <span id="blog-page-indicator"
-                            class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 / 1</span>
-                                                <button id="blog-next-btn"
+                            &larr; Trang trước
+                        </button>
+                        <span id="blog-page-indicator" class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 /
+                            1</span>
+                        <button id="blog-next-btn"
                             class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 disabled:opacity-50 disabled:cursor-not-allowed">
-                                                        Trang sau &rarr;
-                                                    </button>
-                                            </div>
+                            Trang sau &rarr;
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -574,6 +573,27 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 console.error("Lỗi tải cài đặt tab:", error);
             });
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
+            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
+            // === HÀM MỚI: CHUYÊN GIA KHÓA/MỞ LỊCH ===
+            function setCalendarInputsReadOnly(isReadOnly) {
+                // 1. Khóa/Mở các ô gõ tiền
+                const inputs = calendarGrid.querySelectorAll('.day-cost-input');
+                inputs.forEach(input => {
+                    if (input.autoNumericInstance) {
+                        input.autoNumericInstance.options.readOnly(isReadOnly);
+                    } else {
+                        input.readOnly = isReadOnly;
+                    }
+                });
+
+                // 2. Khóa/Mở các nút '●'
+                const toggles = calendarGrid.querySelectorAll('.day-toggle');
+                toggles.forEach(toggle => {
+                    toggle.disabled = isReadOnly;
+                });
+            }
+
+            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
             function updateUI(user, isAdmin) {
                 // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
                 window.isAdmin = (user && isAdmin);
@@ -585,47 +605,78 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 const navB = document.getElementById('nav-badminton-scheduler');
                 const navAdmin = document.getElementById('nav-admin-panel');
                 const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
+                const submitDepositBtn = document.getElementById('badminton-submit-deposit'); // <<< MỠ LẤY THÊM NÚT
 
                 // (Bản vá đầy đủ)
-                if (!gView || !aView || !navD || !navR || !navB || !navAdmin || !addDepositInput) {
+                if (!gView || !aView || !navD || !navR || !navB || !navAdmin || !addDepositInput || !submitDepositBtn) { // <<< MỠ THÊM NÚT VÀO CHECK
                     console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
                     return;
                 }
 
+                // === MỠ "TÁI CẤU TRÚC" HÀM NÀY ===
+
+                // 1. Khởi tạo AutoNumeric cho ô "Nộp thêm" (1 LẦN DUY NHẤT)
+                // (Hàm này sẽ tự chạy 1 lần khi tải trang)
+                if (addDepositInput && !addDepositInput.autoNumericInstance) {
+                    const anInput = new AutoNumeric(addDepositInput, {
+                        decimalCharacter: ',',
+                        digitGroupSeparator: '.',
+                        decimalPlaces: 0,
+                        minimumValue: '-999999999',
+                        maximumValue: '999999999',
+                        // Không set readOnly ở đây, set ở dưới
+                    });
+                    addDepositInput.autoNumericInstance = anInput;
+                }
+
+
                 if (user && isAdmin) {
-                    // Là Admin
+                    // 1. LÀ ADMIN
                     gView.style.display = 'none';
                     aView.style.display = 'block';
                     navD.classList.remove('hidden');
                     navR.classList.remove('hidden');
                     navB.classList.remove('hidden');
                     navAdmin.classList.remove('hidden');
-                    initializeAdminBlogFeatures(); // Kích hoạt các tính năng Admin Blog
+                    initializeAdminBlogFeatures();
+                    setCalendarInputsReadOnly(false);
+
+                    // 2. Bật ô nộp tiền
+                    if (addDepositInput.autoNumericInstance) {
+                        addDepositInput.autoNumericInstance.options.readOnly(false); // <<< Cho phép gõ
+                    }
+                    addDepositInput.placeholder = 'Nộp thêm...';
+                    submitDepositBtn.disabled = false; // <<< Bật nút [+]
+
+                    // 3. Tải lịch (nếu chưa)
+                    // (Code này đã bị chuyển qua hàm showTool, nhưng Admin vẫn cần khởi tạo lần đầu)
                     if (!window.calendarInitialized) {
-                        // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
-                        if (!addDepositInput.autoNumericInstance) {
-                            const anInput = new AutoNumeric(addDepositInput, {
-                                decimalCharacter: ',',
-                                digitGroupSeparator: '.',
-                                decimalPlaces: 0,
-                                minimumValue: '-999999999',
-                                maximumValue: '999999999',
-                            });
-                            addDepositInput.autoNumericInstance = anInput;
-                        }
-                        loadFundData(); // Tải Quỹ
-                        renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
+                        loadFundData();
+                        renderCalendar(currentDate.getMonth(), currentDate.getFullYear());
                         window.calendarInitialized = true;
                     }
+
+                    // 4. Set Avatar
                     const adminAvatar = document.getElementById('admin-avatar');
                     const adminName = document.getElementById('admin-name');
                     if (adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
                     if (adminName) adminName.textContent = user.displayName || "Chào Admin!";
+
                 } else {
-                    // Là Guest
+                    // 1. LÀ GUEST
                     gView.style.display = 'block';
                     aView.style.display = 'none';
+                    setCalendarInputsReadOnly(true); // <<< DÒNG MỚI (KHÓA LỊCH)
 
+                    // 2. Tắt ô nộp tiền
+                    if (addDepositInput.autoNumericInstance) {
+                        addDepositInput.autoNumericInstance.options.readOnly(true); // <<< Khóa gõ
+                        addDepositInput.autoNumericInstance.clear(); // Xóa số (nếu lỡ gõ)
+                    }
+                    addDepositInput.placeholder = 'Chỉ Admin mới nộp quỹ'; // <<< Đổi chữ
+                    submitDepositBtn.disabled = true; // <<< Tắt nút [+]
+
+                    // 3. Ẩn/Hiện Nav theo cài đặt (Giữ nguyên)
                     navAdmin.classList.add('hidden');
                     if (globalTabSettings.show_diary) {
                         navD.classList.remove('hidden');
@@ -804,7 +855,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
             /* ============================================================
             === BỘ NÃO BLOG "MY RESEARCH" (GĐ 6 - "KẾ TOÁN" PRO) ===
-            ===       (Bản "TỔNG VỆ SINH" - Fix mọi lỗi)               ===
+            ===       (Bản "TỔNG VỆ SINH" - Fix mọi lỗi)               ===
             ============================================================
             */
             // --- 1. Khai báo biến toàn cục cho Blog ---
@@ -963,8 +1014,8 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                                 const baseClasses = "blog-tag-link text-xs font-medium py-1 px-2 rounded-full cursor-pointer";
                                 // "Trộn" lại!
                                 return `<span class="${baseClasses} ${colorClasses}">
-        ${tag}
-    </span>`;
+        ${tag}
+    </span>`;
                             }).join(' ');
                             const tagsDiv = document.createElement('div');
                             tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
@@ -973,10 +1024,10 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         }
                         if (window.isAdmin) {
                             const adminButtonsHTML = `
-                            <div class="mt-4 flex gap-2">
-                                <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
-                                <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
-                            </div>`;
+                            <div class="mt-4 flex gap-2">
+                                <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                                <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                            </div>`;
                             const adminDiv = document.createElement('div');
                             adminDiv.innerHTML = adminButtonsHTML;
                             postCard.appendChild(adminDiv);
@@ -1162,8 +1213,8 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const baseClasses = "blog-tag-link text-xs font-medium py-1 px-2 rounded-full cursor-pointer";
                         // "Trộn" lại!
                         return `<span class="${baseClasses} ${colorClasses}">
-                ${tag}
-            </span>`;
+                ${tag}
+            </span>`;
                     }).join(' ');
                 }
                 const headerHTML = `
@@ -1461,25 +1512,36 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 totalDaysEver: 0
             };
             // --- 2. Hàm "Vẽ Lịch" (NÂNG CẤP AUTONUMERIC) ---
+            // --- 2. Hàm "Vẽ Lịch" (BẢN VÁ LỖI CRASH CUỐI CÙNG) ---
             async function renderCalendar(month, year) {
                 console.log(`Đang vẽ lịch cho: ${month + 1}/${year}`);
-                calendarGrid.innerHTML = ''; // Xóa lịch cũ
-                monthYearHeader.textContent = `Tháng ${month + 1} / ${year}`;
+
+                // === BƯỚC 1: TẢI DATA TRƯỚC ===
                 await loadMonthData(month, year);
+
+                monthYearHeader.textContent = `Tháng ${month + 1} / ${year}`;
+
                 let firstDayOfMonth = new Date(year, month, 1).getDay();
                 let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
                 let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                // === BƯỚC 2: TẠO CHUỖI HTML (TẠO 1 LẦN) ===
+                let calendarHtml = ''; // Tạo 1 chuỗi rỗng
+
                 // A. Vẽ các ô "mờ" của tháng trước
                 for (let i = 0; i < startDay; i++) {
-                    calendarGrid.innerHTML += `<div class="calendar-day not-in-month"></div>`;
+                    calendarHtml += `<div class="calendar-day not-in-month"></div>`; // Nối vào chuỗi
                 }
+
                 // B. Vẽ các ô ngày của tháng này
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const dayData = currentMonthData[dateString] || {};
                     const isPresent = dayData.present || false;
                     const cost = dayData.cost || '';
-                    let dayHtml = `
+
+                    // (Đã xóa placeholder="_" ở đây)
+                    calendarHtml += `
 <div class="calendar-day">
 <span class="day-number">${day}</span>
 <button 
@@ -1491,28 +1553,49 @@ data-old-present="${isPresent}">
 <input 
 type="text"  
 class="day-cost-input" 
-placeholder="_" 
+placeholder="" 
 value="${cost}"
 data-date="${dateString}"
 data-old-cost="${cost || 0}">
 </div>
-`;
-                    calendarGrid.innerHTML += dayHtml;
+`; // Nối vào chuỗi
                 }
-                // C. Khởi động "Hàng hiệu"
-                const inputs = calendarGrid.querySelectorAll('.day-cost-input');
-                inputs.forEach(input => {
-                    const anInput = new AutoNumeric(input, {
-                        decimalCharacter: ',',
-                        digitGroupSeparator: '.',
-                        decimalPlaces: 0,
-                        minimumValue: '-999999999',
-                        maximumValue: '999999999',
-                    });
-                    input.autoNumericInstance = anInput;
-                });
-                // D. Cập nhật ô "Tổng tiền sân (tháng này)"
-                calculateThisMonthCost();
+
+                // === BƯỚC 3: "BƠM" HTML VÀO LỊCH (CHỈ 1 LẦN) ===
+                calendarGrid.innerHTML = calendarHtml;
+
+                // === BƯỚC 4: "HỒI SỨC" (setTimeout) TRƯỚC KHI GỌI AUTONUMERIC ===
+                // Chiêu này đảm bảo DOM đã "thở" xong
+                setTimeout(() => {
+                    try {
+                        // C. Khởi động "Hàng hiệu"
+                        const anInputs = new AutoNumeric.multiple('.day-cost-input', {
+                            decimalCharacter: ',',
+                            digitGroupSeparator: '.',
+                            decimalPlaces: 0,
+                            minimumValue: '-999999999',
+                            maximumValue: '999999999'
+                        });
+
+                        // Lưu instance vào từng input
+                        const inputs = calendarGrid.querySelectorAll('.day-cost-input');
+                        inputs.forEach(input => {
+                            input.autoNumericInstance = AutoNumeric.getAutoNumericElement(input);
+                            
+                        });
+
+                        // === BƯỚC 5: SAU KHI KHỞI TẠO XONG, MỚI KHÓA/MỞ ===
+                        setCalendarInputsReadOnly(!window.isAdmin);
+
+                        // === BƯỚC 6: TÍNH TOÁN LẠI TIỀN (VÌ HÀM NÀY NẰM CUỐI CÙNG) ===
+                        calculateThisMonthCost();
+
+                        
+                    } catch (e) {
+                        console.error("LỖI AUTONUMERIC NGHIÊM TRỌNG:", e);
+                     calendarGrid.innerHTML = `<p class="text-red-500 text-center">Lỗi nghiêm trọng khi khởi tạo AutoNumeric. Không thể vẽ lịch.</p>`;
+                    }
+                }, 0); // Chỉ cần 0ms để đẩy nó ra sau
             }
             // --- 3. Hàm "Tính toán" ---
             function calculateThisMonthCost() {
@@ -1527,7 +1610,6 @@ data-old-cost="${cost || 0}">
                 totalDepositedEl.textContent = `${currentFund.totalDeposited.toLocaleString('vi-VN')} đ`;
                 totalDaysEl.textContent = `${currentFund.totalDaysEver} ngày`;
                 remainingBalanceEl.textContent = `${remaining.toLocaleString('vi-VN')} đ`;
-                calculateThisMonthCost();
             }
             // --- 4. Hàm "Nói chuyện với Firestore" ---
             function loadFundData() {
@@ -1582,6 +1664,7 @@ data-old-cost="${cost || 0}">
                     currentFund.totalDaysEver += dayDiff;
                     // 2. "Vẽ" lại UI NGAY LẬP TỨC
                     updateSummaryUI();
+                    calculateThisMonthCost(); // <<< THÊM DÒNG NÀY ĐỂ ADMIN CẬP NHẬT
                 } else {
                     // Nếu k sửa gì, chỉ cập nhật cache
                     currentMonthData[dateString] = { present: isPresent, cost: newCost };
@@ -1644,6 +1727,7 @@ data-old-cost="${cost || 0}">
             // DÂY ĐIỆN NÂNG CẤP 1 (CLICK ●)
             calendarGrid.addEventListener('click', (e) => {
                 if (e.target.classList.contains('day-toggle')) {
+                    if (!window.isAdmin) return; // <<< BẢO VỆ CHỐNG GUEST
                     const button = e.target;
                     const dateString = button.dataset.date;
                     const input = document.querySelector(`.day-cost-input[data-date="${dateString}"]`);
@@ -1660,9 +1744,10 @@ data-old-cost="${cost || 0}">
                 }
             });
             // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
-            // DÂY ĐIỆN NÂNG CẤP 2 (GÕ TIỀN)
             calendarGrid.addEventListener('focusout', (e) => {
+
                 if (e.target.classList.contains('day-cost-input')) {
+                    if (!window.isAdmin) return;
                     const input = e.target;
                     const dateString = input.dataset.date;
                     const button = document.querySelector(`.day-toggle[data-date="${dateString}"]`);
@@ -1747,6 +1832,17 @@ data-old-cost="${cost || 0}">
                             window.isBlogInitialized = true; // Đánh dấu đã tải
                         }
                         // === HẾT THẦN CHÚ ===
+
+                        // === MỠ THÊM: CHO GUEST XEM LỊCH ===
+                        if (toolId === 'badminton-scheduler' && !window.calendarInitialized) {
+                            console.log("Lần đầu vào 'B Scheduler', tải lịch (cho cả Guest)...");
+                            // Guest không cần AutoNumeric cho ô "Nộp thêm", chỉ cần tải data
+                            loadFundData(); // Tải Quỹ
+                            renderCalendar(currentDate.getMonth(), currentDate.getFullYear()); // Vẽ lịch
+                            window.calendarInitialized = true; // Đánh dấu đã tải
+                        }
+                        // === HẾT PHẦN THÊM ===
+
                     } else {
                         content.classList.add('opacity-0');
                         setTimeout(() => {
