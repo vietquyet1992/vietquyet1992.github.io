@@ -115,6 +115,20 @@ text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool=
                     </svg>
                     <span class="font-medium">B Scheduler</span>
                 </a>
+
+                <a href="#" id="nav-admin-panel"
+                    class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
+                    data-tool="admin-panel">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.532 1.532 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.532 1.532 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span class="font-medium">Admin Panel</span>
+                </a>
+
             </nav>
             <div class="mt-auto">
                 <div class="p-4">
@@ -286,7 +300,8 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             </div>
             <div id="tool-my-research" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect space-y-8">
-                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Một vài bài viết do chức năng Deep Research của Gemini tạo ra!</h2>
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Một vài bài viết do chức năng
+                        Deep Research của Gemini tạo ra!</h2>
                     <div id="blog-admin-controls" class="hidden">
                         <button id="blog-create-new-btn"
                             class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/40 flex items-center justify-center gap-2">
@@ -398,7 +413,41 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     </div>
                 </div>
             </div>
+
+            <div id="tool-admin-panel" class="tool-content hidden opacity-0">
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Cài đặt Hiển thị</h2>
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Chọn những tab mà <span
+                            class="font-bold text-red-500">Khách (Guest)</span> có thể thấy.</p>
+
+                    <div class="space-y-4 max-w-md">
+                        <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
+                            <label for="toggle-diary" class="font-medium text-gray-700 dark:text-gray-200">Hiện "My
+                                Diary"</label>
+                            <input type="checkbox" id="toggle-diary"
+                                class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
+                            <label for="toggle-research" class="font-medium text-gray-700 dark:text-gray-200">Hiện
+                                "My Blog"</label>
+                            <input type="checkbox" id="toggle-research"
+                                class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
+                            <label for="toggle-badminton" class="font-medium text-gray-700 dark:text-gray-200">Hiện
+                                "B Scheduler"</label>
+                            <input type="checkbox" id="toggle-badminton"
+                                class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
+                        </div>
+                    </div>
+                </div>
         </main>
+    </div>
+
+    </div>
+    </main>
     </div>
     <footer class="text-center py-4 mt-8 relative">
         <p class="text-base text-gray-500 dark:text-gray-400">
@@ -495,6 +544,9 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+            let globalTabSettings = { show_diary: false, show_research: false, show_badminton: false };
+            const settingsRef = db.collection("settings").doc("tab_visibility");
+
             const storage = firebase.storage();
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth();
@@ -505,10 +557,25 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             const selectAdminBtn = document.getElementById('select-role-admin');
             const adminLoginBtn = document.getElementById('admin-login-btn');
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
+            // (Tự động lắng nghe thay đổi từ Firestore)
+            settingsRef.onSnapshot((doc) => {
+                if (doc.exists) {
+                    globalTabSettings = doc.data();
+                } else {
+                    // Nếu chưa có, tự tạo file cài đặt mặc định (ẩn hết)
+                    settingsRef.set(globalTabSettings).catch(e => console.error("Lỗi tạo settings:", e));
+                }
+                console.log("Cài đặt tab đã cập nhật:", globalTabSettings);
+
+                // Chạy lại hàm updateUI để áp dụng cài đặt mới cho Guest
+                const user = auth.currentUser;
+                checkAdminStatus(user);
+            }, (error) => {
+                console.error("Lỗi tải cài đặt tab:", error);
+            });
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
             function updateUI(user, isAdmin) {
                 // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
-                // Biến này sẽ giúp hàm showTool ở dưới biết ba là ai
                 window.isAdmin = (user && isAdmin);
                 // ===============================================
                 const gView = document.getElementById('guest-view');
@@ -516,11 +583,15 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 const navD = document.getElementById('nav-my-diary');
                 const navR = document.getElementById('nav-my-research');
                 const navB = document.getElementById('nav-badminton-scheduler');
+                const navAdmin = document.getElementById('nav-admin-panel');
                 const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
-                if (!gView || !aView || !navD || !navR || !navB || !addDepositInput) {
+
+                // (Bản vá đầy đủ)
+                if (!gView || !aView || !navD || !navR || !navB || !navAdmin || !addDepositInput) {
                     console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
                     return;
                 }
+
                 if (user && isAdmin) {
                     // Là Admin
                     gView.style.display = 'none';
@@ -528,6 +599,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     navD.classList.remove('hidden');
                     navR.classList.remove('hidden');
                     navB.classList.remove('hidden');
+                    navAdmin.classList.remove('hidden');
                     initializeAdminBlogFeatures(); // Kích hoạt các tính năng Admin Blog
                     if (!window.calendarInitialized) {
                         // Khởi động "Hàng hiệu" cho ô "Nộp thêm"
@@ -553,29 +625,104 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     // Là Guest
                     gView.style.display = 'block';
                     aView.style.display = 'none';
-                    navD.classList.add('hidden');
-                    navR.classList.add('hidden');
-                    navB.classList.add('hidden');
+
+                    navAdmin.classList.add('hidden');
+                    if (globalTabSettings.show_diary) {
+                        navD.classList.remove('hidden');
+                    } else {
+                        navD.classList.add('hidden');
+                    }
+
+                    if (globalTabSettings.show_research) {
+                        navR.classList.remove('hidden');
+                    } else {
+                        navR.classList.add('hidden');
+                    }
+
+                    if (globalTabSettings.show_badminton) {
+                        navB.classList.remove('hidden');
+                    } else {
+                        navB.classList.add('hidden');
+                    }
                     if (user && !isAdmin) {
                         signOut();
                         alert("Tài khoản này không có quyền Admin!");
                     }
-                    // === MỠ BỔ SUNG 2: "Quét phòng" khi Logout ===
-                    // Khi ba logout, kiểm tra xem ba có đang ở phòng cấm không
-                    // Nếu có, "đá" ba về trang chủ an toàn
+
+                    // === SỬA LỖI LOGIC "QUÉT PHÒNG" NẰM Ở ĐÂY ===
+
                     const currentHash = window.location.hash.substring(1);
-                    const protectedTools = ['my-diary', 'my-research', 'badminton-scheduler'];
                     const defaultTool = 'remove-bg'; // Trang an toàn
-                    if (protectedTools.includes(currentHash)) {
-                        console.warn("User logged out while in protected area. Redirecting...");
+
+                    // 1. Tạo 1 danh sách các trang BỊ CẤM (tức là đang ẨN)
+                    let forbiddenTools = ['admin-panel']; // 'admin-panel' luôn cấm
+                    if (!globalTabSettings.show_diary) {
+                        forbiddenTools.push('my-diary');
+                    }
+                    if (!globalTabSettings.show_research) {
+                        forbiddenTools.push('my-research');
+                    }
+                    if (!globalTabSettings.show_badminton) {
+                        forbiddenTools.push('badminton-scheduler');
+                    }
+
+                    // 2. Chỉ "đá" về trang chủ NẾU user đang ở 1 trang BỊ CẤM
+                    if (forbiddenTools.includes(currentHash)) {
+                        console.warn("User đang ở trang bị cấm (" + currentHash + "). Đá về trang chủ...");
                         // Chuyển link về trang an toàn
                         history.pushState({ toolId: defaultTool }, '', `#${defaultTool}`);
                         // Gọi hàm showTool để "vẽ" lại trang an toàn
                         showTool(defaultTool);
                     }
-                    // ============================================
+                    // === HẾT PHẦN SỬA LỖI ===
                 }
             }
+
+
+            // === THÊM HÀM MỚI NÀY ===
+            function initializeAdminPanelToggles() {
+                // Lấy 3 cái nút gạt
+                const toggleDiary = document.getElementById('toggle-diary');
+                const toggleResearch = document.getElementById('toggle-research');
+                const toggleBadminton = document.getElementById('toggle-badminton');
+
+                // (Thoát nếu lỡ gọi hàm mà chưa ở đúng tab)
+                if (!toggleDiary) return;
+
+                console.log("Khởi tạo Admin Panel Toggles...");
+
+                // 1. Đặt trạng thái 'checked' theo cài đặt đã tải
+                toggleDiary.checked = globalTabSettings.show_diary;
+                toggleResearch.checked = globalTabSettings.show_research;
+                toggleBadminton.checked = globalTabSettings.show_badminton;
+
+                // 2. Gắn sự kiện 'change' để lưu lên Firestore
+                // (Dùng .hasListener để tránh gắn 2-3 lần)
+                if (!toggleDiary.hasListener) {
+                    toggleDiary.addEventListener('change', () => {
+                        settingsRef.update({ show_diary: toggleDiary.checked })
+                            .catch(e => alert("Lỗi cập nhật Diary: " + e.message));
+                    });
+                    toggleDiary.hasListener = true;
+                }
+
+                if (!toggleResearch.hasListener) {
+                    toggleResearch.addEventListener('change', () => {
+                        settingsRef.update({ show_research: toggleResearch.checked })
+                            .catch(e => alert("Lỗi cập nhật Research: " + e.message));
+                    });
+                    toggleResearch.hasListener = true;
+                }
+
+                if (!toggleBadminton.hasListener) {
+                    toggleBadminton.addEventListener('change', () => {
+                        settingsRef.update({ show_badminton: toggleBadminton.checked })
+                            .catch(e => alert("Lỗi cập nhật Badminton: " + e.message));
+                    });
+                    toggleBadminton.hasListener = true;
+                }
+            }
+            // === HẾT HÀM MỚI ===
             // === HÀM CHECK ADMIN (HỎI FIRESTORE) ===
             async function checkAdminStatus(user) {
                 if (!user) {
@@ -1145,7 +1292,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const postId = doc.id;
                         const postCard = document.createElement('div');
                         postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-black/20 dark:border dark:border-white/15 rounded-lg';
-                        
+
 
                         const titleEl = document.createElement('h3');
                         titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
@@ -1605,6 +1752,9 @@ data-old-cost="${cost || 0}">
                         setTimeout(() => {
                             content.classList.add('hidden');
                         }, 400);
+                    }
+                    if (toolId === 'admin-panel' && window.isAdmin) {
+                        initializeAdminPanelToggles();
                     }
                 });
                 if (!targetFound && navLinks.length > 0) {
