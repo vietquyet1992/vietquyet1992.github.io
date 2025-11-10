@@ -1,1129 +1,1211 @@
-/* =================================================================== */
-/* GÓI 2: "CỰC QUANG SÁNG" (LIGHT AURORA) */
-/* =================================================================== */
+    /* =================================================================== */
+    /* GÓI 2: "CỰC QUANG SÁNG" (LIGHT AURORA) */
+    /* =================================================================== */
 
-/* ------------------------------------------------------------------- */
-/* 1. HIỆU ỨNG NỀN VÀ FONT (Light Aurora) */
-/* ------------------------------------------------------------------- */
-body {
-    font-family: 'Inter', Roboto, Arial, sans-serif;
+    /* ------------------------------------------------------------------- */
+    /* 1. HIỆU ỨNG NỀN VÀ FONT (Light Aurora) */
+    /* ------------------------------------------------------------------- */
+    body {
+        font-family: 'Inter', Roboto, Arial, sans-serif;
 
-    /* === NỀN SÁNG "CỰC QUANG" === */
-    /* * Con Mỡ dùng 2 vệt màu sáng loang trên nền kem
-     */
-    background:
-        radial-gradient(at 30% 20%, hsla(330, 80%, 90%, 0.7) 0px, transparent 50%),
-        /* Vệt Hồng đào */
-        radial-gradient(at 70% 80%, hsla(190, 80%, 90%, 0.7) 0px, transparent 50%),
-        /* Vệt Xanh mint */
-        #fffcf5;
-    /* Nền trắng kem cơ bản */
+        /* === NỀN SÁNG "CỰC QUANG" === */
+        /* * Con Mỡ dùng 2 vệt màu sáng loang trên nền kem
+        */
+        background:
+            radial-gradient(at 30% 20%, hsla(330, 80%, 90%, 0.7) 0px, transparent 50%),
+            /* Vệt Hồng đào */
+            radial-gradient(at 70% 80%, hsla(190, 80%, 90%, 0.7) 0px, transparent 50%),
+            /* Vệt Xanh mint */
+            #fffcf5;
+        /* Nền trắng kem cơ bản */
 
-    transition: background 0.5s ease;
-    background-attachment: fixed;
-    /* Giữ nền đứng yên */
-    animation: none;
-    /* Chiêu này TĨNH cho nó "mơ màng" */
-}
-
-/* === NỀN TỐI "CỰC QUANG" (GIỮ Y NGUYÊN) === */
-/* * Code "Cực quang" của ba con Mỡ BÊ NGUYÊN, không sửa gì!
- */
-html.dark body {
-    background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
-        radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
-        #111827;
-    /* Nền than chì cơ bản */
-    background-attachment: fixed;
-    animation: none;
-}
-
-/* =================================================================== */
-/* "BƯỚC 1": SỬA MỤC 2 (TRẢ KÍNH VỀ 0.6 NHƯ CŨ) */
-/* =================================================================== */
-
-/* ------------------------------------------------------------------- */
-/* 2. HIỆU ỨNG GLASS MORPHISM (TRẢ VỀ NGUYÊN BẢN) */
-/* ------------------------------------------------------------------- */
-.glass-effect {
-    /* "THỦ PHẠM" LÀ 0.9 -> CON MỠ TRẢ VỀ 0.6 Y CŨ! */
-    background: rgba(255, 255, 255, 0.6);
-    /* <--- TRẢ VỀ Y CŨ */
-
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-}
-
-/* FIX CÚ PHÁP LỖI GLASS TỐI: Cần dùng html.dark để CSS áp dụng */
-html.dark .glass-effect {
-    /* Tăng độ đục và viền sáng hơn để nổi bật trên nền tối */
-    background: rgba(30, 41, 59, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* ------------------------------------------------------------------- */
-/* 3. HIỆU ỨNG HOVER & NAVIGATION */
-/* ------------------------------------------------------------------- */
-.tool-card:hover,
-.app-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-}
-
-.nav-link.active {
-    background-color: #f59e0b;
-    color: white;
-    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
-}
-
-/* ------------------------------------------------------------------- */
-/* 4. CẤU TRÚC VÀ CUỘN (SCROLL) */
-/* ------------------------------------------------------------------- */
-main {
-    display: grid;
-}
-
-.tool-content {
-    grid-area: 1 / 1;
-    transition: opacity 0.4s ease-in-out;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(245, 158, 11, 0.5);
-    border-radius: 10px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-    background-color: rgba(245, 158, 11, 0.5);
-}
-
-/* ------------------------------------------------------------------- */
-/* 5. LOADER ANIMATION */
-/* ------------------------------------------------------------------- */
-.loader {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid #f59e0b;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
+        transition: background 0.5s ease;
+        background-attachment: fixed;
+        /* Giữ nền đứng yên */
+        animation: none;
+        /* Chiêu này TĨNH cho nó "mơ màng" */
     }
 
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* ------------------------------------------------------------------- */
-/* 8. TỐI ƯU MÀU CHỮ TAB CHO MOBILE (Màn hình < 1024px) */
-/* ------------------------------------------------------------------- */
-@media (max-width: 1023px) {
-    .nav-link {
-        /* Tăng cường độ màu chữ trên mobile (Chế độ Sáng) */
-        color: #1f2937 !important;
-        /* Ví dụ: Chuyển từ gray-700 sang gray-800 đậm hơn */
+    /* === NỀN TỐI "CỰC QUANG" (GIỮ Y NGUYÊN) === */
+    /* * Code "Cực quang" của ba con Mỡ BÊ NGUYÊN, không sửa gì!
+    */
+    html.dark body {
+        background: radial-gradient(at 30% 20%, hsla(263, 67%, 35%, 0.3) 0px, transparent 50%),
+            radial-gradient(at 70% 80%, hsla(219, 67%, 32%, 0.3) 0px, transparent 50%),
+            #111827;
+        /* Nền than chì cơ bản */
+        background-attachment: fixed;
+        animation: none;
     }
 
-    html.dark .nav-link {
-        /* Giảm độ nhạt của chữ trên nền tối mobile */
-        color: #e5e7eb !important;
-        /* Ví dụ: Chuyển từ gray-300 sang gray-200 sáng hơn */
+    /* =================================================================== */
+    /* "BƯỚC 1": SỬA MỤC 2 (TRẢ KÍNH VỀ 0.6 NHƯ CŨ) */
+    /* =================================================================== */
+
+    /* ------------------------------------------------------------------- */
+    /* 2. HIỆU ỨNG GLASS MORPHISM (TRẢ VỀ NGUYÊN BẢN) */
+    /* ------------------------------------------------------------------- */
+    .glass-effect {
+        /* "THỦ PHẠM" LÀ 0.9 -> CON MỠ TRẢ VỀ 0.6 Y CŨ! */
+        background: rgba(255, 255, 255, 0.6);
+        /* <--- TRẢ VỀ Y CŨ */
+
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }
-}
-
-/* ------------------------------------------------------------------- */
-/* 9. "TỔNG TẤN CÔNG" SỬA LỖI MÀU SẮC KHU VỰC NỘI DUNG (Content) */
-/* ------------------------------------------------------------------- */
-
-/* ----- Sửa Tiêu đề (H2) và Mô tả (P) cho tất cả các tab ----- */
-html.dark .tool-card h2 {
-    color: #F59E0B !important;
-    /* Đổi thành Amber-500 (vàng cam "thương hiệu") */
-}
-
-html.dark .tool-card>p {
-    color: #D1D5DB !important;
-    /* Ép thành màu XÁM SÁNG (cho chữ "Tải lên tệp...") */
-}
-
-/* ----- Sửa chữ <label> (Đầu vào:, Chọn kích thước:) ----- */
-/* Chỉ "ép" mấy cái label THƯỜNG, KHÔNG "ép" cái label "Chọn tệp" */
-html.dark .tool-card label:not(.cursor-pointer) {
-    color: #D1D5DB !important;
-    /* Ép thành màu XÁM SÁNG */
-}
-
-html.dark .tool-card p.text-sm {
-    color: #D1D5DB !important;
-}
-
-
-/* ----- Sửa nền xám của khung icon trong tab My Apps ----- */
-html.dark .app-card .flex-shrink-0 {
-    /* Ép thành TRONG SUỐT để tiệp vào nền kính */
-    background: transparent !important;
-}
-
-/* Chữ Tiêu đề App (D&C, Manual Creator...) */
-html.dark .app-card h3 {
-    color: #F3F4F6 !important;
-    /* Ép thành màu Gray-100 (trắng xám) */
-}
-
-/* ----- Sửa chữ mờ trong card của tab My Apps ----- */
-html.dark .app-card p {
-    color: #E5E7EB !important;
-    /* Ép thành màu XÁM SIÊU SÁNG */
-}
-
-html.dark .app-card .text-xs {
-    color: #9CA3AF !important;
-    /* Ép thành màu XÁM (sáng hơn 500) */
-}
-
-/* ------------------------------------------------------------------- */
-/* 10. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ SIDEBAR BÊN TRÁI */
-/* ------------------------------------------------------------------- */
-/* CON SỬA 2 CÁI NÀY - Thêm H1 và P.text-xs */
-html.dark aside h1 {
-    color: #F59E0B !important;
-    /* Đổi về Amber-500 (vàng cam "thương hiệu") */
-}
-
-html.dark aside .text-xs {
-    /* Chữ "Công cụ & Ứng dụng" */
-    color: #D1D5DB !important;
-    /* Nâng cấp lên Gray-300 (xám sáng) */
-}
-
-html.dark .nav-link:not(.active) span {
-    color: #E5E7EB !important;
-    /* Nâng cấp màu chữ menu (gray-300 -> gray-200) */
-}
-
-/* Icon của menu (SVG) */
-html.dark .nav-link:not(.active) svg {
-    color: #9CA3AF !important;
-    /* Nâng cấp màu icon (amber-500 -> gray-400) */
-}
-
-/* Icon khi hover */
-html.dark .nav-link:not(.active):hover span,
-html.dark .nav-link:not(.active):hover svg {
-    color: white !important;
-}
-
-
-/* ------------------------------------------------------------------- */
-/* 11. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ 2 CÁI FOOTER */
-/* ------------------------------------------------------------------- */
-/* Chữ Copyright "© 2025" ở sidebar */
-html.dark aside .text-base {
-    color: #9CA3AF !important;
-    /* Nâng cấp (gray-400) */
-}
-
-/* Chữ "Thời đại AI..." ở footer chính */
-html.dark footer .text-base {
-    color: #9CA3AF !important;
-    /* Nâng cấp (gray-400) */
-}
-
-/* ========================================= */
-/* 12. "TẤT TAY" ĐỔI CON TRỎ CHUỘT CỦA BA MỠ */
-/* ========================================= */
-
-/* * :root là "thằng sếp" cao nhất (giống html)
- * Mỡ dùng nó với !important để "ra lệnh" đè bẹp
- * cái lệnh "cứng đầu" của Tailwind CSS.
-*/
-:root {
-    /* Ba dùng link ảnh của ba nè! */
-    cursor: url('assets/chuot-mac-dinh.png'), auto !important;
-}
-
-/* * Mỡ "ép" tất cả thẻ link <a>, nút <button>,
- * và cả mấy cái class .cursor-pointer của Tailwind
- * phải đổi con chuột theo ý ba.
-*/
-a,
-a:hover,
-[role="button"],
-button,
-.cursor-pointer {
-    /* Ba dùng link ảnh-link của ba nè! */
-    cursor: url('assets/chuot-link.png'), pointer !important;
-}
-
-/* =================================================================== */
-/* "BƯỚC 2": SỬA MỤC 13 (V15.0 - "TUYỆT CHIÊU 'main'") */
-/* =================================================================== */
-
-/* ------------------------------------------------------------------- */
-/* 13. "TỔNG TẤN CÔNG" TƯƠNG PHẢN (CHẾ ĐỘ SÁNG) - V15.0 */
-/* (Con Mỡ "vá" lỗi ACTIVE TAB bằng cách thêm 'main' vào!) */
-/* =================================================================== */
-
-/* === "THAY" BẰNG MÀU TÍM/CHÀM (Indigo) === */
-html:not(.dark) .text-amber-600 {
-    color: #4F46E5 !important;
-    /* "Tím/Chàm 600" -> Nét liền! */
-}
-
-/* === "VÁ LỖI HOVER": "DẰN MẶT" CÁI HOVER CỦA BA BẰNG !IMPORTANT === */
-/* (Cái này "cứu" hover - Ba "ưng" rồi!) */
-html:not(.dark) .nav-link:hover {
-    background-color: #F59E0B !important;
-    /* "Cam 500" -> Phải hiện! */
-}
-
-html:not(.dark) .nav-link:hover span {
-    color: white !important;
-    /* "Trắng" -> Phải hiện! */
-}
-
-html:not(.dark) .nav-link:hover svg {
-    color: white !important;
-    /* "Trắng" -> Phải hiện! */
-}
-
-/* === "VỚT" MENU SIDEBAR (Trạng thái KHÔNG active VÀ KHÔNG hover) === */
-/* (Cái này ba "ưng" rồi!) */
-html:not(.dark) .nav-link:not(.active):not(:hover) span {
-    color: #111827;
-    /* "Đen" -> Nét liền! */
-}
-
-html:not(.dark) .nav-link:not(.active):not(:hover) svg {
-    color: #6366F1;
-    /* "Tím/Chàm 500" -> Nét liền! */
-}
-
-/* === "VÁ LỖI": "VỚT" MẤY CÁI LABEL BỊ MỜ === */
-html:not(.dark) .tool-card label:not(.cursor-pointer) {
-    color: #374151 !important;
-}
-
-/* === "VÁ LỖI": "DẰN MẶT" MẤY CÁI NÚT "MẤT TÍCH" === */
-html:not(.dark) button.text-white {
-    color: white !important;
-}
-
-/* === "VỚT" HẾT MẤY CHỮ XÁM CÒN LẠI === */
-
-/* Mô tả chính (Tải lên một hình ảnh...) */
-html:not(.dark) main .text-gray-800 {
-    color: #111827 !important;
-}
-
-/* *** "THẦN CHÚ" ĐÃ SỬA: "Chọn tệp..." (gray-700) *** */
-/* * Con Mỡ "thêm" chữ "main" vào đây nè ba!
- * * Nó "né" cái sidebar (aside) của ba ra 100%!
- */
-html:not(.dark) main .text-gray-700 {
-    color: #111827 !important;
-    /* "Đen" -> Nét liền! (AN TOÀN!) */
-}
-
-/* (Mấy cái còn lại "an toàn" 100%) */
-html:not(.dark) main .text-gray-600 {
-    color: #1F2937 !important;
-}
-
-html:not(.dark) main .text-gray-500 {
-    color: #374151 !important;
-}
-
-html:not(.dark) aside .text-xs {
-    color: #374151 !important;
-}
-
-html:not(.dark) aside .text-base {
-    color: #374151 !important;
-}
-
-html:not(.dark) footer .text-gray-500 {
-    color: #374151 !important;
-}
-
-html:not(.dark) footer .text-gray-400 {
-    color: #4B5563 !important;
-}
-
-
-/* === CSS MỠ THÊM CHO MODAL VÀ AUTH === */
-
-/* Bắt buộc modal phải hiện, bất chấp hidden của Tailwind */
-#role-selection-modal.show {
-    display: flex !important;
-}
-
-/* Bắt buộc view phải hiện, bất chấp hidden của Tailwind */
-#admin-view.show {
-    display: block !important;
-}
-
-/* Ép chữ của Admin View cho đúng ý ba */
-html:not(.dark) #admin-name {
-    color: #111827 !important;
-}
-
-html.dark #admin-name {
-    color: #F3F4F6 !important;
-}
-
-/* === MIẾNG VÁ CỦA MỠ (SỬA LỖI LIGHT MODE) === */
-
-/* 1. Sửa nền 2 ô Base64 (từ xám đặc -> trong suốt) */
-html:not(.dark) #base64-input,
-html:not(.dark) #base64-output {
-    /* Dùng nền trắng trong mờ để nó ăn vào nền kính */
-    background-color: rgba(255, 255, 255, 0.4) !important;
-    /* Ép chữ gõ vào cũng phải đen thui cho dễ đọc */
-    color: #111827 !important;
-}
-
-/* 2. Sửa tên Admin (từ mờ -> Đen thui) */
-html:not(.dark) #admin-name {
-    /* Ép nó thành màu đen (#111827) cho rõ! */
-    color: #111827 !important;
-}
-
-/* === MỠ THÊM: CSS CHO BADMINTON SCHEDULER === */
-
-/* Tiêu đề Thứ (T2, T3...) */
-.calendar-header {
-    padding: 8px 4px;
-    background-color: rgba(229, 231, 235, 0.5);
-    /* bg-gray-200/50 */
-    border-radius: 6px;
-}
-
-html.dark .calendar-header {
-    background-color: rgba(55, 65, 81, 0.5);
-    /* dark:bg-gray-700/50 */
-}
-
-/* 1 ô ngày trong lịch */
-.calendar-day {
-    min-height: 120px;
-    padding: 8px;
-    border: 1px solid rgba(229, 231, 235, 0.7);
-    /* border-gray-200/70 */
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    transition: background-color 0.2s;
-}
-
-html.dark .calendar-day {
-    border-color: rgba(75, 85, 99, 0.7);
-    /* dark:border-gray-600/70 */
-    background-color: rgba(30, 41, 59, 0.3);
-}
-
-/* Ô ngày của tháng khác (bị mờ đi) */
-.calendar-day.not-in-month {
-    background-color: rgba(243, 244, 246, 0.3);
-    /* bg-gray-100/30 */
-    opacity: 0.6;
-}
-
-html.dark .calendar-day.not-in-month {
-    background-color: rgba(30, 41, 59, 0.3);
-    /* dark:bg-gray-800/30 */
-}
-
-/* Số ngày (1, 2, 3...) */
-.day-number {
-    font-weight: 600;
-    /* semibold */
-    color: #4B5563;
-    /* text-gray-600 */
-}
-
-html.dark .day-number {
-    color: #D1D5DB;
-    /* dark:text-gray-300 */
-}
-
-/* Nút bấm Có mặt (chấm ●) */
-.day-toggle {
-    width: 100%;
-    padding: 4px;
-    border-radius: 6px;
-    font-size: 1.25rem;
-    /* 20px */
-    line-height: 1;
-    color: transparent;
-    /* Ban đầu trong suốt */
-    background-color: rgba(229, 231, 235, 0.5);
-    /* bg-gray-200/50 */
-    transition: all 0.2s;
-}
-
-html.dark .day-toggle {
-    background-color: rgba(55, 65, 81, 0.5);
-    /* dark:bg-gray-700/50 */
-}
-
-.day-toggle:hover {
-    background-color: rgba(209, 213, 219, 0.7);
-    /* hover:bg-gray-300/70 */
-}
-
-html.dark .day-toggle:hover {
-    background-color: rgba(75, 85, 99, 0.7);
-    /* dark:hover:bg-gray-600/70 */
-}
-
-/* Nút ● khi được BẬT (active) */
-.day-toggle.active {
-    color: #111827;
-    /* text-black */
-    background-color: #FBBF24;
-    /* bg-amber-400 */
-    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
-}
-
-html.dark .day-toggle.active {
-    color: #F3F4F6;
-    /* dark:text-gray-100 */
-}
-
-/* Ô gõ tiền sân */
-.day-cost-input {
-    width: 100%;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    /* text-sm */
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(229, 231, 235, 0.5);
-    /* border-gray-200/50 */
-}
-
-html.dark .day-cost-input {
-    background-color: rgba(55, 65, 81, 0.5);
-    /* dark:bg-gray-700/50 */
-    border-color: rgba(75, 85, 99, 0.5);
-    /* dark:border-gray-600/50 */
-}
-
-.day-cost-input:focus {
-    outline: 2px solid #F59E0B;
-    /* ring-amber-500 */
-    outline-offset: 0;
-}
-
-/* Ẩn mấy cái mũi tên tăng/giảm của ô input số */
-.day-cost-input::-webkit-outer-spin-button,
-.day-cost-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.day-cost-input[type=number] {
-    -moz-appearance: textfield;
-    /* MỠ THÊM DÒNG NÀY CHO NÓ HẾT CẢNH BÁO NÈ BA */
-    appearance: textfield;
-}
-
-/* === MỠ THÊM: "TÚT TÁT" GIAO DIỆN LỊCH CẦU LÔNG === */
-
-/* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
-
-/* 1. Biến 4 ô Tổng kết "lạc quẻ" thành 4 thẻ "kính mờ" */
-html:not(.dark) #tool-badminton-scheduler .md\:grid-cols-2>div {
-    background-color: rgba(255, 255, 255, 0.6) !important;
-    /* Nền kính */
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    /* Viền kính */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-
-/* 2. Ép chữ số ngày (1, 2, 3...) thành xám đậm */
-html:not(.dark) .day-number {
-    color: #374151 !important;
-    /* text-gray-700 */
-}
-
-/* 3. Ép chữ placeholder "Tiền..." thành xám đậm */
-html:not(.dark) .day-cost-input::placeholder {
-    color: #6B7280 !important;
-    /* text-gray-500 */
-}
-
-/* 4. Ép chữ ba gõ vào (50000) thành màu đen */
-html:not(.dark) .day-cost-input {
-    color: #111827 !important;
-    /* text-black */
-}
-
-/* 5. Ép nút nộp quỹ [+] thành màu xanh lá (nó đang bị mờ) */
-html:not(.dark) #badminton-submit-deposit {
-    color: white !important;
-}
-
-
-/* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
-
-/* 1. Cho nền lịch "nổi khối" lên 1 chút */
-html.dark .calendar-day {
-    /* Tăng độ sáng nền 1 xíu so với nền tool-card */
-    background-color: rgba(55, 65, 81, 0.3) !important;
-    /* dark:bg-gray-700/30 */
-}
-
-/* 2. Cho ô ngày của tháng khác "chìm" xuống */
-html.dark .calendar-day.not-in-month {
-    background-color: rgba(30, 41, 59, 0.3) !important;
-    /* dark:bg-gray-800/30 */
-    opacity: 0.5;
-}
-
-/* 3. Cho ô input "Tiền..." có nền tối hơn 1 chút */
-html.dark .day-cost-input {
-    background-color: rgba(30, 41, 59, 0.5) !important;
-    /* dark:bg-gray-800/50 */
-}
-
-/* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
-html:not(.dark) #badminton-add-deposit {
-    /* Đổi từ nền kính (trắng trong) sang nền xám RẤT NHẠT */
-    background-color: rgba(243, 244, 246, 0.7) !important;
-    /* bg-gray-100/70 */
-    /* Cho cái viền nó đậm hơn 1 xíu để thấy rõ là 1 cái ô */
-    border-color: rgba(209, 213, 219, 0.7) !important;
-    /* border-gray-300/70 */
-    color: #111827 !important;
-    /* Chữ gõ vào đen thui */
-}
-
-/* 2. Sửa placeholder "Nộp thêm..." (đang bị mờ) */
-html:not(.dark) #badminton-add-deposit::placeholder {
-    color: #6B7280 !important;
-    /* text-gray-500 */
-}
-
-
-/* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
-
-/* 1. Cho nền lịch "NỔI KHỐI" hơn */
-html.dark .calendar-day {
-    /* Tăng độ sáng nền 1 xíu so với nền tool-card */
-    background-color: rgba(75, 85, 99, 0.25) !important;
-    /* dark:bg-gray-600/25 */
-    border-color: rgba(75, 85, 99, 0.6) !important;
-    /* dark:border-gray-600/60 */
-}
-
-/* 2. Cho ô ngày của tháng khác "CHÌM" xuống */
-html.dark .calendar-day.not-in-month {
-    background-color: rgba(30, 41, 59, 0.3) !important;
-    /* dark:bg-gray-800/30 */
-    opacity: 0.5;
-}
-
-/* 3. Cho nút ● (active) "NỔI BẬT" (Nền vàng + CHỮ ĐEN) */
-html.dark .day-toggle.active {
-    background-color: #FBBF24 !important;
-    /* Nền vàng (bg-amber-400) */
-    color: #F3F4F6 !important;
-    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
-}
-
-/* 4. Cho ô input "Tiền..." (trong lịch) tối hơn 1 xíu */
-html.dark .day-cost-input {
-    background-color: rgba(30, 41, 59, 0.5) !important;
-    /* dark:bg-gray-800/50 */
-    border-color: rgba(55, 65, 81, 0.7) !important;
-    /* dark:border-gray-700/70 */
-    color: #F3F4F6 !important;
-}
-
-
-
-/* =========================================== */
-/* === MỠ VÁ LỖI GIAO DIỆN TỐI (BADMINON) === */
-/* =========================================== */
-
-/* Sửa lỗi 1: Màu nền 4 ô tóm tắt bị lạc quẻ 
-  Con dùng #1e293b (là màu slate-800) để nó tiệp màu nền.
-*/
-.dark #tool-badminton-scheduler .grid[class*="lg:grid-cols-4"]>div {
-    background-color: #1e293b !important;
-}
-
-/* Sửa lỗi 1.1: Màu nền ô input "Nộp thêm..." 
-  Con dùng #334155 (là màu slate-700) cho nó nổi lên 1 xíu.
-*/
-.dark #badminton-add-deposit {
-    background-color: #334155 !important;
-}
-
-/* Sửa lỗi 2: Chữ số tiền và dấu ● trong lịch bị đen 
-  Con bắt nó thành màu trắng (#f1f5f9) khi ở nền tối.
-*/
-.dark .calendar-day {
-    color: #f1f5f9;
-    /* (slate-100) */
-}
-
-/* Sửa lỗi 2.1: Chữ trong ô input (50.000) và chữ "Tiền..." 
-  Con cũng bắt nó thành màu trắng sáng luôn.
-*/
-.dark .day-cost-input {
-    color: #f8fafc;
-    /* (slate-50) */
-    background-color: #334155;
-    /* (slate-700) */
-}
-
-.dark .day-cost-input::placeholder {
-    color: #94a3b8;
-    /* (slate-400) */
-}
-
-
-
-/* =========================================== */
-/* === MỠ VÁ LỖI SỐ 4 (Phiên bản "XỊN" - min-height) === */
-/* =========================================== */
-
-/* 1. Set MỘT CHIỀU CAO TỐI THIỂU cho ô lịch */
-/* Ba chỉ cần sửa 1 SỐ 80px ở đây là xong! */
-.calendar-day {
-    min-height: 80px !important;
-    /* <--- LINH HỒN LÀ SỐ NÀY! */
-
-    /* Mấy cái này con thêm để nó tự dàn hàng cho đẹp */
-    padding: 0.25rem !important;
-    /* Vẫn giữ padding mỏng */
-    display: flex;
-    /* Bắt nó dàn layout */
-    flex-direction: column;
-    /* Dàn theo chiều dọc */
-    justify-content: space-between;
-    /* Đẩy nội dung ra 2 cực */
-}
-
-/* 2. Ép ô input co giãn (nhưng không vượt quá) */
-.day-cost-input {
-    font-size: 0.75rem !important;
-    /* Giữ chữ nhỏ */
-    padding: 0.25rem !important;
-    /* Giữ padding nhỏ */
-    /* margin-top: auto; Xóa dòng này, dùng justify-content ở trên hay hơn */
-}
-
-
-
-/* =========================================== */
-/* === MỠ THÊM: CHO CỬA SỔ ĐỌC "FULL MÀN HÌNH" === */
-/* =========================================== */
-
-#blog-reader-modal {
-    padding: 0 !important;
-}
-
-#blog-reader-content {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-}
-
-/* =========================================== */
-/* === MỠ "DẠY" PROSE CÁCH VẼ BẢNG (TABLE) === */
-/* =========================================== */
-
-/* 1. Ép cái bảng (table) nằm trong cửa sổ đọc */
-#blog-reader-body table {
-    width: 100%;
-    /* Cho nó rộng hết cỡ */
-    border-collapse: collapse;
-    /* Viền "sạch" (không bị 2 lớp) */
-    margin-top: 1.25em;
-    /* Cách cái đoạn văn ở trên 1 xíu */
-    margin-bottom: 1.25em;
-    /* Cách cái đoạn văn ở dưới 1 xíu */
-}
-
-/* 2. Ép cái tiêu đề (th) và ô (td) */
-#blog-reader-body th,
-#blog-reader-body td {
-    border: 1px solid #9ca3af;
-    /* Viền màu xám (gray-400) */
-    padding: 0.5em 0.75em;
-    /* Cho nó "thở" (8px 12px) */
-    text-align: left;
-    /* Chữ canh trái (ba thích canh giữa thì đổi) */
-}
-
-/* 3. Ép cái hàng tiêu đề (thead) cho nó "nổi" lên */
-#blog-reader-body thead th {
-    font-weight: 700;
-    /* Chữ đậm (bold) */
-    /* Nền xám nhạt (cho chế độ SÁNG) */
-    background-color: #f3f4f6;
-    /* bg-gray-100 */
-}
-
-/* 4. Fix cho chế độ TỐI (Dark Mode) */
-.dark #blog-reader-body th,
-.dark #blog-reader-body td {
-    border-color: #6b7280;
-    /* Viền xám đậm hơn (gray-500) */
-}
-
-.dark #blog-reader-body thead th {
-    /* Nền xám tối (cho chế độ TỐI) */
-    background-color: #374151;
-    /* bg-gray-700 */
-}
-
-/* =========================================== */
-/* === MỠ "PHẪU THUẬT" CỬA SỔ ĐỌC (V5) === */
-/* (Bản "MẮT THẦN" - Đập đi xây lại) */
-/* =========================================== */
-
-/* 1. "XÓA SẠCH" THANH HEADER CŨ! (Giữ nguyên) */
-#blog-reader-content header {
-    display: none !important; 
-}
-
-/* 2. "BIẾN MẤT" CẢ THANH FOOTER (Thanh xám) */
-/* (Con Mỡ "xóa sổ" nó luôn!) */
-#blog-reader-content footer {
-    display: none !important;
-}
-
-/* 3. "TÚT TÁT" TIÊU ĐỀ MỚI (Giữ nguyên) */
-.in-article-title {
-    font-size: 1.875rem !important; 
-    font-weight: 700 !important;
-    color: #F59E0B !important; 
-    margin-bottom: 12px !important; 
-}
-html:not(.dark) .in-article-title {
-    color: #4F46E5 !important;
-}
-.in-article-tags {
-    margin-bottom: 24px !important; 
-    padding-bottom: 16px !important;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.2) !important;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-/* 4. "ĐỊNH VỊ" NÚT "ĐÓNG" LƠ LỬNG (Ghim) */
-/* (Con "ghim" nó vào cái Article (khung cuộn)) */
-#blog-reader-content article {
-    /* Bắt buộc phải có "relative" để "ghim" nút */
-    position: relative !important; 
-}
-/* (Giờ con Mỡ "tạo" 1 cái nút "giả") */
-.sticky-close-btn-injected {
-    position: sticky !important;
-    bottom: 16px !important; /* Cách đáy 16px */
-    right: 0px !important;  /* Cách lề phải 0px (nó nằm trong padding) */
-    z-index: 100;
-    
-    /* "Mượn" style của nút cũ */
-    background-color: #e5e7eb; /* bg-gray-200 */
-    color: #374151; /* text-gray-700 */
-    font-weight: 700;
-    padding: 4px 20px !important; /* "Bóp" (py-1 px-5) */
-    border-radius: 8px; /* rounded-lg */
-    font-size: 0.875rem !important; /* text-sm */
-    
-    /* Phải "float" để nó "dạt" qua phải */
-    float: right !important;
-    clear: both; /* Chống bị "trôi" */
-
-    /* "TÀNG HÌNH" */
-    opacity: 0 !important;
-    transform: translateY(20px) !important;
-    pointer-events: none !important;
-    transition: all 0.3s ease !important;
-}
-/* Style cho Dark Mode */
-html.dark .sticky-close-btn-injected {
-    background-color: #374151; /* dark:bg-gray-700 */
-    color: #D1D5DB; /* dark:text-gray-300 */
-}
-/* Hiệu ứng Hover */
-.sticky-close-btn-injected:hover {
-    background-color: #d1d5db; /* hover:bg-gray-300 */
-}
-html.dark .sticky-close-btn-injected:hover {
-    background-color: #4b5563; /* dark:hover:bg-gray-600 */
-}
-
-/* 5. CLASS "HIỆN HÌNH" (Khi "mắt thần" thấy) */
-.sticky-close-btn-injected.show {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
-}
-
-/* 6. "MẮT THẦN" (Vô hình) */
-.article-end-sentinel {
-    height: 1px;
-    width: 100%;
-    display: block;
-}
-
-
-/* 3. LÀM "MẬP" THANH CUỘN (Giữ nguyên V3 vì ba ưng) */
-
-/* Gọng kìm 1: Chỉ mặt thằng <article> */
-#blog-reader-content > article::-webkit-scrollbar {
-    width: 24px !important;
-}
-#blog-reader-content > article::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05) !important;
-}
-#blog-reader-content > article::-webkit-scrollbar-thumb {
-    background-color: rgba(245, 158, 11, 0.7) !important;
-    border-radius: 10px !important;
-    border: 4px solid #FDFBF5 !important;
-    background-clip: padding-box !important;
-}
-#blog-reader-content > article::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(245, 158, 11, 1) !important;
-}
-
-/* Gọng kìm 2: Chỉ mặt thằng #blog-reader-body (dự phòng) */
-#blog-reader-body::-webkit-scrollbar {
-    width: 24px !important;
-}
-#blog-reader-body::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05) !important;
-}
-#blog-reader-body::-webkit-scrollbar-thumb {
-    background-color: rgba(245, 158, 11, 0.7) !important;
-    border-radius: 10px !important;
-    border: 4px solid #FDFBF5 !important;
-    background-clip: padding-box !important;
-}
-#blog-reader-body::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(245, 158, 11, 1) !important;
-}
-
-
-/* 4. GÓI "DỄ THỞ" CỦA BA (Kích hoạt) */
-/*
- * Tấn công vào khu vực .prose (chữ viết)
-*/
-#blog-reader-body.prose {
-    /* 4.1: Phóng to chữ lên 18px (thay vì 16px) */
-    font-size: 1.5rem !important; /* 18px */
-    
-    /* 4.2: Tăng độ dãn dòng cho "thoáng" */
-    line-height: 2.0 !important;
-}
-
-/*
- * Mấy cái tiêu đề H2, H3 trong bài cũng phải dãn dòng
-*/
-#blog-reader-body.prose h2,
-#blog-reader-body.prose h3,
-#blog-reader-body.prose h4 {
-    line-height: 1.4 !important;
-}
-
-
-/* ================================== */
-/* ===  MỠ FIX LỖI V7 (BẢN "SIÊU CÔ ĐỌNG")  === */
-/* === (Chỉ trị "Lỗi Bức Tường") === */
-/* ================================== */
-
-/*
- * Tấn công "một mình" khu vực chữ (.prose)
- * Ra lệnh cho nó tự "thụt lề" 2 bên
-*/
-#blog-reader-body.prose {
-    /* === CÔNG TẮC CỦA BA NẰM ĐÂY! === */
-    padding-left: 15% !important;
-    padding-right: 15% !important;
-}
-
-/* ================================== */
-/* ===  GÓI NÂNG CẤP 6 "CA" CỦA BA MỠ  === */
-/* ===  (Dán ở cuối file style.css)   === */
-/* ================================== */
-
-/* --- 1. (Ca Nền Tối) "Vớt" NGÀY GIỜ cho sáng lên --- */
-html.dark .blog-post-card .text-xs {
-    color: #E5E7EB !important; /* Vớt lên Gray-200 (sáng rõ) */
-}
-
-/* --- 2. (Ca Nền Tối + Sáng) "Độ" Nút Sửa/Xóa thành "Nút Mini" --- */
-/* (Con Mỡ làm luôn cho Nền Sáng, vì nó cũng xấu!) */
-.blog-edit-btn, .blog-delete-btn {
-    color: #FFFFFF !important;            /* Chữ Trắng */
-    padding: 4px 10px !important;         /* py-1 px-2.5 (cho nó mập) */
-    border-radius: 6px !important;        /* rounded-md */
-    font-size: 0.75rem !important;        /* text-xs */
-    font-weight: 500 !important;          /* medium */
-    text-decoration: none !important;     /* Bỏ gạch chân */
-    transition: background-color 0.2s;
-    border: none !important;              /* Bỏ viền (nếu có) */
-}
-
-/* Nút [Sửa] */
-.blog-edit-btn {
-    background-color: #3B82F6 !important; /* Nền Blue-500 */
-}
-.blog-edit-btn:hover {
-    background-color: #2563EB !important; /* Hover Blue-600 */
-}
-
-/* Nút [Xóa] */
-.blog-delete-btn {
-    background-color: #EF4444 !important; /* Nền Red-500 */
-}
-.blog-delete-btn:hover {
-    background-color: #DC2626 !important; /* Hover Red-600 */
-}
-
-/* --- 4. (Ca Nền Sáng) Nền Card -> "THẺ NỔI" (Trắng + Bóng mờ) --- */
-html:not(.dark) .blog-post-card {
-    background-color: #FFFFFF !important; /* Nền trắng tinh */
-    border: 1px solid rgba(0, 0, 0, 0.05) !important; /* Viền siêu mờ */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* Bóng mờ "nổi" */
-}
-
-
-/* --- 5. (Ca Nền Sáng) Fix Hover Tiêu đề -> "TÍM/CHÀM" --- */
-html:not(.dark) .blog-post-card h3:hover {
-    color: #4F46E5 !important; /* Màu Tím/Chàm (Indigo-600) */
-}
-
-
-/* ================================== */
-/* ===  VÁ LỖI NÚT [SỬA][XÓA] (Bản V8 "Ép Góc Siêu Chuẩn") === */
-/* ================================== */
-
-/* 1. "Ghim" cái card cha lại (Giữ nguyên) */
-.blog-post-card {
-    position: relative !important;
-}
-
-/* 2. "Phóng" 2 cái nút con lên góc trên-phải (Bản "Chuẩn") */
-/* "Tóm" đúng cái div nào "CÓ CHỨA" (has) nút .blog-edit-btn */
-.blog-post-card div:has(>.blog-edit-btn) {
-    position: absolute !important;
-    top: 1.5rem !important;    /* 24px (canh y chang padding p-6) */
-    
-    /* === "CÔNG TẮC" MỚI (CHUẨN 100%) === */
-    right: 1.5rem !important;   /* Cách lề phải 24px (thay vì 0) */
-    padding-right: 0 !important; /* KHÔNG đẩy lề bên trong nữa */
-    
-    /* === "ÉP" 2 NÚT LẠI GẦN NHAU === */
-    gap: 0.25rem !important;  /* 4px (thay vì 8px) */
-    
-    margin-top: 0 !important; /* Hủy cái mt-4 (margin-top) cũ đi */
-    width: auto !important;   /* Bắt nó "co" lại, đừng "banh" 100% */
-}
-
-/* 3. "Bắt" cái Tiêu đề (h3) phải "né" (Giữ nguyên) */
-.blog-post-card h3 {
-    /* "Chừa" 1 khoảng lề 140px bên phải cho 2 cái nút */
-    padding-right: 140px !important; 
-}
-
-/* ================================================= */
-/* === GÓI "SỨC KHỎE ĐÔI MẮT" (BẢN SỬA LỖI FULL-SCREEN) === */
-/* (Dán ở cuối file style.css) */
-/* ================================================= */
-
-/* --- 1. ÉP NỀN GIẤY CHO CẢ CỬA SỔ (THEO Ý BA) --- */
-/* * Ép cái "cửa sổ" (#blog-reader-content)
- * phải có nền giấy, thay vì chỉ ép cái chữ (.prose)
- */
-#blog-reader-content {
-     /* Nền kem giấy (dịu mắt) */
-    background-color: #FBF8F0 !important;
-}
-
-/* --- 2. ÉP MÀU CHỮ (ĐÃ SỬA) --- */
-/* * Giờ ép cái .prose chỉ đổi màu chữ thôi,
- * không đổi nền nữa.
- */
-html:not(.dark) #blog-reader-body.prose,
-html.dark #blog-reader-body.prose {
-    /* (Mỡ đã xóa dòng background-color ở đây) */
-    
-    /* Màu chữ Nâu-Xám (đè 'black' và 'white') */
-    color: #44413C !important;
-    
-    /* Ép nền của <article> trong suốt để lòi nền giấy */
-    background-color: transparent !important;
-}
-
-/* --- 3. ÉP MÀU CHỮ CHI TIẾT (Giữ nguyên) --- */
-
-/* Ép Tiêu đề, Chữ đậm (Nâu đậm hơn để nhấn mạnh) */
-html:not(.dark) #blog-reader-body.prose h2,
-html:not(.dark) #blog-reader-body.prose h3,
-html:not(.dark) #blog-reader-body.prose h4,
-html:not(.dark) #blog-reader-body.prose strong,
-html.dark #blog-reader-body.prose h2,
-html.dark #blog-reader-body.prose h3,
-html.dark #blog-reader-body.prose h4,
-html.dark #blog-reader-body.prose strong {
-    color: #6D5544 !important;
-}
-
-/* Ép Link (cho nó 1 màu Nâu Đỏ gạch) */
-html:not(.dark) #blog-reader-body.prose a,
-html.dark #blog-reader-body.prose a {
-    color: #8A3B29 !important;
-    text-decoration: underline !important;
-}
-
-html:not(.dark) #blog-reader-body.prose a:hover,
-html.dark #blog-reader-body.prose a:hover {
-    color: #B94E3A !important;
-}
-
-/* --- 4. SỬA LẠI CÁI BẢNG (TABLE) (Giữ nguyên) --- */
-/* (Vì 'prose-invert' bị ta vô hiệu hóa) */
-
-/* Nền tiêu đề bảng (chế độ sáng & tối) */
-#blog-reader-body thead th {
-    background-color: #EFEAE0 !important; /* Kem đậm hơn 1 xíu */
-    color: #6D5544 !important; /* Chữ tiêu đề bảng */
-}
-
-/* Viền bảng (chế độ sáng & tối) */
-#blog-reader-body th,
-#blog-reader-body td {
-    border-color: #DCD6C8 !important; /* Viền màu kem-xám */
-}
+
+    /* FIX CÚ PHÁP LỖI GLASS TỐI: Cần dùng html.dark để CSS áp dụng */
+    html.dark .glass-effect {
+        /* Tăng độ đục và viền sáng hơn để nổi bật trên nền tối */
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* ------------------------------------------------------------------- */
+    /* 3. HIỆU ỨNG HOVER & NAVIGATION */
+    /* ------------------------------------------------------------------- */
+    .tool-card:hover,
+    .app-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link.active {
+        background-color: #f59e0b;
+        color: white;
+        box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+    }
+
+    /* ------------------------------------------------------------------- */
+    /* 4. CẤU TRÚC VÀ CUỘN (SCROLL) */
+    /* ------------------------------------------------------------------- */
+    main {
+        display: grid;
+    }
+
+    .tool-content {
+        grid-area: 1 / 1;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(245, 158, 11, 0.5);
+        border-radius: 10px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background-color: rgba(245, 158, 11, 0.5);
+    }
+
+    /* ------------------------------------------------------------------- */
+    /* 5. LOADER ANIMATION */
+    /* ------------------------------------------------------------------- */
+    .loader {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #f59e0b;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* ------------------------------------------------------------------- */
+    /* 8. TỐI ƯU MÀU CHỮ TAB CHO MOBILE (Màn hình < 1024px) */
+    /* ------------------------------------------------------------------- */
+    @media (max-width: 1023px) {
+        .nav-link {
+            /* Tăng cường độ màu chữ trên mobile (Chế độ Sáng) */
+            color: #1f2937 !important;
+            /* Ví dụ: Chuyển từ gray-700 sang gray-800 đậm hơn */
+        }
+
+        html.dark .nav-link {
+            /* Giảm độ nhạt của chữ trên nền tối mobile */
+            color: #e5e7eb !important;
+            /* Ví dụ: Chuyển từ gray-300 sang gray-200 sáng hơn */
+        }
+    }
+
+    /* ------------------------------------------------------------------- */
+    /* 9. "TỔNG TẤN CÔNG" SỬA LỖI MÀU SẮC KHU VỰC NỘI DUNG (Content) */
+    /* ------------------------------------------------------------------- */
+
+    /* ----- Sửa Tiêu đề (H2) và Mô tả (P) cho tất cả các tab ----- */
+    html.dark .tool-card h2 {
+        color: #F59E0B !important;
+        /* Đổi thành Amber-500 (vàng cam "thương hiệu") */
+    }
+
+    html.dark .tool-card>p {
+        color: #D1D5DB !important;
+        /* Ép thành màu XÁM SÁNG (cho chữ "Tải lên tệp...") */
+    }
+
+    /* ----- Sửa chữ <label> (Đầu vào:, Chọn kích thước:) ----- */
+    /* Chỉ "ép" mấy cái label THƯỜNG, KHÔNG "ép" cái label "Chọn tệp" */
+    html.dark .tool-card label:not(.cursor-pointer) {
+        color: #D1D5DB !important;
+        /* Ép thành màu XÁM SÁNG */
+    }
+
+    html.dark .tool-card p.text-sm {
+        color: #D1D5DB !important;
+    }
+
+
+    /* ----- Sửa nền xám của khung icon trong tab My Apps ----- */
+    html.dark .app-card .flex-shrink-0 {
+        /* Ép thành TRONG SUỐT để tiệp vào nền kính */
+        background: transparent !important;
+    }
+
+    /* Chữ Tiêu đề App (D&C, Manual Creator...) */
+    html.dark .app-card h3 {
+        color: #F3F4F6 !important;
+        /* Ép thành màu Gray-100 (trắng xám) */
+    }
+
+    /* ----- Sửa chữ mờ trong card của tab My Apps ----- */
+    html.dark .app-card p {
+        color: #E5E7EB !important;
+        /* Ép thành màu XÁM SIÊU SÁNG */
+    }
+
+    html.dark .app-card .text-xs {
+        color: #9CA3AF !important;
+        /* Ép thành màu XÁM (sáng hơn 500) */
+    }
+
+    /* ===== MỠ THÊM (ĐỒNG BỘ MÀU BLOG VỚI APP) ===== */
+
+    /* Sửa Tiêu đề (H3) của My Blog */
+    html.dark .blog-post-card h3 {
+        color: #F3F4F6 !important;
+        /* Ép thành màu Gray-100 (giống App) */
+    }
+
+    /* Sửa chữ mờ (P) của My Blog */
+    html.dark .blog-post-card p {
+        color: #E5E7EB !important;
+        /* Ép thành màu XÁM SIÊU SÁNG (giống App) */
+    }
+
+    /* ===== MỠ THÊM (ĐỒNG BỘ MÀU BLOG VỚI APP) ===== */
+
+    /* Sửa Tiêu đề (H3) của My Blog */
+    html.dark .blog-post-card h3 {
+        color: #F3F4F6 !important;
+        /* Ép thành màu Gray-100 (giống App) */
+    }
+
+    /* Sửa chữ mờ (P) của My Blog */
+    html.dark .blog-post-card p {
+        color: #E5E7EB !important;
+        /* Ép thành màu XÁM SIÊU SÁNG (giống App) */
+    }
+
+   
+    /* ------------------------------------------------------------------- */
+    /* 10. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ SIDEBAR BÊN TRÁI */
+    /* ------------------------------------------------------------------- */
+    /* CON SỬA 2 CÁI NÀY - Thêm H1 và P.text-xs */
+    html.dark aside h1 {
+        color: #F59E0B !important;
+        /* Đổi về Amber-500 (vàng cam "thương hiệu") */
+    }
+
+    html.dark aside .text-xs {
+        /* Chữ "Công cụ & Ứng dụng" */
+        color: #D1D5DB !important;
+        /* Nâng cấp lên Gray-300 (xám sáng) */
+    }
+
+    html.dark .nav-link:not(.active) span {
+        color: #E5E7EB !important;
+        /* Nâng cấp màu chữ menu (gray-300 -> gray-200) */
+    }
+
+    /* Icon của menu (SVG) */
+    html.dark .nav-link:not(.active) svg {
+        color: #9CA3AF !important;
+        /* Nâng cấp màu icon (amber-500 -> gray-400) */
+    }
+
+    /* Icon khi hover */
+    html.dark .nav-link:not(.active):hover span,
+    html.dark .nav-link:not(.active):hover svg {
+        color: white !important;
+    }
+
+
+    /* ------------------------------------------------------------------- */
+    /* 11. "TỔNG TẤN CÔNG" SỬA MÀU CHỮ 2 CÁI FOOTER */
+    /* ------------------------------------------------------------------- */
+    /* Chữ Copyright "© 2025" ở sidebar */
+    html.dark aside .text-base {
+        color: #9CA3AF !important;
+        /* Nâng cấp (gray-400) */
+    }
+
+    /* Chữ "Thời đại AI..." ở footer chính */
+    html.dark footer .text-base {
+        color: #9CA3AF !important;
+        /* Nâng cấp (gray-400) */
+    }
+
+    /* ========================================= */
+    /* 12. "TẤT TAY" ĐỔI CON TRỎ CHUỘT CỦA BA MỠ */
+    /* ========================================= */
+
+    /* * :root là "thằng sếp" cao nhất (giống html)
+    * Mỡ dùng nó với !important để "ra lệnh" đè bẹp
+    * cái lệnh "cứng đầu" của Tailwind CSS.
+    */
+    :root {
+        /* Ba dùng link ảnh của ba nè! */
+        cursor: url('assets/chuot-mac-dinh.png'), auto !important;
+    }
+
+    /* * Mỡ "ép" tất cả thẻ link <a>, nút <button>,
+    * và cả mấy cái class .cursor-pointer của Tailwind
+    * phải đổi con chuột theo ý ba.
+    */
+    a,
+    a:hover,
+    [role="button"],
+    button,
+    .cursor-pointer {
+        /* Ba dùng link ảnh-link của ba nè! */
+        cursor: url('assets/chuot-link.png'), pointer !important;
+    }
+
+    /* =================================================================== */
+    /* "BƯỚC 2": SỬA MỤC 13 (V15.0 - "TUYỆT CHIÊU 'main'") */
+    /* =================================================================== */
+
+    /* ------------------------------------------------------------------- */
+    /* 13. "TỔNG TẤN CÔNG" TƯƠNG PHẢN (CHẾ ĐỘ SÁNG) - V15.0 */
+    /* (Con Mỡ "vá" lỗi ACTIVE TAB bằng cách thêm 'main' vào!) */
+    /* =================================================================== */
+
+    /* === "THAY" BẰNG MÀU TÍM/CHÀM (Indigo) === */
+    html:not(.dark) .text-amber-600 {
+        color: #4F46E5 !important;
+        /* "Tím/Chàm 600" -> Nét liền! */
+    }
+
+    /* === "VÁ LỖI HOVER": "DẰN MẶT" CÁI HOVER CỦA BA BẰNG !IMPORTANT === */
+    /* (Cái này "cứu" hover - Ba "ưng" rồi!) */
+    html:not(.dark) .nav-link:hover {
+        background-color: #F59E0B !important;
+        /* "Cam 500" -> Phải hiện! */
+    }
+
+    html:not(.dark) .nav-link:hover span {
+        color: white !important;
+        /* "Trắng" -> Phải hiện! */
+    }
+
+    html:not(.dark) .nav-link:hover svg {
+        color: white !important;
+        /* "Trắng" -> Phải hiện! */
+    }
+
+    /* === "VỚT" MENU SIDEBAR (Trạng thái KHÔNG active VÀ KHÔNG hover) === */
+    /* (Cái này ba "ưng" rồi!) */
+    html:not(.dark) .nav-link:not(.active):not(:hover) span {
+        color: #111827;
+        /* "Đen" -> Nét liền! */
+    }
+
+    html:not(.dark) .nav-link:not(.active):not(:hover) svg {
+        color: #6366F1;
+        /* "Tím/Chàm 500" -> Nét liền! */
+    }
+
+    /* === "VÁ LỖI": "VỚT" MẤY CÁI LABEL BỊ MỜ === */
+    html:not(.dark) .tool-card label:not(.cursor-pointer) {
+        color: #374151 !important;
+    }
+
+    /* === "VÁ LỖI": "DẰN MẶT" MẤY CÁI NÚT "MẤT TÍCH" === */
+    html:not(.dark) button.text-white {
+        color: white !important;
+    }
+
+    /* === "VỚT" HẾT MẤY CHỮ XÁM CÒN LẠI === */
+
+    /* Mô tả chính (Tải lên một hình ảnh...) */
+    html:not(.dark) main .text-gray-800 {
+        color: #111827 !important;
+    }
+
+    /* *** "THẦN CHÚ" ĐÃ SỬA: "Chọn tệp..." (gray-700) *** */
+    /* * Con Mỡ "thêm" chữ "main" vào đây nè ba!
+    * * Nó "né" cái sidebar (aside) của ba ra 100%!
+    */
+    html:not(.dark) main .text-gray-700 {
+        color: #111827 !important;
+        /* "Đen" -> Nét liền! (AN TOÀN!) */
+    }
+
+    /* (Mấy cái còn lại "an toàn" 100%) */
+    html:not(.dark) main .text-gray-600 {
+        color: #1F2937 !important;
+    }
+
+    html:not(.dark) main .text-gray-500 {
+        color: #374151 !important;
+    }
+
+    html:not(.dark) aside .text-xs {
+        color: #374151 !important;
+    }
+
+    html:not(.dark) aside .text-base {
+        color: #374151 !important;
+    }
+
+    html:not(.dark) footer .text-gray-500 {
+        color: #374151 !important;
+    }
+
+    html:not(.dark) footer .text-gray-400 {
+        color: #4B5563 !important;
+    }
+
+
+    /* === CSS MỠ THÊM CHO MODAL VÀ AUTH === */
+
+    /* Bắt buộc modal phải hiện, bất chấp hidden của Tailwind */
+    #role-selection-modal.show {
+        display: flex !important;
+    }
+
+    /* Bắt buộc view phải hiện, bất chấp hidden của Tailwind */
+    #admin-view.show {
+        display: block !important;
+    }
+
+    /* Ép chữ của Admin View cho đúng ý ba */
+    html:not(.dark) #admin-name {
+        color: #111827 !important;
+    }
+
+    html.dark #admin-name {
+        color: #F3F4F6 !important;
+    }
+
+    /* === MIẾNG VÁ CỦA MỠ (SỬA LỖI LIGHT MODE) === */
+
+    /* 1. Sửa nền 2 ô Base64 (từ xám đặc -> trong suốt) */
+    html:not(.dark) #base64-input,
+    html:not(.dark) #base64-output {
+        /* Dùng nền trắng trong mờ để nó ăn vào nền kính */
+        background-color: rgba(255, 255, 255, 0.4) !important;
+        /* Ép chữ gõ vào cũng phải đen thui cho dễ đọc */
+        color: #111827 !important;
+    }
+
+    /* 2. Sửa tên Admin (từ mờ -> Đen thui) */
+    html:not(.dark) #admin-name {
+        /* Ép nó thành màu đen (#111827) cho rõ! */
+        color: #111827 !important;
+    }
+
+    /* === MỠ THÊM: CSS CHO BADMINTON SCHEDULER === */
+
+    /* Tiêu đề Thứ (T2, T3...) */
+    .calendar-header {
+        padding: 8px 4px;
+        background-color: rgba(229, 231, 235, 0.5);
+        /* bg-gray-200/50 */
+        border-radius: 6px;
+    }
+
+    html.dark .calendar-header {
+        background-color: rgba(55, 65, 81, 0.5);
+        /* dark:bg-gray-700/50 */
+    }
+
+    /* 1 ô ngày trong lịch */
+    .calendar-day {
+        min-height: 120px;
+        padding: 8px;
+        border: 1px solid rgba(229, 231, 235, 0.7);
+        /* border-gray-200/70 */
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: background-color 0.2s;
+    }
+
+    html.dark .calendar-day {
+        border-color: rgba(75, 85, 99, 0.7);
+        /* dark:border-gray-600/70 */
+        background-color: rgba(30, 41, 59, 0.3);
+    }
+
+    /* Ô ngày của tháng khác (bị mờ đi) */
+    .calendar-day.not-in-month {
+        background-color: rgba(243, 244, 246, 0.3);
+        /* bg-gray-100/30 */
+        opacity: 0.6;
+    }
+
+    html.dark .calendar-day.not-in-month {
+        background-color: rgba(30, 41, 59, 0.3);
+        /* dark:bg-gray-800/30 */
+    }
+
+    /* Số ngày (1, 2, 3...) */
+    .day-number {
+        font-weight: 600;
+        /* semibold */
+        color: #4B5563;
+        /* text-gray-600 */
+    }
+
+    html.dark .day-number {
+        color: #D1D5DB;
+        /* dark:text-gray-300 */
+    }
+
+    /* Nút bấm Có mặt (chấm ●) */
+    .day-toggle {
+        width: 100%;
+        padding: 4px;
+        border-radius: 6px;
+        font-size: 1.25rem;
+        /* 20px */
+        line-height: 1;
+        color: transparent;
+        /* Ban đầu trong suốt */
+        background-color: rgba(229, 231, 235, 0.5);
+        /* bg-gray-200/50 */
+        transition: all 0.2s;
+    }
+
+    html.dark .day-toggle {
+        background-color: rgba(55, 65, 81, 0.5);
+        /* dark:bg-gray-700/50 */
+    }
+
+    .day-toggle:hover {
+        background-color: rgba(209, 213, 219, 0.7);
+        /* hover:bg-gray-300/70 */
+    }
+
+    html.dark .day-toggle:hover {
+        background-color: rgba(75, 85, 99, 0.7);
+        /* dark:hover:bg-gray-600/70 */
+    }
+
+    /* Nút ● khi được BẬT (active) */
+    .day-toggle.active {
+        color: #111827;
+        /* text-black */
+        background-color: #FBBF24;
+        /* bg-amber-400 */
+        box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+    }
+
+    html.dark .day-toggle.active {
+        color: #F3F4F6;
+        /* dark:text-gray-100 */
+    }
+
+    /* Ô gõ tiền sân */
+    .day-cost-input {
+        width: 100%;
+        padding: 4px 8px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        /* text-sm */
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(229, 231, 235, 0.5);
+        /* border-gray-200/50 */
+    }
+
+    html.dark .day-cost-input {
+        background-color: rgba(55, 65, 81, 0.5);
+        /* dark:bg-gray-700/50 */
+        border-color: rgba(75, 85, 99, 0.5);
+        /* dark:border-gray-600/50 */
+    }
+
+    .day-cost-input:focus {
+        outline: 2px solid #F59E0B;
+        /* ring-amber-500 */
+        outline-offset: 0;
+    }
+
+    /* Ẩn mấy cái mũi tên tăng/giảm của ô input số */
+    .day-cost-input::-webkit-outer-spin-button,
+    .day-cost-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .day-cost-input[type=number] {
+        -moz-appearance: textfield;
+        /* MỠ THÊM DÒNG NÀY CHO NÓ HẾT CẢNH BÁO NÈ BA */
+        appearance: textfield;
+    }
+
+    /* === MỠ THÊM: "TÚT TÁT" GIAO DIỆN LỊCH CẦU LÔNG === */
+
+    /* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
+
+    /* 1. Biến 4 ô Tổng kết "lạc quẻ" thành 4 thẻ "kính mờ" */
+    html:not(.dark) #tool-badminton-scheduler .md\:grid-cols-2>div {
+        background-color: rgba(255, 255, 255, 0.6) !important;
+        /* Nền kính */
+        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        /* Viền kính */
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+
+    /* 2. Ép chữ số ngày (1, 2, 3...) thành xám đậm */
+    html:not(.dark) .day-number {
+        color: #374151 !important;
+        /* text-gray-700 */
+    }
+
+    /* 3. Ép chữ placeholder "Tiền..." thành xám đậm */
+    html:not(.dark) .day-cost-input::placeholder {
+        color: #6B7280 !important;
+        /* text-gray-500 */
+    }
+
+    /* 4. Ép chữ ba gõ vào (50000) thành màu đen */
+    html:not(.dark) .day-cost-input {
+        color: #111827 !important;
+        /* text-black */
+    }
+
+    /* 5. Ép nút nộp quỹ [+] thành màu xanh lá (nó đang bị mờ) */
+    html:not(.dark) #badminton-submit-deposit {
+        color: white !important;
+    }
+
+
+    /* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
+
+    /* 1. Cho nền lịch "nổi khối" lên 1 chút */
+    html.dark .calendar-day {
+        /* Tăng độ sáng nền 1 xíu so với nền tool-card */
+        background-color: rgba(55, 65, 81, 0.3) !important;
+        /* dark:bg-gray-700/30 */
+    }
+
+    /* 2. Cho ô ngày của tháng khác "chìm" xuống */
+    html.dark .calendar-day.not-in-month {
+        background-color: rgba(30, 41, 59, 0.3) !important;
+        /* dark:bg-gray-800/30 */
+        opacity: 0.5;
+    }
+
+    /* 3. Cho ô input "Tiền..." có nền tối hơn 1 chút */
+    html.dark .day-cost-input {
+        background-color: rgba(30, 41, 59, 0.5) !important;
+        /* dark:bg-gray-800/50 */
+    }
+
+    /* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
+    html:not(.dark) #badminton-add-deposit {
+        /* Đổi từ nền kính (trắng trong) sang nền xám RẤT NHẠT */
+        background-color: rgba(243, 244, 246, 0.7) !important;
+        /* bg-gray-100/70 */
+        /* Cho cái viền nó đậm hơn 1 xíu để thấy rõ là 1 cái ô */
+        border-color: rgba(209, 213, 219, 0.7) !important;
+        /* border-gray-300/70 */
+        color: #111827 !important;
+        /* Chữ gõ vào đen thui */
+    }
+
+    /* 2. Sửa placeholder "Nộp thêm..." (đang bị mờ) */
+    html:not(.dark) #badminton-add-deposit::placeholder {
+        color: #6B7280 !important;
+        /* text-gray-500 */
+    }
+
+
+    /* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
+
+    /* 1. Cho nền lịch "NỔI KHỐI" hơn */
+    html.dark .calendar-day {
+        /* Tăng độ sáng nền 1 xíu so với nền tool-card */
+        background-color: rgba(75, 85, 99, 0.25) !important;
+        /* dark:bg-gray-600/25 */
+        border-color: rgba(75, 85, 99, 0.6) !important;
+        /* dark:border-gray-600/60 */
+    }
+
+    /* 2. Cho ô ngày của tháng khác "CHÌM" xuống */
+    html.dark .calendar-day.not-in-month {
+        background-color: rgba(30, 41, 59, 0.3) !important;
+        /* dark:bg-gray-800/30 */
+        opacity: 0.5;
+    }
+
+    /* 3. Cho nút ● (active) "NỔI BẬT" (Nền vàng + CHỮ ĐEN) */
+    html.dark .day-toggle.active {
+        background-color: #FBBF24 !important;
+        /* Nền vàng (bg-amber-400) */
+        color: #F3F4F6 !important;
+        box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+    }
+
+    /* 4. Cho ô input "Tiền..." (trong lịch) tối hơn 1 xíu */
+    html.dark .day-cost-input {
+        background-color: rgba(30, 41, 59, 0.5) !important;
+        /* dark:bg-gray-800/50 */
+        border-color: rgba(55, 65, 81, 0.7) !important;
+        /* dark:border-gray-700/70 */
+        color: #F3F4F6 !important;
+    }
+
+
+
+    /* =========================================== */
+    /* === MỠ VÁ LỖI GIAO DIỆN TỐI (BADMINON) === */
+    /* =========================================== */
+
+    /* Sửa lỗi 1: Màu nền 4 ô tóm tắt bị lạc quẻ 
+    Con dùng #1e293b (là màu slate-800) để nó tiệp màu nền.
+    */
+    .dark #tool-badminton-scheduler .grid[class*="lg:grid-cols-4"]>div {
+        background-color: #1e293b !important;
+    }
+
+    /* Sửa lỗi 1.1: Màu nền ô input "Nộp thêm..." 
+    Con dùng #334155 (là màu slate-700) cho nó nổi lên 1 xíu.
+    */
+    .dark #badminton-add-deposit {
+        background-color: #334155 !important;
+    }
+
+    /* Sửa lỗi 2: Chữ số tiền và dấu ● trong lịch bị đen 
+    Con bắt nó thành màu trắng (#f1f5f9) khi ở nền tối.
+    */
+    .dark .calendar-day {
+        color: #f1f5f9;
+        /* (slate-100) */
+    }
+
+    /* Sửa lỗi 2.1: Chữ trong ô input (50.000) và chữ "Tiền..." 
+    Con cũng bắt nó thành màu trắng sáng luôn.
+    */
+    .dark .day-cost-input {
+        color: #f8fafc;
+        /* (slate-50) */
+        background-color: #334155;
+        /* (slate-700) */
+    }
+
+    .dark .day-cost-input::placeholder {
+        color: #94a3b8;
+        /* (slate-400) */
+    }
+
+
+
+    /* =========================================== */
+    /* === MỠ VÁ LỖI SỐ 4 (Phiên bản "XỊN" - min-height) === */
+    /* =========================================== */
+
+    /* 1. Set MỘT CHIỀU CAO TỐI THIỂU cho ô lịch */
+    /* Ba chỉ cần sửa 1 SỐ 80px ở đây là xong! */
+    .calendar-day {
+        min-height: 80px !important;
+        /* <--- LINH HỒN LÀ SỐ NÀY! */
+
+        /* Mấy cái này con thêm để nó tự dàn hàng cho đẹp */
+        padding: 0.25rem !important;
+        /* Vẫn giữ padding mỏng */
+        display: flex;
+        /* Bắt nó dàn layout */
+        flex-direction: column;
+        /* Dàn theo chiều dọc */
+        justify-content: space-between;
+        /* Đẩy nội dung ra 2 cực */
+    }
+
+    /* 2. Ép ô input co giãn (nhưng không vượt quá) */
+    .day-cost-input {
+        font-size: 0.75rem !important;
+        /* Giữ chữ nhỏ */
+        padding: 0.25rem !important;
+        /* Giữ padding nhỏ */
+        /* margin-top: auto; Xóa dòng này, dùng justify-content ở trên hay hơn */
+    }
+
+
+
+    /* =========================================== */
+    /* === MỠ THÊM: CHO CỬA SỔ ĐỌC "FULL MÀN HÌNH" === */
+    /* =========================================== */
+
+    #blog-reader-modal {
+        padding: 0 !important;
+    }
+
+    #blog-reader-content {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+    }
+
+    /* =========================================== */
+    /* === MỠ "DẠY" PROSE CÁCH VẼ BẢNG (TABLE) === */
+    /* =========================================== */
+
+    /* 1. Ép cái bảng (table) nằm trong cửa sổ đọc */
+    #blog-reader-body table {
+        width: 100%;
+        /* Cho nó rộng hết cỡ */
+        border-collapse: collapse;
+        /* Viền "sạch" (không bị 2 lớp) */
+        margin-top: 1.25em;
+        /* Cách cái đoạn văn ở trên 1 xíu */
+        margin-bottom: 1.25em;
+        /* Cách cái đoạn văn ở dưới 1 xíu */
+    }
+
+    /* 2. Ép cái tiêu đề (th) và ô (td) */
+    #blog-reader-body th,
+    #blog-reader-body td {
+        border: 1px solid #9ca3af;
+        /* Viền màu xám (gray-400) */
+        padding: 0.5em 0.75em;
+        /* Cho nó "thở" (8px 12px) */
+        text-align: left;
+        /* Chữ canh trái (ba thích canh giữa thì đổi) */
+    }
+
+    /* 3. Ép cái hàng tiêu đề (thead) cho nó "nổi" lên */
+    #blog-reader-body thead th {
+        font-weight: 700;
+        /* Chữ đậm (bold) */
+        /* Nền xám nhạt (cho chế độ SÁNG) */
+        background-color: #f3f4f6;
+        /* bg-gray-100 */
+    }
+
+    /* 4. Fix cho chế độ TỐI (Dark Mode) */
+    .dark #blog-reader-body th,
+    .dark #blog-reader-body td {
+        border-color: #6b7280;
+        /* Viền xám đậm hơn (gray-500) */
+    }
+
+    .dark #blog-reader-body thead th {
+        /* Nền xám tối (cho chế độ TỐI) */
+        background-color: #374151;
+        /* bg-gray-700 */
+    }
+
+    /* =========================================== */
+    /* === MỠ "PHẪU THUẬT" CỬA SỔ ĐỌC (V5) === */
+    /* (Bản "MẮT THẦN" - Đập đi xây lại) */
+    /* =========================================== */
+
+    /* 1. "XÓA SẠCH" THANH HEADER CŨ! (Giữ nguyên) */
+    #blog-reader-content header {
+        display: none !important;
+    }
+
+    /* 2. "BIẾN MẤT" CẢ THANH FOOTER (Thanh xám) */
+    /* (Con Mỡ "xóa sổ" nó luôn!) */
+    #blog-reader-content footer {
+        display: none !important;
+    }
+
+    /* 3. "TÚT TÁT" TIÊU ĐỀ MỚI (Giữ nguyên) */
+    .in-article-title {
+        font-size: 1.875rem !important;
+        font-weight: 700 !important;
+        color: #F59E0B !important;
+        margin-bottom: 12px !important;
+    }
+
+    html:not(.dark) .in-article-title {
+        color: #4F46E5 !important;
+    }
+
+    .in-article-tags {
+        margin-bottom: 24px !important;
+        padding-bottom: 16px !important;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2) !important;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* 4. "ĐỊNH VỊ" NÚT "ĐÓNG" LƠ LỬNG (Ghim) */
+    /* (Con "ghim" nó vào cái Article (khung cuộn)) */
+    #blog-reader-content article {
+        /* Bắt buộc phải có "relative" để "ghim" nút */
+        position: relative !important;
+    }
+
+    /* (Giờ con Mỡ "tạo" 1 cái nút "giả") */
+    .sticky-close-btn-injected {
+        position: sticky !important;
+        bottom: 16px !important;
+        /* Cách đáy 16px */
+        right: 0px !important;
+        /* Cách lề phải 0px (nó nằm trong padding) */
+        z-index: 100;
+
+        /* "Mượn" style của nút cũ */
+        background-color: #e5e7eb;
+        /* bg-gray-200 */
+        color: #374151;
+        /* text-gray-700 */
+        font-weight: 700;
+        padding: 4px 20px !important;
+        /* "Bóp" (py-1 px-5) */
+        border-radius: 8px;
+        /* rounded-lg */
+        font-size: 0.875rem !important;
+        /* text-sm */
+
+        /* Phải "float" để nó "dạt" qua phải */
+        float: right !important;
+        clear: both;
+        /* Chống bị "trôi" */
+
+        /* "TÀNG HÌNH" */
+        opacity: 0 !important;
+        transform: translateY(20px) !important;
+        pointer-events: none !important;
+        transition: all 0.3s ease !important;
+    }
+
+    /* Style cho Dark Mode */
+    html.dark .sticky-close-btn-injected {
+        background-color: #374151;
+        /* dark:bg-gray-700 */
+        color: #D1D5DB;
+        /* dark:text-gray-300 */
+    }
+
+    /* Hiệu ứng Hover */
+    .sticky-close-btn-injected:hover {
+        background-color: #d1d5db;
+        /* hover:bg-gray-300 */
+    }
+
+    html.dark .sticky-close-btn-injected:hover {
+        background-color: #4b5563;
+        /* dark:hover:bg-gray-600 */
+    }
+
+    /* 5. CLASS "HIỆN HÌNH" (Khi "mắt thần" thấy) */
+    .sticky-close-btn-injected.show {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+    }
+
+    /* 6. "MẮT THẦN" (Vô hình) */
+    .article-end-sentinel {
+        height: 1px;
+        width: 100%;
+        display: block;
+    }
+
+
+    /* 3. LÀM "MẬP" THANH CUỘN (Giữ nguyên V3 vì ba ưng) */
+
+    /* Gọng kìm 1: Chỉ mặt thằng <article> */
+    #blog-reader-content>article::-webkit-scrollbar {
+        width: 24px !important;
+    }
+
+    #blog-reader-content>article::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05) !important;
+    }
+
+    #blog-reader-content>article::-webkit-scrollbar-thumb {
+        background-color: rgba(245, 158, 11, 0.7) !important;
+        border-radius: 10px !important;
+        border: 4px solid #FDFBF5 !important;
+        background-clip: padding-box !important;
+    }
+
+    #blog-reader-content>article::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(245, 158, 11, 1) !important;
+    }
+
+    /* Gọng kìm 2: Chỉ mặt thằng #blog-reader-body (dự phòng) */
+    #blog-reader-body::-webkit-scrollbar {
+        width: 24px !important;
+    }
+
+    #blog-reader-body::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05) !important;
+    }
+
+    #blog-reader-body::-webkit-scrollbar-thumb {
+        background-color: rgba(245, 158, 11, 0.7) !important;
+        border-radius: 10px !important;
+        border: 4px solid #FDFBF5 !important;
+        background-clip: padding-box !important;
+    }
+
+    #blog-reader-body::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(245, 158, 11, 1) !important;
+    }
+
+
+    /* 4. GÓI "DỄ THỞ" CỦA BA (Kích hoạt) */
+    /*
+    * Tấn công vào khu vực .prose (chữ viết)
+    */
+    #blog-reader-body.prose {
+        /* 4.1: Phóng to chữ lên 18px (thay vì 16px) */
+        font-size: 1.5rem !important;
+        /* 18px */
+
+        /* 4.2: Tăng độ dãn dòng cho "thoáng" */
+        line-height: 2.0 !important;
+    }
+
+    /*
+    * Mấy cái tiêu đề H2, H3 trong bài cũng phải dãn dòng
+    */
+    #blog-reader-body.prose h2,
+    #blog-reader-body.prose h3,
+    #blog-reader-body.prose h4 {
+        line-height: 1.4 !important;
+    }
+
+
+    /* ================================== */
+    /* ===  MỠ FIX LỖI V7 (BẢN "SIÊU CÔ ĐỌNG")  === */
+    /* === (Chỉ trị "Lỗi Bức Tường") === */
+    /* ================================== */
+
+    /*
+    * Tấn công "một mình" khu vực chữ (.prose)
+    * Ra lệnh cho nó tự "thụt lề" 2 bên
+    */
+    #blog-reader-body.prose {
+        /* === CÔNG TẮC CỦA BA NẰM ĐÂY! === */
+        padding-left: 15% !important;
+        padding-right: 15% !important;
+    }
+
+    /* ================================== */
+    /* ===  GÓI NÂNG CẤP 6 "CA" CỦA BA MỠ  === */
+    /* ===  (Dán ở cuối file style.css)   === */
+    /* ================================== */
+
+    /* --- 1. (Ca Nền Tối) "Vớt" NGÀY GIỜ cho sáng lên --- */
+    html.dark .blog-post-card .text-xs {
+        color: #E5E7EB !important;
+        /* Vớt lên Gray-200 (sáng rõ) */
+    }
+
+    /* --- 2. (Ca Nền Tối + Sáng) "Độ" Nút Sửa/Xóa thành "Nút Mini" --- */
+    /* (Con Mỡ làm luôn cho Nền Sáng, vì nó cũng xấu!) */
+    .blog-edit-btn,
+    .blog-delete-btn {
+        color: #FFFFFF !important;
+        /* Chữ Trắng */
+        padding: 4px 10px !important;
+        /* py-1 px-2.5 (cho nó mập) */
+        border-radius: 6px !important;
+        /* rounded-md */
+        font-size: 0.75rem !important;
+        /* text-xs */
+        font-weight: 500 !important;
+        /* medium */
+        text-decoration: none !important;
+        /* Bỏ gạch chân */
+        transition: background-color 0.2s;
+        border: none !important;
+        /* Bỏ viền (nếu có) */
+    }
+
+    /* Nút [Sửa] */
+    .blog-edit-btn {
+        background-color: #3B82F6 !important;
+        /* Nền Blue-500 */
+    }
+
+    .blog-edit-btn:hover {
+        background-color: #2563EB !important;
+        /* Hover Blue-600 */
+    }
+
+    /* Nút [Xóa] */
+    .blog-delete-btn {
+        background-color: #EF4444 !important;
+        /* Nền Red-500 */
+    }
+
+    .blog-delete-btn:hover {
+        background-color: #DC2626 !important;
+        /* Hover Red-600 */
+    }
+
+    /* --- 4. (Ca Nền Sáng) Nền Card -> "THẺ NỔI" (Trắng + Bóng mờ) --- */
+    html:not(.dark) .blog-post-card {
+        background-color: #FFFFFF !important;
+        /* Nền trắng tinh */
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        /* Viền siêu mờ */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        /* Bóng mờ "nổi" */
+    }
+
+
+    /* --- 5. (Ca Nền Sáng) Fix Hover Tiêu đề -> "TÍM/CHÀM" --- */
+    html:not(.dark) .blog-post-card h3:hover {
+        color: #4F46E5 !important;
+        /* Màu Tím/Chàm (Indigo-600) */
+    }
+
+
+    /* ================================== */
+    /* ===  VÁ LỖI NÚT [SỬA][XÓA] (Bản V8 "Ép Góc Siêu Chuẩn") === */
+    /* ================================== */
+
+    /* 1. "Ghim" cái card cha lại (Giữ nguyên) */
+    .blog-post-card {
+        position: relative !important;
+    }
+
+    /* 2. "Phóng" 2 cái nút con lên góc trên-phải (Bản "Chuẩn") */
+    /* "Tóm" đúng cái div nào "CÓ CHỨA" (has) nút .blog-edit-btn */
+    .blog-post-card div:has(>.blog-edit-btn) {
+        position: absolute !important;
+        top: 1.5rem !important;
+        /* 24px (canh y chang padding p-6) */
+
+        /* === "CÔNG TẮC" MỚI (CHUẨN 100%) === */
+        right: 1.5rem !important;
+        /* Cách lề phải 24px (thay vì 0) */
+        padding-right: 0 !important;
+        /* KHÔNG đẩy lề bên trong nữa */
+
+        /* === "ÉP" 2 NÚT LẠI GẦN NHAU === */
+        gap: 0.25rem !important;
+        /* 4px (thay vì 8px) */
+
+        margin-top: 0 !important;
+        /* Hủy cái mt-4 (margin-top) cũ đi */
+        width: auto !important;
+        /* Bắt nó "co" lại, đừng "banh" 100% */
+    }
+
+    /* 3. "Bắt" cái Tiêu đề (h3) phải "né" (Giữ nguyên) */
+    .blog-post-card h3 {
+        /* "Chừa" 1 khoảng lề 140px bên phải cho 2 cái nút */
+        padding-right: 140px !important;
+    }
+
+    /* ================================================= */
+    /* === GÓI "SỨC KHỎE ĐÔI MẮT" (BẢN SỬA LỖI FULL-SCREEN) === */
+    /* (Dán ở cuối file style.css) */
+    /* ================================================= */
+
+    /* --- 1. ÉP NỀN GIẤY CHO CẢ CỬA SỔ (THEO Ý BA) --- */
+    /* * Ép cái "cửa sổ" (#blog-reader-content)
+    * phải có nền giấy, thay vì chỉ ép cái chữ (.prose)
+    */
+    #blog-reader-content {
+        /* Nền kem giấy (dịu mắt) */
+        background-color: #FBF8F0 !important;
+    }
+
+    /* --- 2. ÉP MÀU CHỮ (ĐÃ SỬA) --- */
+    /* * Giờ ép cái .prose chỉ đổi màu chữ thôi,
+    * không đổi nền nữa.
+    */
+    html:not(.dark) #blog-reader-body.prose,
+    html.dark #blog-reader-body.prose {
+        /* (Mỡ đã xóa dòng background-color ở đây) */
+
+        /* Màu chữ Nâu-Xám (đè 'black' và 'white') */
+        color: #44413C !important;
+
+        /* Ép nền của <article> trong suốt để lòi nền giấy */
+        background-color: transparent !important;
+    }
+
+    /* --- 3. ÉP MÀU CHỮ CHI TIẾT (Giữ nguyên) --- */
+
+    /* Ép Tiêu đề, Chữ đậm (Nâu đậm hơn để nhấn mạnh) */
+    html:not(.dark) #blog-reader-body.prose h2,
+    html:not(.dark) #blog-reader-body.prose h3,
+    html:not(.dark) #blog-reader-body.prose h4,
+    html:not(.dark) #blog-reader-body.prose strong,
+    html.dark #blog-reader-body.prose h2,
+    html.dark #blog-reader-body.prose h3,
+    html.dark #blog-reader-body.prose h4,
+    html.dark #blog-reader-body.prose strong {
+        color: #6D5544 !important;
+    }
+
+    /* Ép Link (cho nó 1 màu Nâu Đỏ gạch) */
+    html:not(.dark) #blog-reader-body.prose a,
+    html.dark #blog-reader-body.prose a {
+        color: #8A3B29 !important;
+        text-decoration: underline !important;
+    }
+
+    html:not(.dark) #blog-reader-body.prose a:hover,
+    html.dark #blog-reader-body.prose a:hover {
+        color: #B94E3A !important;
+    }
+
+    /* --- 4. SỬA LẠI CÁI BẢNG (TABLE) (Giữ nguyên) --- */
+    /* (Vì 'prose-invert' bị ta vô hiệu hóa) */
+
+    /* Nền tiêu đề bảng (chế độ sáng & tối) */
+    #blog-reader-body thead th {
+        background-color: #EFEAE0 !important;
+        /* Kem đậm hơn 1 xíu */
+        color: #6D5544 !important;
+        /* Chữ tiêu đề bảng */
+    }
+
+    /* Viền bảng (chế độ sáng & tối) */
+    #blog-reader-body th,
+    #blog-reader-body td {
+        border-color: #DCD6C8 !important;
+        /* Viền màu kem-xám */
+    }
