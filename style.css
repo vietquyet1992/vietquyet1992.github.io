@@ -1144,74 +1144,64 @@
     }
 
     /* ================================================= */
-    /* === GÓI "SỨC KHỎE ĐÔI MẮT" (BẢN SỬA LỖI FULL-SCREEN) === */
-    /* (Dán ở cuối file style.css) */
-    /* ================================================= */
+/* === GÓI "MẮT DỊU E-INK" (GIẢ LẬP KINDLE) === */
+/* (Thay thế cho "GÓI SỨC KHỎE ĐÔI MẮT" cũ) */
+/* ================================================= */
 
-    /* --- 1. ÉP NỀN GIẤY CHO CẢ CỬA SỔ (THEO Ý BA) --- */
-    /* * Ép cái "cửa sổ" (#blog-reader-content)
-    * phải có nền giấy, thay vì chỉ ép cái chữ (.prose)
-    */
-    #blog-reader-content {
-        /* Nền kem giấy (dịu mắt) */
-        background-color: #FBF8F0 !important;
-    }
+/* --- 1. ÉP NỀN GIẤY E-INK (MÀU KEM GIẤY) --- */
+#blog-reader-content {
+  /* Nền kem giấy (dịu mắt, giống Kindle) */
+  background-color: #FBF8F0 !important;
+}
 
-    /* --- 2. ÉP MÀU CHỮ (ĐÃ SỬA) --- */
-    /* * Giờ ép cái .prose chỉ đổi màu chữ thôi,
-    * không đổi nền nữa.
-    */
-    html:not(.dark) #blog-reader-body.prose,
-    html.dark #blog-reader-body.prose {
-        /* (Mỡ đã xóa dòng background-color ở đây) */
+/* --- 2. ÉP MÀU CHỮ CHÍNH (XÁM ĐEN MỀM) --- */
+/* Ép .prose đổi màu chữ, không đổi nền */
+html:not(.dark) #blog-reader-body.prose,
+html.dark #blog-reader-body.prose {
+  /* Màu chữ xám đen (giống Kindle, mềm hơn #000) */
+  color: #333333 !important;
 
-        /* Màu chữ Nâu-Xám (đè 'black' và 'white') */
-        color: #44413C !important;
+  /* Ép nền của <article> trong suốt để lòi nền giấy */
+  background-color: transparent !important;
+}
 
-        /* Ép nền của <article> trong suốt để lòi nền giấy */
-        background-color: transparent !important;
-    }
+/* --- 3. ÉP MÀU CHỮ CHI TIẾT (THEO TÔNG XÁM) --- */
 
-    /* --- 3. ÉP MÀU CHỮ CHI TIẾT (Giữ nguyên) --- */
+/* Ép Tiêu đề, Chữ đậm (CÙNG MÀU CHỮ CHÍNH) */
+/* (Độ đậm sẽ do font-weight: 700 của .prose lo) */
+html:not(.dark) #blog-reader-body.prose h2,
+html:not(.dark) #blog-reader-body.prose h3,
+html:not(.dark) #blog-reader-body.prose h4,
+html:not(.dark) #blog-reader-body.prose strong,
+html.dark #blog-reader-body.prose h2,
+html.dark #blog-reader-body.prose h3,
+html.dark #blog-reader-body.prose h4,
+html.dark #blog-reader-body.prose strong {
+  color: #333333 !important; /* Dùng chung 1 màu xám đen */
+}
 
-    /* Ép Tiêu đề, Chữ đậm (Nâu đậm hơn để nhấn mạnh) */
-    html:not(.dark) #blog-reader-body.prose h2,
-    html:not(.dark) #blog-reader-body.prose h3,
-    html:not(.dark) #blog-reader-body.prose h4,
-    html:not(.dark) #blog-reader-body.prose strong,
-    html.dark #blog-reader-body.prose h2,
-    html.dark #blog-reader-body.prose h3,
-    html.dark #blog-reader-body.prose h4,
-    html.dark #blog-reader-body.prose strong {
-        color: #6D5544 !important;
-    }
+/* Ép Link (Màu xanh dương đậm, dễ đọc) */
+html:not(.dark) #blog-reader-body.prose a,
+html.dark #blog-reader-body.prose a {
+  color: #0056b3 !important; /* Xanh dương đậm, dễ đọc */
+  text-decoration: underline !important;
+}
 
-    /* Ép Link (cho nó 1 màu Nâu Đỏ gạch) */
-    html:not(.dark) #blog-reader-body.prose a,
-    html.dark #blog-reader-body.prose a {
-        color: #8A3B29 !important;
-        text-decoration: underline !important;
-    }
+html:not(.dark) #blog-reader-body.prose a:hover,
+html.dark #blog-reader-body.prose a:hover {
+  color: #007bff !important; /* Xanh sáng hơn khi hover */
+}
 
-    html:not(.dark) #blog-reader-body.prose a:hover,
-    html.dark #blog-reader-body.prose a:hover {
-        color: #B94E3A !important;
-    }
+/* --- 4. SỬA LẠI CÁI BẢNG (TABLE) THEO TÔNG XÁM --- */
 
-    /* --- 4. SỬA LẠI CÁI BẢNG (TABLE) (Giữ nguyên) --- */
-    /* (Vì 'prose-invert' bị ta vô hiệu hóa) */
+/* Nền tiêu đề bảng (sáng & tối) */
+#blog-reader-body thead th {
+  background-color: #EEEEEE !important; /* Nền xám nhạt */
+  color: #333333 !important; /* Chữ xám đen */
+}
 
-    /* Nền tiêu đề bảng (chế độ sáng & tối) */
-    #blog-reader-body thead th {
-        background-color: #EFEAE0 !important;
-        /* Kem đậm hơn 1 xíu */
-        color: #6D5544 !important;
-        /* Chữ tiêu đề bảng */
-    }
-
-    /* Viền bảng (chế độ sáng & tối) */
-    #blog-reader-body th,
-    #blog-reader-body td {
-        border-color: #DCD6C8 !important;
-        /* Viền màu kem-xám */
-    }
+/* Viền bảng (sáng & tối) */
+#blog-reader-body th,
+#blog-reader-body td {
+  border-color: #DDDDDD !important; /* Viền xám tiêu chuẩn */
+}
