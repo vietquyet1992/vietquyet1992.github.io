@@ -207,6 +207,12 @@
         /* Ép thành màu Gray-100 (giống App) */
     }
 
+    /* === MÃ SỬA LỖI MẤT HOVER (DARK MODE) === */
+    html.dark .blog-post-card h3:hover {
+        color: #F59E0B !important;
+        /* Vàng cam (Amber-500) */
+    }
+
     /* Sửa chữ mờ (P) của My Blog */
     html.dark .blog-post-card p {
         color: #E5E7EB !important;
