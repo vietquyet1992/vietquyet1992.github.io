@@ -992,7 +992,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const postData = doc.data();
                         const postId = doc.id;
                         const postCard = document.createElement('div');
-                        postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-slate-800/50 rounded-lg';
+                        postCard.className = 'blog-post-card glass-effect p-6 rounded-xl';
                         const titleEl = document.createElement('h3');
                         titleEl.className = 'text-xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer hover:text-amber-500 transition-colors';
                         titleEl.textContent = postData.title || 'Bài viết không có tiêu đề';
@@ -1003,7 +1003,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         dateEl.textContent = new Date(postData.createdAt.seconds * 1000).toLocaleString('vi-VN');
                         postCard.appendChild(dateEl);
                         const summaryEl = document.createElement('p');
-                        summaryEl.className = 'text-gray-700 dark:text-gray-300 mt-4';
+                        summaryEl.className = 'text-gray-700 dark:text-gray-200 mt-4';
                         summaryEl.textContent = postData.summary || '(Bài viết này chưa có tóm tắt...)';
                         postCard.appendChild(summaryEl);
                         if (postData.tags && postData.tags.length > 0) {
@@ -1342,7 +1342,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const postData = doc.data();
                         const postId = doc.id;
                         const postCard = document.createElement('div');
-                        postCard.className = 'blog-post-card p-6 bg-gray-100/30 dark:bg-black/20 dark:border dark:border-white/15 rounded-lg';
+                        postCard.className = 'blog-post-card glass-effect p-6 rounded-xl';
 
 
                         const titleEl = document.createElement('h3');
@@ -1553,7 +1553,7 @@ data-old-present="${isPresent}">
 <input 
 type="text"  
 class="day-cost-input" 
-placeholder="" 
+placeholder="_" 
 value="${cost}"
 data-date="${dateString}"
 data-old-cost="${cost || 0}">
@@ -2197,4 +2197,4 @@ ${iconHTML}
     </script>
 </body>
 
-</html>
+</html> 

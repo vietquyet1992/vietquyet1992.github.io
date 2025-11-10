@@ -1012,14 +1012,6 @@ html.dark .blog-post-card .text-xs {
     background-color: #DC2626 !important; /* Hover Red-600 */
 }
 
-
-/* --- 3. (Ca Nền Tối) Nền Card -> "TRONG SUỐT" + Viền Sáng --- */
-html.dark .blog-post-card {
-    background-color: rgba(0, 0, 0, 0.2) !important; /* bg-black/20 */
-    border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Viền trắng mờ 15% */
-}
-
-
 /* --- 4. (Ca Nền Sáng) Nền Card -> "THẺ NỔI" (Trắng + Bóng mờ) --- */
 html:not(.dark) .blog-post-card {
     background-color: #FFFFFF !important; /* Nền trắng tinh */
