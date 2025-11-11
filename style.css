@@ -1287,42 +1287,58 @@
     /* === CSS CHO POPUP SỰ KIỆN (BẤT NGỜ) === */
     /* ======================================================= */
 
-    /* Lớp nền mờ */
+    /* Lớp nền mờ (ĐÃ SỬA BLUR VÀ VỊ TRÍ) */
     .event-popup-backdrop {
         position: fixed;
+        /* <--- SỬA LẠI THÀNH 'fixed' */
         inset: 0;
+        /* <--- Thuộc tính này thay thế cho top/left/width/height */
+        /* <--- SỬA LẠI: Dùng absolute thay vì fixed */
+
         z-index: 100;
-        /* Phải cao hơn z-index của cửa sổ đọc blog */
-        background-color: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(8px);
+
+        /* Tăng độ tối của nền mờ để hiệu ứng nổi bật hơn */
+        background-color: rgba(0, 0, 0, 0.85);
+        /* Tối hơn 0.6 để độ mờ rõ ràng hơn */
+
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+
         opacity: 0;
         transition: opacity 0.3s ease;
         pointer-events: none;
-        /* Không cho bấm xuyên qua */
     }
 
     /* Nội dung Popup */
-.event-popup-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 101;
-  transform: translate(-50%, -50%) scale(0.9);
-  
-  /* === SỬA MỚI === */
-  margin-left: 2px; /* Đẩy sang phải một chút để che bóng thừa */
-  /* === HẾT SỬA MỚI === */
-  
-  opacity: 0;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
+    .event-popup-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 101;
+        transform: translate(-50%, -50%) scale(0.9);
 
-    /* Trạng thái HIỆN */
-    .event-popup-backdrop.show,
+        /* === SỬA MỚI === */
+        margin-left: 2px;
+        /* Đẩy sang phải một chút để che bóng thừa */
+        /* === HẾT SỬA MỚI === */
+
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    /* Trạng thái HIỆN (CHO NỀN MỜ) */
+    .event-popup-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+        /* KHÔNG CÓ TRANSFORM Ở ĐÂY */
+    }
+
+    /* Trạng thái HIỆN (CHO NỘI DUNG THIỆP) */
     .event-popup-content.show {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
+        /* CHỈ CÓ TRANSFORM Ở ĐÂY */
         pointer-events: auto;
     }
 
@@ -1413,88 +1429,105 @@
 
     /* Trong file CSS của bạn */
 
-/* Điều chỉnh màu chữ và nền của thiệp sinh nhật */
-.card-birthday { /* Hoặc .modal-birthday, tùy thuộc vào class bạn dùng cho thiệp */
-    /* Màu nền của thiệp */
-    background-color: var(--card-background-color, #2D3748); /* Sử dụng biến CSS để thay đổi theo theme */
-    
-    /* Màu chữ của thiệp */
-    color: var(--text-color, #E2E8F0); /* Sử dụng biến CSS để thay đổi theo theme */
-    
-    /* Thêm shadow để thiệp nổi bật hơn trên nền sáng */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-    
-    /* Đảm bảo border rõ ràng hơn nếu có */
-    border: 1px solid var(--border-color, #4A5568);
-}
+    /* Điều chỉnh màu chữ và nền của thiệp sinh nhật */
+    .card-birthday {
+        /* Hoặc .modal-birthday, tùy thuộc vào class bạn dùng cho thiệp */
+        /* Màu nền của thiệp */
+        background-color: var(--card-background-color, #2D3748);
+        /* Sử dụng biến CSS để thay đổi theo theme */
 
-/* Hoặc nếu bạn có một class cụ thể cho các đoạn văn bản trong thiệp */
-.card-birthday p,
-.card-birthday h1,
-.card-birthday h2,
-.card-birthday h3 {
-    color: var(--text-color, #E2E8F0); /* Đảm bảo màu chữ luôn rõ */
-}
+        /* Màu chữ của thiệp */
+        color: var(--text-color, #E2E8F0);
+        /* Sử dụng biến CSS để thay đổi theo theme */
 
-/* Đặc biệt cho chế độ sáng: Bạn cần có một khối CSS cho Light Mode */
-/* Giả sử bạn đang dùng một class như .light-mode trên body hoặc một container nào đó */
-body.light-mode .card-birthday {
-    background-color: #FFFFFF; /* Nền trắng sáng cho thiệp */
-    color: #333333; /* Chữ đen hoặc xám đậm để dễ đọc */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow nhẹ hơn */
-    border: 1px solid #E2E8F0; /* Border màu sáng */
-}
+        /* Thêm shadow để thiệp nổi bật hơn trên nền sáng */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-body.light-mode .card-birthday h1 { /* Hoặc các tiêu đề khác */
-    color: #FF69B4; /* Màu hồng đậm cho tiêu đề để nổi bật hơn */
-}
+        /* Đảm bảo border rõ ràng hơn nếu có */
+        border: 1px solid var(--border-color, #4A5568);
+    }
 
-/* Nếu bạn sử dụng biến CSS để quản lý theme, hãy đảm bảo các biến đó được định nghĩa chính xác */
-/* Ví dụ: */
-:root { /* Chế độ tối mặc định */
-    --card-background-color: #2D3748;
-    --text-color: #E2E8F0;
-    --border-color: #4A5568;
-}
+    /* Hoặc nếu bạn có một class cụ thể cho các đoạn văn bản trong thiệp */
+    .card-birthday p,
+    .card-birthday h1,
+    .card-birthday h2,
+    .card-birthday h3 {
+        color: var(--text-color, #E2E8F0);
+        /* Đảm bảo màu chữ luôn rõ */
+    }
 
-.light-mode { /* Khi body có class light-mode */
-    --card-background-color: #FFFFFF;
-    --text-color: #333333;
-    --border-color: #E2E8F0;
-}
+    /* Đặc biệt cho chế độ sáng: Bạn cần có một khối CSS cho Light Mode */
+    /* Giả sử bạn đang dùng một class như .light-mode trên body hoặc một container nào đó */
+    body.light-mode .card-birthday {
+        background-color: #FFFFFF;
+        /* Nền trắng sáng cho thiệp */
+        color: #333333;
+        /* Chữ đen hoặc xám đậm để dễ đọc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Shadow nhẹ hơn */
+        border: 1px solid #E2E8F0;
+        /* Border màu sáng */
+    }
 
-/* ======================================================= */
-/* === FIX POPUP SỰ KIỆN (LIGHT MODE TĂNG TƯƠNG PHẢN) === */
-/* ======================================================= */
+    body.light-mode .card-birthday h1 {
+        /* Hoặc các tiêu đề khác */
+        color: #FF69B4;
+        /* Màu hồng đậm cho tiêu đề để nổi bật hơn */
+    }
 
-/* 1. Tiêu đề Chính (Chúc mừng sinh nhật Cô Út!) */
-html:not(.dark) #event-popup-title {
-    /* Ép màu thành hồng đậm hơn để nổi bật trên nền trắng */
-    color: #C026D3 !important; /* Ví dụ: Màu Magenta 600 (Đậm hơn Pink) */
-    /* Hoặc bạn có thể dùng màu Cam #F59E0B nếu thích tông màu chủ đạo */
-}
+    /* Nếu bạn sử dụng biến CSS để quản lý theme, hãy đảm bảo các biến đó được định nghĩa chính xác */
+    /* Ví dụ: */
+    :root {
+        /* Chế độ tối mặc định */
+        --card-background-color: #2D3748;
+        --text-color: #E2E8F0;
+        --border-color: #4A5568;
+    }
 
-/* 2. Tiêu đề phụ (HPBDI Cô Út) và Lời chúc */
-html:not(.dark) #event-popup-content p {
-    /* Ép màu chữ lời chúc (và sub-text) thành màu đen đậm */
-    color: #1F2937 !important; /* text-gray-800 */
-}
+    .light-mode {
+        /* Khi body có class light-mode */
+        --card-background-color: #FFFFFF;
+        --text-color: #333333;
+        --border-color: #E2E8F0;
+    }
 
-/* 3. Nền kính mờ (Đảm bảo chữ không bị tàng hình vì nền) */
-html:not(.dark) .event-popup-content .tool-card {
-    /* Đảm bảo nền là màu trắng tinh (white) hoặc trắng kem (#FFFBF5) */
-    background-color: #FFFFFF !important;
-}
+    /* ======================================================= */
+    /* === FIX POPUP SỰ KIỆN (LIGHT MODE TĂNG TƯƠNG PHẢN) === */
+    /* ======================================================= */
 
-/* 4. Nút đóng [X] */
-html:not(.dark) .event-popup-close-btn {
-    /* Đổi màu chữ [X] thành màu đen/xám đậm để hiện rõ */
-    color: #1F2937 !important; 
-    /* Đổi màu nền nút thành trắng tinh (để nó không còn là mờ ảo) */
-    background-color: #F3F4F6 !important; /* Hoặc #FFFFFF */
-    border: 1px solid #D1D5DB !important; /* Thêm viền nhẹ */
-}
+    /* 1. Tiêu đề Chính (Chúc mừng sinh nhật Cô Út!) */
+    html:not(.dark) #event-popup-title {
+        /* Ép màu thành hồng đậm hơn để nổi bật trên nền trắng */
+        color: #C026D3 !important;
+        /* Ví dụ: Màu Magenta 600 (Đậm hơn Pink) */
+        /* Hoặc bạn có thể dùng màu Cam #F59E0B nếu thích tông màu chủ đạo */
+    }
 
-html:not(.dark) .event-popup-close-btn:hover {
-    background-color: #E5E7EB !important; /* Nền xám nhạt khi hover */
-}
+    /* 2. Tiêu đề phụ (HPBDI Cô Út) và Lời chúc */
+    html:not(.dark) #event-popup-content p {
+        /* Ép màu chữ lời chúc (và sub-text) thành màu đen đậm */
+        color: #1F2937 !important;
+        /* text-gray-800 */
+    }
+
+    /* 3. Nền kính mờ (Đảm bảo chữ không bị tàng hình vì nền) */
+    html:not(.dark) .event-popup-content .tool-card {
+        /* Đảm bảo nền là màu trắng tinh (white) hoặc trắng kem (#FFFBF5) */
+        background-color: #FFFFFF !important;
+    }
+
+    /* 4. Nút đóng [X] */
+    html:not(.dark) .event-popup-close-btn {
+        /* Đổi màu chữ [X] thành màu đen/xám đậm để hiện rõ */
+        color: #1F2937 !important;
+        /* Đổi màu nền nút thành trắng tinh (để nó không còn là mờ ảo) */
+        background-color: #F3F4F6 !important;
+        /* Hoặc #FFFFFF */
+        border: 1px solid #D1D5DB !important;
+        /* Thêm viền nhẹ */
+    }
+
+    html:not(.dark) .event-popup-close-btn:hover {
+        background-color: #E5E7EB !important;
+        /* Nền xám nhạt khi hover */
+    }

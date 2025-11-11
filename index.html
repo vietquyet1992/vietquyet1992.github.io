@@ -15,7 +15,7 @@
     <script src="tinymce/tinymce.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=4.5">
     <script>
         if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
             document.documentElement.classList.add('dark');
@@ -26,6 +26,21 @@
 </head>
 
 <body class="text-black dark:text-gray-100 min-h-screen">
+    <div id="event-popup-backdrop" class="event-popup-backdrop"></div>
+    <div id="event-popup-content" class="event-popup-content">
+        <div class="p-8 tool-card glass-effect text-center relative max-w-lg">
+            <button id="event-popup-close-btn" class="event-popup-close-btn">&times;</button>
+
+            <audio id="birthday-song" src="assets/birthday-song.mp3" loop></audio>
+
+            <h2 id="event-popup-title" class="text-4xl font-bold mb-4 text-pink-600 dark:text-pink-400"></h2>
+            <p id="event-popup-greeting" class="text-lg text-gray-800 dark:text-gray-300 mb-6 whitespace-pre-line"></p>
+
+            <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2Y5dWU4c3l1OWZleGYyN2RlNm1zNmYzaGNna2E3d2ZrNHN4c3J2bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l41Ys1fQky5raqvMQ/giphy.gif"
+                alt="Chúc mừng" class="mx-auto rounded-lg shadow-lg">
+        </div>
+    </div>
+
     <audio id="nhac-nen-cua-ba" src="assets/am-thanh.mp3" loop></audio>
     <div class="lg:flex">
         <aside class="lg:w-64 w-full lg:min-h-screen p-4 flex flex-col glass-effect">
@@ -35,7 +50,7 @@
             </div>
             <nav class="flex flex-col space-y-2">
                 <a href="#" class="nav-link active group flex items-center px-4 py-3 rounded-lg transition-all duration-200 
-text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="remove-bg">
+    text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool="remove-bg">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
                         viewBox="0 0 20 20" fill="currentColor">
@@ -248,9 +263,9 @@ text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool=
                             </select>
                         </div>
                         <button id="convert-to-ico-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 
-disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
-dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
-shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
+    disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none 
+    dark:disabled:bg-gray-600/50 dark:disabled:text-gray-400 
+    shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</button>
                         <div id="ico-status" class="text-sm text-green-600 dark:text-green-400 mt-2"></div>
                     </div>
                 </div>
@@ -298,17 +313,17 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 </div>
             </div>
             <div id="tool-events-public" class="tool-content hidden opacity-0">
-                                <div class="p-8 tool-card glass-effect">
-                                        <h2 class="text-2xl font-bold mb-6 text-amber-600 dark:text-gray-50">Góc Bất Ngờ
+                <div class="p-8 tool-card glass-effect">
+                    <h2 class="text-2xl font-bold mb-6 text-amber-600 dark:text-gray-50">Góc Bất Ngờ
                     </h2>
-                                                            <div id="events-public-list" class="space-y-4">
-                                                <p id="events-public-loading" class="text-gray-500">Đang tải danh sách
+                    <div id="events-public-list" class="space-y-4">
+                        <p id="events-public-loading" class="text-gray-500">Đang tải danh sách
                             sự kiện...</p>
-                                                <p id="events-public-empty" class="text-gray-500 hidden">Hôm nay không
+                        <p id="events-public-empty" class="text-gray-500 hidden">Hôm nay không
                             có sự kiện gì đặc biệt cả.</p>
-                                            </div>
-                                    </div>
-                            </div>
+                    </div>
+                </div>
+            </div>
             <div id="tool-my-research" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect space-y-8">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Một vài bài viết do chức năng
@@ -335,16 +350,16 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     <div id="blog-pagination-controls" class="hidden flex items-center justify-between mt-8">
                         <button id="blog-prev-btn"
                             class="font-bold py-2 px-6 rounded-lg transition duration-300 
-                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
-                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
+                                    bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
+                                    disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
                             &larr; Trang trước
                         </button>
                         <span id="blog-page-indicator" class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 /
                             1</span>
                         <button id="blog-next-btn"
                             class="font-bold py-2 px-6 rounded-lg transition duration-300 
-                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
-                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
+                                    bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
+                                    disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
                             Trang sau &rarr;
                         </button>
                     </div>
@@ -495,14 +510,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                             sách...</p>
                     </div>
                 </div>
-            </div>
-    </div>
-    </div>
-    </main>
-    </div>
-
-    </div>
-    </main>
+        </main>
     </div>
     <footer class="text-center py-4 mt-8 relative">
         <p class="text-base text-gray-500 dark:text-gray-400">
@@ -1104,8 +1112,8 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                                 const baseClasses = "blog-tag-link text-xs font-medium py-1 px-2 rounded-full cursor-pointer";
                                 // "Trộn" lại!
                                 return `<span class="${baseClasses} ${colorClasses}">
-        ${tag}
-    </span>`;
+            ${tag}
+        </span>`;
                             }).join(' ');
                             const tagsDiv = document.createElement('div');
                             tagsDiv.className = 'mt-4 flex flex-wrap gap-2';
@@ -1114,10 +1122,10 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         }
                         if (window.isAdmin) {
                             const adminButtonsHTML = `
-                            <div class="mt-4 flex gap-2">
-                                <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
-                                <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
-                            </div>`;
+                                <div class="mt-4 flex gap-2">
+                                    <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                                    <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                                </div>`;
                             const adminDiv = document.createElement('div');
                             adminDiv.innerHTML = adminButtonsHTML;
                             postCard.appendChild(adminDiv);
@@ -1161,23 +1169,23 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     skin: 'oxide', // 1. Ép giao diện (toolbar) luôn là Sáng
                     content_css: false, // 2. Vô hiệu hóa CSS "dark"/"default" của TinyMCE
                     content_style: `
-                        /* 3. Tải Google Font (giống hệt file index.html) */
-                        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-                        
-                        /* 4. Áp dụng nền giấy và chữ xám đen */
-                        body {
-                            background-color: #FBF8F0 !important; /* Nền giấy E-Ink */
-                            color: #333333 !important; /* Chữ xám đen mềm */
-                            font-family: 'Inter', sans-serif !important; 
-                            line-height: 1.8 !important; /* Dãn dòng 1.8 cho dễ viết */
-                        }
+                            /* 3. Tải Google Font (giống hệt file index.html) */
+                            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                            
+                            /* 4. Áp dụng nền giấy và chữ xám đen */
+                            body {
+                                background-color: #FBF8F0 !important; /* Nền giấy E-Ink */
+                                color: #333333 !important; /* Chữ xám đen mềm */
+                                font-family: 'Inter', sans-serif !important; 
+                                line-height: 1.8 !important; /* Dãn dòng 1.8 cho dễ viết */
+                            }
 
-                        /* 5. Sửa màu link cho đồng bộ */
-                        a {
-                            color: #0056b3 !important;
-                            text-decoration: underline !important;
-                        }
-                    `,
+                            /* 5. Sửa màu link cho đồng bộ */
+                            a {
+                                color: #0056b3 !important;
+                                text-decoration: underline !important;
+                            }
+                        `,
                     // === HẾT MÃ MỚI ===
                     height: 400,
                     file_picker_types: 'image media',
@@ -1323,18 +1331,18 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         const baseClasses = "blog-tag-link text-xs font-medium py-1 px-2 rounded-full cursor-pointer";
                         // "Trộn" lại!
                         return `<span class="${baseClasses} ${colorClasses}">
-                ${tag}
-            </span>`;
+                    ${tag}
+                </span>`;
                     }).join(' ');
                 }
                 const headerHTML = `
-        <div class="in-article-header">
-            <h2 class="in-article-title">${postData.title || 'Bài viết không có tiêu đề'}</h2>
-            <div class="in-article-tags">
-                ${tagsHTML || 'Chưa gắn tag'}
+            <div class="in-article-header">
+                <h2 class="in-article-title">${postData.title || 'Bài viết không có tiêu đề'}</h2>
+                <div class="in-article-tags">
+                    ${tagsHTML || 'Chưa gắn tag'}
+                </div>
             </div>
-        </div>
-    `;
+        `;
 
                 // 2. "BƠM" (Gộp header + nội dung + "MẮT THẦN")
                 blogReaderBody.innerHTML = headerHTML +
@@ -1419,13 +1427,13 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 filterStatusEl.id = 'blog-filter-status'; // (Mỡ thêm ID để xóa)
                 filterStatusEl.className = 'p-4 bg-amber-100 dark:bg-amber-900/50 rounded-lg mb-6 flex justify-between items-center';
                 filterStatusEl.innerHTML = `
-        <span class="font-medium text-amber-800 dark:text-amber-200">
-            Đang lọc theo tag: <strong class="text-lg">${tagName}</strong>
-        </span>
-        <button id="blog-clear-filter-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">
-            &times; Xóa bộ lọc
-        </button>
-    `;
+            <span class="font-medium text-amber-800 dark:text-amber-200">
+                Đang lọc theo tag: <strong class="text-lg">${tagName}</strong>
+            </span>
+            <button id="blog-clear-filter-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">
+                &times; Xóa bộ lọc
+            </button>
+        `;
                 // Chèn vào *trước* danh sách bài viết
                 blogPostsList.before(filterStatusEl);
 
@@ -1494,10 +1502,10 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
                         if (window.isAdmin) {
                             const adminButtonsHTML = `
-                <div class="mt-4 flex gap-2">
-                    <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
-                    <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
-                </div>`;
+                    <div class="mt-4 flex gap-2">
+                        <button class="blog-edit-btn text-sm text-blue-400 hover:text-blue-300" data-id="${postId}">[Sửa]</button>
+                        <button class="blog-delete-btn text-sm text-red-400 hover:text-red-300" data-id="${postId}">[Xóa]</button>
+                    </div>`;
                             const adminDiv = document.createElement('div');
                             adminDiv.innerHTML = adminButtonsHTML;
                             postCard.appendChild(adminDiv);
@@ -1512,10 +1520,10 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     // ĐÂY LÀ "THẦN CHÚ" BÁO LỖI INDEX
                     if (error.code === 'failed-precondition') {
                         blogPostsList.innerHTML = `<p class="text-center text-red-500 p-4 bg-red-100 dark:bg-red-900/50 rounded-lg">
-                <b>Lỗi "đụng nóc" Firestore!</b><br>
-                Ba ơi, ba cần tạo "Chỉ mục" (Index) thì mới lọc tag được! <br>
-                <span class="text-xs">(Lỗi: ${error.message})</span>
-            </p>`;
+                    <b>Lỗi "đụng nóc" Firestore!</b><br>
+                    Ba ơi, ba cần tạo "Chỉ mục" (Index) thì mới lọc tag được! <br>
+                    <span class="text-xs">(Lỗi: ${error.message})</span>
+                </p>`;
                     } else {
                         blogPostsList.innerHTML = `<p class="text-center text-red-500">Lọc tag thất bại.</p>`;
                     }
@@ -1716,15 +1724,15 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         card.className = 'flex items-center justify-between p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg';
                         const checked = event.isEnabled ? 'checked' : '';
                         card.innerHTML = `
-      <div class="flex-1">
-        <span class="font-medium text-gray-700 dark:text-gray-200">${event.title}</span>
-      </div>
-      <div class="flex items-center gap-3">
-                <input type="checkbox" data-id="${event.id}" class="event-toggle-btn form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" ${checked}>
-                <button data-id="${event.id}" class="event-edit-btn text-sm font-medium text-blue-500 hover:text-blue-700">[Sửa]</button>
-                <button data-id="${event.id}" class="event-delete-btn text-sm font-medium text-red-500 hover:text-red-700">[Xóa]</button>
-      </div>
-    `;
+          <div class="flex-1">
+            <span class="font-medium text-gray-700 dark:text-gray-200">${event.title}</span>
+          </div>
+          <div class="flex items-center gap-3">
+                    <input type="checkbox" data-id="${event.id}" class="event-toggle-btn form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" ${checked}>
+                    <button data-id="${event.id}" class="event-edit-btn text-sm font-medium text-blue-500 hover:text-blue-700">[Sửa]</button>
+                    <button data-id="${event.id}" class="event-delete-btn text-sm font-medium text-red-500 hover:text-red-700">[Xóa]</button>
+          </div>
+        `;
                         listEl.appendChild(card);
                     });
                 }
@@ -1919,23 +1927,23 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
                     // (Đã xóa placeholder="_" ở đây)
                     calendarHtml += `
-<div class="calendar-day">
-<span class="day-number">${day}</span>
-<button 
-class="day-toggle ${isPresent ? 'active' : ''}" 
-data-date="${dateString}"
-data-old-present="${isPresent}">
-●
-</button>
-<input 
-type="text"  
-class="day-cost-input" 
-placeholder="_" 
-value="${cost}"
-data-date="${dateString}"
-data-old-cost="${cost || 0}">
-</div>
-`; // Nối vào chuỗi
+    <div class="calendar-day">
+    <span class="day-number">${day}</span>
+    <button 
+    class="day-toggle ${isPresent ? 'active' : ''}" 
+    data-date="${dateString}"
+    data-old-present="${isPresent}">
+    ●
+    </button>
+    <input 
+    type="text"  
+    class="day-cost-input" 
+    placeholder="_" 
+    value="${cost}"
+    data-date="${dateString}"
+    data-old-cost="${cost || 0}">
+    </div>
+    `; // Nối vào chuỗi
                 }
 
                 // === BƯỚC 3: "BƠM" HTML VÀO LỊCH (CHỈ 1 LẦN) ===
@@ -2485,25 +2493,25 @@ data-old-cost="${cost || 0}">
                                 iconHTML = `<img src="${app.iconUrl}" class="h-full w-full object-contain" alt="${app.appName || 'App'} icon">`;
                             }
                             const appCardHTML = `
-<div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-<div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
-${iconHTML}
-</div>
-<div class="flex-grow">
-<h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
-<p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
-<div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-<span>Số lượt tải: </span>
-<span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
-</div>
-</div>
-<div class="w-full sm:w-auto flex-shrink-0">
-<button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-<span>Tải về</span>
-</button>
-</div>
-</div>`;
+    <div class="app-card glass-effect p-6 rounded-xl shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+    <div class="flex-shrink-0 w-32 h-32 bg-white/70 dark:bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+    ${iconHTML}
+    </div>
+    <div class="flex-grow">
+    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">${app.appName || 'Không có tên'}</h3>
+    <p class="text-gray-600 dark:text-gray-200 mt-1">${app.description || 'Không có mô tả.'}</p>
+    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+    <span>Số lượt tải: </span>
+    <span class="font-semibold" id="count-${appId}">${app.downloadCount || 0}</span>
+    </div>
+    </div>
+    <div class="w-full sm:w-auto flex-shrink-0">
+    <button class="download-btn w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-amber-500/40 flex items-center justify-center gap-2" data-doc-id="${appId}" data-url="${app.downloadUrl || '#'}">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+    <span>Tải về</span>
+    </button>
+    </div>
+    </div>`;
                             appsListContainer.insertAdjacentHTML('beforeend', appCardHTML);
                         });
                     }
@@ -2586,20 +2594,7 @@ ${iconHTML}
             }
         });
     </script>
-    <div id="event-popup-backdrop" class="event-popup-backdrop"></div>
-    <div id="event-popup-content" class="event-popup-content">
-        <div class="p-8 tool-card glass-effect text-center relative max-w-lg">
-            <button id="event-popup-close-btn" class="event-popup-close-btn">&times;</button>
 
-            <audio id="birthday-song" src="assets/birthday-song.mp3" loop></audio>
-
-            <h2 id="event-popup-title" class="text-4xl font-bold mb-4 text-pink-600 dark:text-pink-400"></h2>
-            <p id="event-popup-greeting" class="text-lg text-gray-800 dark:text-gray-300 mb-6 whitespace-pre-line"></p>
-
-            <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2Y5dWU4c3l1OWZleGYyN2RlNm1zNmYzaGNna2E3d2ZrNHN4c3J2bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l41Ys1fQky5raqvMQ/giphy.gif"
-                alt="Chúc mừng" class="mx-auto rounded-lg shadow-lg">
-        </div>
-    </div>
 </body>
 
 </html>
