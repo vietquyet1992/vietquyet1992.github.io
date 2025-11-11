@@ -820,29 +820,24 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 // Lấy 3 cái nút gạt
                 const toggleResearch = document.getElementById('toggle-research');
                 const toggleBadminton = document.getElementById('toggle-badminton');
-                // === THÊM BIẾN MỚI ===
-                const toggleEventsPublic = document.getElementById('toggle-events-public'); // <--- SỬA THÀNH ID ĐÚNG
+                const toggleEventsPublic = document.getElementById('toggle-events-public'); // <--- BIẾN CHÍNH XÁC
 
-
-                // (Thoát nếu không tìm thấy 1 trong các nút quan trọng)
-                if (!toggleEventsPublic || !toggleResearch || !toggleBadminton) return; // <--- FIX LỖI 1: Kiểm tra 3 biến
+                // (Thoát nếu không tìm thấy)
+                if (!toggleEventsPublic || !toggleResearch || !toggleBadminton) return;
 
                 console.log("Khởi tạo Admin Panel Toggles...");
 
-                // 1. Đặt trạng thái 'checked' theo cài đặt đã tải
-
-                toggleEventsPublic.checked = globalTabSettings.show_events_public; // <--- FIX LỖI 2A
+                // 1. Đặt trạng thái 'checked' theo cài đặt đã tải (TỪ FIRESTORE)
+                toggleEventsPublic.checked = globalTabSettings.show_events_public; // <-- SỬ DỤNG TRƯỜNG CHÍNH XÁC
                 toggleResearch.checked = globalTabSettings.show_research;
                 toggleBadminton.checked = globalTabSettings.show_badminton;
 
 
-
-
                 // 2. Gắn sự kiện 'change' để lưu lên Firestore
                 // (Dùng .hasListener để tránh gắn 2-3 lần)
-                if (toggleEventsPublic && !toggleEventsPublic.hasListener) {
+                if (!toggleEventsPublic.hasListener) { // <--- LẮNG NGHE NÚT MỚI
                     toggleEventsPublic.addEventListener('change', () => {
-                        settingsRef.update({ show_events_public: toggleEventsPublic.checked })
+                        settingsRef.update({ show_events_public: toggleEventsPublic.checked }) // <--- CẬP NHẬT TRƯỜNG CHÍNH XÁC
                             .catch(e => alert("Lỗi cập nhật Góc Bất Ngờ: " + e.message));
                     });
                     toggleEventsPublic.hasListener = true;
