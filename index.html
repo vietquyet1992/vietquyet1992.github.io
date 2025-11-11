@@ -639,34 +639,57 @@
                 eventPopupCloseBtn.addEventListener('click', closeEventPopup);
                 eventPopupBackdrop.addEventListener('click', closeEventPopup);
             }
-            // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth();
-            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
             const provider = new firebase.auth.GoogleAuthProvider();
-            provider.setCustomParameters({ prompt: 'select_account' }); // <<< DÒNG MỠ THÊM VÀO ĐÂY
+            provider.setCustomParameters({ prompt: 'select_account' });
             const modal = document.getElementById('role-selection-modal');
             const selectGuestBtn = document.getElementById('select-role-guest');
             const selectAdminBtn = document.getElementById('select-role-admin');
             const adminLoginBtn = document.getElementById('admin-login-btn');
             const adminLogoutBtn = document.getElementById('admin-logout-btn');
-            // (Tự động lắng nghe thay đổi từ Firestore)
-            settingsRef.onSnapshot((doc) => {
-                if (doc.exists) {
-                    globalTabSettings = doc.data();
-                    listenForPublicEvents(); // <-- THÊM DÒNG NÀY (để tải sự kiện)
-                } else {
-                    // Nếu chưa có, tự tạo file cài đặt mặc định (ẩn hết)
-                    settingsRef.set(globalTabSettings).catch(e => console.error("Lỗi tạo settings:", e));
-                }
-                console.log("Cài đặt tab đã cập nhật:", globalTabSettings);
 
-                // Chạy lại hàm updateUI để áp dụng cài đặt mới cho Guest
-                const user = auth.currentUser;
-                checkAdminStatus(user);
-            }, (error) => {
-                console.error("Lỗi tải cài đặt tab:", error);
-            });
-            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
+            // === COMBO "CHỐT HẠ" CỦA MỠ (ĐÚNG THỨ TỰ) ===
+            console.log("Khởi động 'Dàn nhạc' Auth...");
+
+            // BƯỚC 1: Ra lệnh "Đổi bộ nhớ" (SESSION)
+            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then(() => {
+                    // BƯỚC 2: (Đã đổi xong) -> Mới chạy "Trạm gác" (Lễ tân)
+                    console.log("Đã đổi bộ nhớ sang SESSION. Đang hút kết quả Redirect...");
+                    return auth.getRedirectResult(); // Trả kết quả "hút" được
+                })
+                .then((result) => {
+                    // BƯỚC 3: (Đã "hút" xong) -> Báo cáo
+                    if (result.user) {
+                        console.log("Đã 'hút' thành công user từ Redirect:", result.user.email);
+                    } else {
+                        console.log("Không có kết quả Redirect nào (đây là tải trang bình thường).");
+                    }
+
+                    // BƯỚC 4: (Tất cả đã xong) -> Mới mở "Tổng đài" onAuthStateChanged
+                    console.log("Mở 'Tổng đài' onAuthStateChanged...");
+                    auth.onAuthStateChanged((user) => {
+                        const role = localStorage.getItem('userRole');
+                        if (user) {
+                            console.log("'Tổng đài' báo có user:", user.email);
+                            modal.classList.remove('show'); // Dọn dẹp modal (fix lỗi lần trước)
+                            checkAdminStatus(user);
+                        } else {
+                            console.log("'Tổng đài' báo không có user (hoặc đã logout).");
+                            updateUI(null, false);
+                            if (!role) {
+                                console.log("Chưa chọn role, hiện modal...");
+                                modal.classList.add('show');
+                            }
+                        }
+                    });
+                })
+                .catch((error) => {
+                    // Báo lỗi nếu 1 trong 2 BƯỚC (1 hoặc 2) thất bại
+                    console.error("Lỗi nghiêm trọng khi khởi tạo Auth (setPersistence hoặc getRedirectResult):", error);
+                    alert("Lỗi khởi tạo: " + error.message);
+                });
+            // === HẾT COMBO "CHỐT HẠ" ===
             // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
             // === HÀM MỚI: CHUYÊN GIA KHÓA/MỞ LỊCH ===
             function setCalendarInputsReadOnly(isReadOnly) {
