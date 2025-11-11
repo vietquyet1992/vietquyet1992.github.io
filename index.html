@@ -1688,21 +1688,38 @@
             }
 
             // Hàm lắng nghe các sự kiện CÔNG KHAI (cho Guest)
-            function listenForPublicEvents() {
-                // Tắt listener cũ (nếu có)
-                if (publicEventsUnsubscribe) publicEventsUnsubscribe();
 
-                // Chỉ lấy các sự kiện đang được BẬT (isEnabled == true)
-                publicEventsUnsubscribe = eventsRef
-                    .where("isEnabled", "==", true)
-                    .orderBy("createdAt", "desc")
-                    .onSnapshot(snapshot => {
-                        const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        renderPublicEventsList(eventsData);
-                    }, error => {
-                        console.error("Lỗi tải sự kiện công khai:", error);
-                        document.getElementById('events-public-loading').textContent = 'Lỗi tải sự kiện.';
-                    });
+
+
+            function listenForPublicEvents() {
+                // 1. Tắt listener cũ (nếu có)
+                if (publicEventsUnsubscribe) publicEventsUnsubscribe();
+                // 2. "BỘ NÃO" MỚI: Xây dựng truy vấn (query)                
+                let query = eventsRef; // Bắt đầu với query gốc
+
+                // 3. Kiểm tra "biển báo" Admin toàn cục (window.isAdmin)                 
+                if (window.isAdmin) {
+                    // 3a. NẾU LÀ ADMIN (Ba đó!):                    
+                    // Ba là Admin, ba được xem HẾT (KHÔNG lọc .where)                     
+                    console.log("Admin đang xem Góc Bất Ngờ (tải TẤT CẢ sự kiện)");
+                    query = query.where("isEnabled", "in", [true, false])
+                        .orderBy("createdAt", "desc");
+                } else {                     // 3b. NẾU LÀ GUEST (Khách):                    
+                    // Khách chỉ được xem cái đã BẬT (isEnabled == true)                    
+                    // (Cái Index "xịn" Descending của ba sẽ "cân" vụ này!)                     
+                    console.log("Guest đang xem Góc Bất Ngờ (chỉ tải sự kiện ĐÃ BẬT)");
+                    query = query.where("isEnabled", "==", true)
+                        .orderBy("createdAt", "desc");
+                }
+
+                // 4. Chạy listener "thông minh" với query đã chọn                 
+                publicEventsUnsubscribe = query.onSnapshot(snapshot => {
+                    const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderPublicEventsList(eventsData);
+                }, error => {
+                    console.error("Lỗi tải sự kiện công khai (Smart Listen):", error);
+                    document.getElementById('events-public-loading').textContent = 'Lỗi tải sự kiện.';
+                });
             }
 
             // --- 2. HÀM DÀNH CHO QUẢN TRỊ (ADMIN) ---
@@ -1752,6 +1769,7 @@
                 // Tắt listener cũ (nếu có)
                 if (adminEventsUnsubscribe) adminEventsUnsubscribe();
                 adminEventsUnsubscribe = eventsRef
+                    .where("isEnabled", "in", [true, false])
                     .orderBy("createdAt", "desc")
                     .onSnapshot(snapshot => {
                         const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
