@@ -641,6 +641,7 @@
             }
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth();
+            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' }); // <<< DÒNG MỠ THÊM VÀO ĐÂY
             const modal = document.getElementById('role-selection-modal');
