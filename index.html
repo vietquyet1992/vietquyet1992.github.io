@@ -1694,7 +1694,7 @@
 
                 // Chỉ lấy các sự kiện đang được BẬT (isEnabled == true)
                 publicEventsUnsubscribe = eventsRef
-                    .where("isEnabled", "==", true)
+                    //.where("isEnabled", "==", true)
                     .orderBy("createdAt", "desc")
                     .onSnapshot(snapshot => {
                         const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
