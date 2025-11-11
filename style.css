@@ -1531,3 +1531,60 @@
         background-color: #E5E7EB !important;
         /* Nền xám nhạt khi hover */
     }
+
+
+/* ======================================================= */
+/* === MỠ "TÚT TÁT" LẠI CÁI NÚT GÓC BẤT NGỜ (BẢN HÀI HÒA) === */
+/* ======================================================= */
+
+/* --- A. CHẾ ĐỘ SÁNG (LIGHT MODE) --- */
+/* Dùng tông màu TÍM/CHÀM (Indigo) giống như các tiêu đề (H2) */
+
+#events-public-list a {
+    /* Nền: Tím/Chàm siêu nhạt (indigo-100) */
+    background-color: #e0e7ff !important;
+    
+    /* Chữ: Tím/Chàm đậm (indigo-700) */
+    color: #4338ca !important;
+    
+    /* Viền: Tím/Chàm nhạt (indigo-200) */
+    border: 1px solid #c7d2fe !important;
+    
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hiệu ứng lướt chuột (Hover) */
+#events-public-list a:hover {
+    background-color: #c7d2fe !important; /* (indigo-200) */
+    color: #3730a3 !important; /* (indigo-800) */
+    border-color: #a5b4fc !important; /* (indigo-300) */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+/* --- B. CHẾ ĐỘ TỐI (DARK MODE) --- */
+/* Dùng tông màu VÀNG CAM (Amber) "thương hiệu" */
+
+html.dark #events-public-list a {
+    /* Nền: Nâu cam đậm (amber-900) - Rất hợp với nền tối */
+    background-color: #78350f !important;
+    
+    /* Chữ: Vàng cam sáng (amber-400) - Nổi bật */
+    color: #fbbf24 !important;
+    
+    /* Viền: Cam đậm (amber-800) */
+    border: 1px solid #92400e !important;
+}
+
+/* Hiệu ứng lướt chuột (Hover) cho nền tối */
+html.dark #events-public-list a:hover {
+    background-color: #92400e !important; /* (amber-800) */
+    color: #fcd34d !important; /* Sáng hơn (amber-300) */
+    border-color: #d97706 !important; /* (amber-600) */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
