@@ -599,7 +599,7 @@
     <script>
         // (Chèn vào ngay dòng 595)
         document.addEventListener('DOMContentLoaded', () => {
-            
+
 
             const firebaseConfig = {
 
@@ -641,24 +641,6 @@
             }
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth();
-            // === MŨI TIÊM 3: "TRẠM GÁC" ĐÓN KHÁCH TỪ ĐIỆN THOẠI VỀ ===
-            // (Nó phải chạy TRƯỚC TẤT CẢ code firebase)
-            auth.getRedirectResult()
-                .then((result) => {
-                    if (result.user) {
-                        // "Bắt" được "vé" (tức là vừa đăng nhập bằng Redirect)
-                        console.log("Bắt được kết quả Redirect:", result.user.displayName);
-                        // Đóng dấu "chính thức" cho Admin.
-                        // Hàm onAuthStateChanged (ở dưới) sẽ tự động chạy sau cái này
-                        // và đọc cái 'admin' này.
-                        localStorage.setItem('userRole', 'admin');
-                    }
-                })
-                .catch((error) => {
-                    // Xử lý lỗi (nếu có)
-                    console.error("Lỗi khi getRedirectResult:", error);
-                });
-            // === HẾT "TRẠM GÁC" ===
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' }); // <<< DÒNG MỠ THÊM VÀO ĐÂY
             const modal = document.getElementById('role-selection-modal');
@@ -704,7 +686,7 @@
                 });
             }
 
-            // === HÀM "SIÊU TRÂU BÒ" (style.display) + NÂNG CẤP AUTONUMERIC + BẢO MẬT ===
+            // === HÀM "SIÊU TRÂU BÒ" (BẢN V3 "CHỐT HẠ" LOGIC AUTH) ===
             function updateUI(user, isAdmin) {
                 // === MỠ BỔ SUNG 1: Đặt "biển báo" Admin toàn cục ===
                 window.isAdmin = (user && isAdmin);
@@ -715,19 +697,13 @@
                 const navR = document.getElementById('nav-my-research');
                 const navB = document.getElementById('nav-badminton-scheduler');
                 const navAdmin = document.getElementById('nav-admin-panel');
-                const addDepositInput = document.getElementById('badminton-add-deposit'); // Lấy ô Nộp tiền
-                const submitDepositBtn = document.getElementById('badminton-submit-deposit'); // <<< MỠ LẤY THÊM NÚT
-
-                // (Bản vá đầy đủ)
-                if (!gView || !aView || !navD || !navR || !navB || !navAdmin || !addDepositInput || !submitDepositBtn) { // <<< MỠ THÊM NÚT VÀO CHECK
+                const addDepositInput = document.getElementById('badminton-add-deposit');
+                const submitDepositBtn = document.getElementById('badminton-submit-deposit');
+                if (!gView || !aView || !navD || !navR || !navB || !navAdmin || !addDepositInput || !submitDepositBtn) {
                     console.error("Lỗi nghiêm trọng: Không tìm thấy 1 trong các View UI!");
                     return;
                 }
-
-                // === MỠ "TÁI CẤU TRÚC" HÀM NÀY ===
-
-                // 1. Khởi tạo AutoNumeric cho ô "Nộp thêm" (1 LẦN DUY NHẤT)
-                // (Hàm này sẽ tự chạy 1 lần khi tải trang)
+                // (Code AutoNumeric của con Mỡ giữ nguyên)
                 if (addDepositInput && !addDepositInput.autoNumericInstance) {
                     const anInput = new AutoNumeric(addDepositInput, {
                         decimalCharacter: ',',
@@ -735,94 +711,88 @@
                         decimalPlaces: 0,
                         minimumValue: '-999999999',
                         maximumValue: '999999999',
-                        // Không set readOnly ở đây, set ở dưới
                     });
                     addDepositInput.autoNumericInstance = anInput;
                 }
-
-
                 if (user && isAdmin) {
-                    // 1. LÀ ADMIN
+                    // 1. LÀ ADMIN (Đăng nhập ĐÚNG)
+
+                    // === "CHỐT HẠ" 1: ĐÓNG DẤU ADMIN VÀO ĐÂY ===
+                    localStorage.setItem('userRole', 'admin');
+
                     gView.style.display = 'none';
-                    aView.style.display = 'block';
+                    aView.style.display = 'block'; // Hiển thị view Admin
                     navD.classList.remove('hidden');
                     navR.classList.remove('hidden');
                     navB.classList.remove('hidden');
                     navAdmin.classList.remove('hidden');
                     initializeAdminBlogFeatures();
-                    initializeEventAdmin(); // <-- THÊM DÒNG NÀY
+                    initializeEventAdmin();
                     setCalendarInputsReadOnly(false);
-
-                    // 2. Bật ô nộp tiền
                     if (addDepositInput.autoNumericInstance) {
-                        addDepositInput.autoNumericInstance.options.readOnly(false); // <<< Cho phép gõ
+                        addDepositInput.autoNumericInstance.options.readOnly(false);
                     }
                     addDepositInput.placeholder = 'Nộp thêm...';
-                    submitDepositBtn.disabled = false; // <<< Bật nút [+]
-
-                    // 3. Tải lịch (nếu chưa)
-                    // (Code này đã bị chuyển qua hàm showTool, nhưng Admin vẫn cần khởi tạo lần đầu)
+                    submitDepositBtn.disabled = false;
                     if (!window.calendarInitialized) {
                         loadFundData();
                         renderCalendar(currentDate.getMonth(), currentDate.getFullYear());
                         window.calendarInitialized = true;
                     }
-
-                    // 4. Set Avatar
                     const adminAvatar = document.getElementById('admin-avatar');
                     const adminName = document.getElementById('admin-name');
                     if (adminAvatar) adminAvatar.src = user.photoURL || 'images/favicon.png';
                     if (adminName) adminName.textContent = user.displayName || "Chào Admin!";
-
                 } else {
-                    // 1. LÀ GUEST
-                    gView.style.display = 'block';
-                    cleanupEventAdminListeners(); // <-- THÊM DÒNG NÀY (để dọn dẹp)
+                    // 2. LÀ GUEST (hoặc Admin "dỏm")
+
+                    // === "CHỐT HẠ" 2: ĐÓNG DẤU GUEST VÀO ĐÂY ===
+                    localStorage.setItem('userRole', 'guest');
+
+                    gView.style.display = 'block'; // Hiển thị view Guest
+                    cleanupEventAdminListeners();
                     aView.style.display = 'none';
-                    setCalendarInputsReadOnly(true); // <<< DÒNG MỚI (KHÓA LỊCH)
-
-                    // 2. Tắt ô nộp tiền
+                    setCalendarInputsReadOnly(true);
                     if (addDepositInput.autoNumericInstance) {
-                        addDepositInput.autoNumericInstance.options.readOnly(true); // <<< Khóa gõ
-                        addDepositInput.autoNumericInstance.clear(); // Xóa số (nếu lỡ gõ)
+                        addDepositInput.autoNumericInstance.options.readOnly(true);
+                        addDepositInput.autoNumericInstance.clear();
                     }
-                    addDepositInput.placeholder = "Money doesn't grow on trees!"; // <<< Đổi chữ
-                    submitDepositBtn.disabled = true; // <<< Tắt nút [+]
-
-                    // 3. Ẩn/Hiện Nav theo cài đặt (Giữ nguyên)
+                    addDepositInput.placeholder = "Money doesn't grow on trees!";
+                    submitDepositBtn.disabled = true;
                     navAdmin.classList.add('hidden');
-                    if (globalTabSettings.show_events_public) { // <-- SỬA TÊN
+                    if (globalTabSettings.show_events_public) {
                         navD.classList.remove('hidden');
                     } else {
                         navD.classList.add('hidden');
                     }
-
                     if (globalTabSettings.show_research) {
                         navR.classList.remove('hidden');
                     } else {
                         navR.classList.add('hidden');
                     }
-
                     if (globalTabSettings.show_badminton) {
                         navB.classList.remove('hidden');
                     } else {
                         navB.classList.add('hidden');
                     }
+
+                    // === "CHỐT HẠ" 3: XỬ LÝ ADMIN "DỎM" (Rất "từ tốn") ===
                     if (user && !isAdmin) {
-                        signOut();
+                        // Nếu "user" tồn tại (tức là vừa đăng nhập)
+                        // NHƯNG "isAdmin" là false (tức là không có trong "sổ")
+
+                        // 1. "La làng" trước
                         alert("Tài khoản này không có quyền Admin!");
+                        // 2. Sau khi ba bấm OK, "tiễn khách"
+                        signOut();
                     }
-
-                    // === SỬA LỖI LOGIC "QUÉT PHÒNG" NẰM Ở ĐÂY ===
-
+                    // === HẾT "CHỐT HẠ" 3 ===
+                    // (Code "quét phòng" của con Mỡ giữ nguyên)
                     const currentHash = window.location.hash.substring(1);
-                    const defaultTool = 'remove-bg'; // Trang an toàn
-
-                    // 1. Tạo 1 danh sách các trang BỊ CẤM (tức là đang ẨN)
-                    // 1. Tạo 1 danh sách các trang BỊ CẤM (tức là đang ẨN)
-                    let forbiddenTools = ['admin-panel']; // 'admin-panel' luôn cấm
-                    if (!globalTabSettings.show_events_public) { // <-- FIX LỖI 3A: Tên trường mới
-                        forbiddenTools.push('events-public'); // <-- FIX LỖI 3B: Tên tool mới
+                    const defaultTool = 'remove-bg';
+                    let forbiddenTools = ['admin-panel'];
+                    if (!globalTabSettings.show_events_public) {
+                        forbiddenTools.push('events-public');
                     }
                     if (!globalTabSettings.show_research) {
                         forbiddenTools.push('my-research');
@@ -830,16 +800,11 @@
                     if (!globalTabSettings.show_badminton) {
                         forbiddenTools.push('badminton-scheduler');
                     }
-
-                    // 2. Chỉ "đá" về trang chủ NẾU user đang ở 1 trang BỊ CẤM
                     if (forbiddenTools.includes(currentHash)) {
                         console.warn("User đang ở trang bị cấm (" + currentHash + "). Đá về trang chủ...");
-                        // Chuyển link về trang an toàn
                         history.pushState({ toolId: defaultTool }, '', `#${defaultTool}`);
-                        // Gọi hàm showTool để "vẽ" lại trang an toàn
                         showTool(defaultTool);
                     }
-                    // === HẾT PHẦN SỬA LỖI ===
                 }
             }
 
@@ -915,6 +880,7 @@
             auth.onAuthStateChanged((user) => {
                 const role = localStorage.getItem('userRole');
                 if (user) {
+                    modal.classList.remove('show');
                     checkAdminStatus(user);
                 } else {
                     updateUI(null, false);
@@ -923,6 +889,21 @@
                     }
                 }
             });
+            // === "TRẠM GÁC" CỦA MỠ (BA DÁN VÀO ĐÂY) ===
+            // (Chạy ngay khi tải trang, để "hút" kết quả nếu ba vừa bị "lái" về)
+            auth.getRedirectResult()
+                .then((result) => {
+                    if (result.user) {
+                        // Đã "hút" được user!
+                        // "Lễ tân" onAuthStateChanged (ở trên) sẽ lo phần còn lại
+                        console.log("Đã hút thành công user từ Redirect:", result.user.email);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Lỗi khi hút Redirect Result:", error);
+                    alert("Lỗi xử lý đăng nhập: " + error.message);
+                });
+            // === HẾT "TRẠM GÁC" ===
             // === MŨI TIÊM 1: "MÁY NGỬI" ĐIỆN THOẠI CỦA MỠ ===
             function isMobileDevice() {
                 // "Tuyệt chiêu" của con Mỡ: Dùng 1 nùi chữ này để "ngửi"
@@ -944,7 +925,6 @@
                     auth.signInWithPopup(provider)
                         .then((result) => {
                             // Đăng nhập popup thành công
-                            localStorage.setItem('userRole', 'admin');
                         })
                         .catch((error) => {
                             // (Giữ nguyên phần báo lỗi "popup blocked" của ba)
