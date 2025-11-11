@@ -1282,3 +1282,126 @@
         color: #E5E7EB !important;
         /* text-gray-200 */
     }
+
+    /* ======================================================= */
+    /* === CSS CHO POPUP SỰ KIỆN (BẤT NGỜ) === */
+    /* ======================================================= */
+
+    /* Lớp nền mờ */
+    .event-popup-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        /* Phải cao hơn z-index của cửa sổ đọc blog */
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        /* Không cho bấm xuyên qua */
+    }
+
+    /* Nội dung Popup */
+    .event-popup-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 101;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    /* Trạng thái HIỆN */
+    .event-popup-backdrop.show,
+    .event-popup-content.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+    }
+
+    /* Nút đóng [X] mới: Nhỏ, tinh tế, nằm bên trong góc trên phải */
+    .event-popup-close-btn {
+        position: absolute;
+        top: 12px;
+        /* Dịch vào bên trong 12px */
+        right: 12px;
+        /* Dịch vào bên trong 12px */
+        width: 30px;
+        /* Nhỏ hơn */
+        height: 30px;
+        /* Nhỏ hơn */
+
+        /* Đổi màu nền thành màu Xám tối/Trắng mờ */
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #333333;
+        /* Chữ xám đen */
+
+        border-radius: 6px;
+        /* Vuông góc mềm hơn */
+        border: none;
+        /* Bỏ viền */
+        font-size: 1.25rem;
+        /* Vẫn giữ chữ X to */
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: none;
+        /* Bỏ đổ bóng */
+        display: flex;
+        /* Dùng flex để căn giữa chữ X */
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* Hover (Chế độ Sáng) */
+    .event-popup-close-btn:hover {
+        background-color: #E5E7EB;
+        /* Xám nhạt khi hover */
+    }
+
+    .event-popup-close-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* ======================================================= */
+    /* === FIX POPUP SỰ KIỆN (V5 - VỪA VẶN + GIẤU CUỘN) === */
+    /* ======================================================= */
+
+    /* 1. Thiết lập kích thước TỰ ĐỘNG (Auto) cho card */
+    .event-popup-content .tool-card {
+        width: 90vw;
+        max-width: 900px;
+
+        height: auto;
+        /* Chiều cao: TỰ ĐỘNG (auto) theo nội dung */
+
+        /* Giới hạn chiều cao TỐI ĐA:
+   * Sẽ không bao giờ cao hơn 90% màn hình.
+   */
+        max-height: 90vh;
+
+        /* Cho phép cuộn NẾU bị tràn, nhưng giấu thanh cuộn */
+        overflow-y: auto;
+    }
+
+    /* 2. Đảm bảo ảnh GIF không bị tràn chiều ngang */
+    .event-popup-content img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* 3. "THẦN CHÚ" GIẤU THANH CUỘN (SCROLLBAR) */
+
+    /* 3.1. Dành cho Firefox */
+    .event-popup-content .tool-card {
+        scrollbar-width: none;
+        /* Giấu cuộn trên Firefox */
+    }
+
+    /* 3.2. Dành cho Chrome, Edge, Safari */
+    .event-popup-content .tool-card::-webkit-scrollbar {
+        display: none;
+        /* Giấu cuộn trên Chrome/Edge/Safari */
+    }

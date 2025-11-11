@@ -13,6 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.5/dist/autoNumeric.min.js"></script>
     <script src="tinymce/tinymce.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=4.0">
     <script>
@@ -82,14 +83,23 @@ text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool=
                 </a>
                 <a href="#" id="nav-my-diary"
                     class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
-                    data-tool="my-diary">
-                    <svg xmlns="http://www.w3.org/2000/svg"
+                    data-tool="events-public"><svg xmlns="http://www.w3.org/2000/svg"
                         class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
-                        viewBox="0 0 20 20" fill="currentColor">
-                        <path
-                            d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" />
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 15.791c.001-.06.002-.12.002-.181a9.96 9.96 0 0 0-1.89-5.748c-.538-.68-1.15-1.29-1.844-1.796a10.003 10.003 0 0 0-14.24 0C2.33 8.78 1.719 9.39 1.181 10.071a9.96 9.96 0 0 0-1.89 5.748c0 .06.001.121.002.181C.02 17.65 1.7 19.4 4.5 21c2.148 1.2 4.968 1.8 7.5 1.8s5.352-.6 7.5-1.8c2.8-1.6 4.48-3.35 4.5-5.209Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 15.791c.001-.06.002-.12.002-.181a9.96 9.96 0 0 0-1.89-5.748c-.538-.68-1.15-1.29-1.844-1.796a10.003 10.003 0 0 0-14.24 0C2.33 8.78 1.719 9.39 1.181 10.071a9.96 9.96 0 0 0-1.89 5.748c0 .06.001.121.002.181C.02 17.65 1.7 19.4 4.5 21c2.148 1.2 4.968 1.8 7.5 1.8s5.352-.6 7.5-1.8c2.8-1.6 4.48-3.35 4.5-5.209Zm0 0H.002" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 10.5V12m0 0a1.5 1.5 0 0 0 3 0V10.5m-3 0h3m-3 0a1.5 1.5 0 1 0-3 0m3 0a1.5 1.5 0 1 1 3 0m0 0a1.5 1.5 0 1 0 3 0" />
                     </svg>
-                    <span class="font-medium">My Diary</span>
+                    <span class="font-medium">Góc Bất Ngờ</span></a>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
+                    viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                        d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" />
+                </svg>
                 </a>
                 <a href="#" id="nav-my-research"
                     class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
@@ -292,12 +302,18 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     </div>
                 </div>
             </div>
-            <div id="tool-my-diary" class="tool-content hidden opacity-0">
-                <div class="p-8 tool-card glass-effect">
-                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">My Diary</h2>
-                    <p class="text-gray-800 dark:text-gray-300 mb-6">Đây là khu vực nhật ký của ba...</p>
-                </div>
-            </div>
+            <div id="tool-events-public" class="tool-content hidden opacity-0">
+                                <div class="p-8 tool-card glass-effect">
+                                        <h2 class="text-2xl font-bold mb-6 text-amber-600 dark:text-gray-50">Góc Bất Ngờ
+                    </h2>
+                                                            <div id="events-public-list" class="space-y-4">
+                                                <p id="events-public-loading" class="text-gray-500">Đang tải danh sách
+                            sự kiện...</p>
+                                                <p id="events-public-empty" class="text-gray-500 hidden">Hôm nay không
+                            có sự kiện gì đặc biệt cả.</p>
+                                            </div>
+                                    </div>
+                            </div>
             <div id="tool-my-research" class="tool-content hidden opacity-0">
                 <div class="p-8 tool-card glass-effect space-y-8">
                     <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Một vài bài viết do chức năng
@@ -315,30 +331,28 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                         </button>
                     </div>
                     <div id="blog-posts-list" class="space-y-6">
-                                                <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang
-                                                        tải bài viết...</p>
-                                                <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">
-                                                        Chưa có bài viết nào.</p>
-                                            </div>
+                        <p id="blog-loading-state" class="text-center text-gray-500 py-8">Đang
+                            tải bài viết...</p>
+                        <p id="blog-empty-state" class="text-center text-gray-500 py-8 hidden">
+                            Chưa có bài viết nào.</p>
+                    </div>
 
-                                        <div id="blog-pagination-controls"
-                        class="hidden flex items-center justify-between mt-8">
-                                                <button id="blog-prev-btn"                            
+                    <div id="blog-pagination-controls" class="hidden flex items-center justify-between mt-8">
+                        <button id="blog-prev-btn"
                             class="font-bold py-2 px-6 rounded-lg transition duration-300 
-                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
-                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
-                                                        &larr; Trang trước
-                                                    </button>
-                                                <span id="blog-page-indicator"
-                            class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 /
-                                                        1</span>
-                                                <button id="blog-next-btn"                            
+                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
+                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
+                            &larr; Trang trước
+                        </button>
+                        <span id="blog-page-indicator" class="font-semibold text-gray-700 dark:text-gray-300">Trang 1 /
+                            1</span>
+                        <button id="blog-next-btn"
                             class="font-bold py-2 px-6 rounded-lg transition duration-300 
-                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
-                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
-                                                        Trang sau &rarr;
-                                                    </button>
-                                            </div>
+                                   bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-amber-500/40 
+                                   disabled:bg-gray-200/50 disabled:dark:bg-gray-700/50 disabled:text-gray-700 disabled:dark:text-gray-300 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-gray-200/50 disabled:dark:hover:bg-gray-600/70">
+                            Trang sau &rarr;
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -429,11 +443,11 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
                     <div class="space-y-4 max-w-md">
                         <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
-                            <label for="toggle-diary" class="font-medium text-gray-700 dark:text-gray-200">Hiện "My
-                                Diary"</label>
-                            <input type="checkbox" id="toggle-diary"
-                                class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
-                        </div>
+                                                    <label for="toggle-events-public"
+                                class="font-medium text-gray-700 dark:text-gray-200">Hiện "Góc Bất Ngờ"</label>
+                                                    <input type="checkbox" id="toggle-events-public"                    
+                                        class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
+                                                </div>
 
                         <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
                             <label for="toggle-research" class="font-medium text-gray-700 dark:text-gray-200">Hiện
@@ -449,8 +463,57 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                                 class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
                         </div>
                     </div>
+
+                                                                   
+                    <hr class="my-8 border-gray-300/50 dark:border-gray-600/50">
+
+                                            <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Quản lý
+                        Sự kiện</h2>
+                                            <p class="text-gray-800 dark:text-gray-300 mb-6">Tạo, sửa, xóa, và bật/tắt
+                        các thiệp chúc mừng.</p>
+
+                                                                    <div
+                        class="space-y-4 p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg mb-6">
+                                                    <div>
+                                                            <label for="event-admin-title"
+                                class="block font-medium mb-1 dark:text-gray-300">Tên Sự kiện:</label>
+                                                            <input type="text" id="event-admin-title"
+                                placeholder="Ví dụ: SN Cậu Út"                                    
+                                class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                                                        </div>
+                                                    <div>
+                                                            <label for="event-admin-greeting"
+                                class="block font-medium mb-1 dark:text-gray-300">Lời chúc:</label>
+                                                            <textarea id="event-admin-greeting" rows="4"
+                                placeholder="Chúc Cậu Út luôn..."                                    
+                                class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
+                                                        </div>
+                                                    <div class="flex gap-4">
+                                                            <button id="event-admin-save-btn"                          
+                                         
+                                class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Lưu
+                                Sự kiện Mới</button>
+                                                            <button id="event-admin-cancel-btn"                        
+                                           
+                                class="hidden bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-2 px-6 rounded-lg transition duration-300">Hủy
+                                Sửa</button>
+                                                        </div>
+                                                    <input type="hidden" id="event-admin-edit-id">
+                                                </div>
+
+                                                                    <h3
+                        class="text-xl font-bold mb-4 text-amber-600 dark:text-gray-50">Danh sách Sự kiện</h3>
+                                            <div id="event-admin-list" class="space-y-3">
+                                                    <p id="event-admin-loading" class="text-gray-500">Đang tải danh
+                            sách...</p>
+                                                </div>
+                                                               
                 </div>
-        </main>
+                               
+            </div>
+    </div>
+    </div>
+    </main>
     </div>
 
     </div>
@@ -553,10 +616,33 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            let globalTabSettings = { show_diary: false, show_research: false, show_badminton: false };
+            let globalTabSettings = { show_events_public: false, show_research: false, show_badminton: false };
             const settingsRef = db.collection("settings").doc("tab_visibility");
 
+            // === BIẾN MỚI CHO HỆ THỐNG SỰ KIỆN ===
+            const eventsRef = db.collection("events"); // Bảng 'events' mới trên Firestore
+            const eventPopupBackdrop = document.getElementById('event-popup-backdrop');
+            const eventPopupContent = document.getElementById('event-popup-content');
+            const eventPopupTitle = document.getElementById('event-popup-title');
+            const eventPopupGreeting = document.getElementById('event-popup-greeting');
+            const eventPopupCloseBtn = document.getElementById('event-popup-close-btn');
+            const birthdaySong = document.getElementById('birthday-song');
+            if (birthdaySong) {
+                birthdaySong.preload = 'auto'; // Yêu cầu trình duyệt tải toàn bộ file
+                birthdaySong.load();  // Kích hoạt việc tải file ngay khi trang tải xong
+            }
+            // ========================================================
+            const bgMusic = document.getElementById('nhac-nen-cua-ba');
+            let publicEventsUnsubscribe = null; // Biến giữ listener của Guest
+            let adminEventsUnsubscribe = null; // Biến giữ listener của Admin
+            // === HẾT BIẾN MỚI ===
+
             const storage = firebase.storage();
+            // GẮN LISTENER CHO NÚT ĐÓNG POPUP SỰ KIỆN
+            if (eventPopupCloseBtn) {
+                eventPopupCloseBtn.addEventListener('click', closeEventPopup);
+                eventPopupBackdrop.addEventListener('click', closeEventPopup);
+            }
             // === CODE AUTH CỦA MỠ (BẢO MẬT + SỬA LỖI) ===
             const auth = firebase.auth();
             const provider = new firebase.auth.GoogleAuthProvider();
@@ -570,6 +656,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             settingsRef.onSnapshot((doc) => {
                 if (doc.exists) {
                     globalTabSettings = doc.data();
+                    listenForPublicEvents(); // <-- THÊM DÒNG NÀY (để tải sự kiện)
                 } else {
                     // Nếu chưa có, tự tạo file cài đặt mặc định (ẩn hết)
                     settingsRef.set(globalTabSettings).catch(e => console.error("Lỗi tạo settings:", e));
@@ -649,6 +736,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     navB.classList.remove('hidden');
                     navAdmin.classList.remove('hidden');
                     initializeAdminBlogFeatures();
+                    initializeEventAdmin(); // <-- THÊM DÒNG NÀY
                     setCalendarInputsReadOnly(false);
 
                     // 2. Bật ô nộp tiền
@@ -675,6 +763,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 } else {
                     // 1. LÀ GUEST
                     gView.style.display = 'block';
+                    cleanupEventAdminListeners(); // <-- THÊM DÒNG NÀY (để dọn dẹp)
                     aView.style.display = 'none';
                     setCalendarInputsReadOnly(true); // <<< DÒNG MỚI (KHÓA LỊCH)
 
@@ -688,7 +777,7 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
                     // 3. Ẩn/Hiện Nav theo cài đặt (Giữ nguyên)
                     navAdmin.classList.add('hidden');
-                    if (globalTabSettings.show_diary) {
+                    if (globalTabSettings.show_events_public) { // <-- SỬA TÊN
                         navD.classList.remove('hidden');
                     } else {
                         navD.classList.add('hidden');
@@ -746,6 +835,8 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 const toggleDiary = document.getElementById('toggle-diary');
                 const toggleResearch = document.getElementById('toggle-research');
                 const toggleBadminton = document.getElementById('toggle-badminton');
+                // === THÊM BIẾN MỚI ===
+                const toggleEventsPublic = document.getElementById('toggle-diary'); // ID của nút gạt cũ
 
                 // (Thoát nếu lỡ gọi hàm mà chưa ở đúng tab)
                 if (!toggleDiary) return;
@@ -756,16 +847,20 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                 toggleDiary.checked = globalTabSettings.show_diary;
                 toggleResearch.checked = globalTabSettings.show_research;
                 toggleBadminton.checked = globalTabSettings.show_badminton;
+                if (toggleEventsPublic) toggleEventsPublic.checked = globalTabSettings.show_events_public;
+
+
 
                 // 2. Gắn sự kiện 'change' để lưu lên Firestore
                 // (Dùng .hasListener để tránh gắn 2-3 lần)
-                if (!toggleDiary.hasListener) {
-                    toggleDiary.addEventListener('change', () => {
-                        settingsRef.update({ show_diary: toggleDiary.checked })
-                            .catch(e => alert("Lỗi cập nhật Diary: " + e.message));
+                if (toggleEventsPublic && !toggleEventsPublic.hasListener) {
+                    toggleEventsPublic.addEventListener('change', () => {
+                        settingsRef.update({ show_events_public: toggleEventsPublic.checked })
+                            .catch(e => alert("Lỗi cập nhật Góc Bất Ngờ: " + e.message));
                     });
-                    toggleDiary.hasListener = true;
+                    toggleEventsPublic.hasListener = true;
                 }
+                // (Giữ nguyên listener của toggleResearch và toggleBadminton)
 
                 if (!toggleResearch.hasListener) {
                     toggleResearch.addEventListener('change', () => {
@@ -1084,23 +1179,23 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     skin: 'oxide', // 1. Ép giao diện (toolbar) luôn là Sáng
                     content_css: false, // 2. Vô hiệu hóa CSS "dark"/"default" của TinyMCE
                     content_style: `
-                        /* 3. Tải Google Font (giống hệt file index.html) */
-                        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-                        
-                        /* 4. Áp dụng nền giấy và chữ xám đen */
-                        body {
-                            background-color: #FBF8F0 !important; /* Nền giấy E-Ink */
-                            color: #333333 !important; /* Chữ xám đen mềm */
-                            font-family: 'Inter', sans-serif !important; 
-                            line-height: 1.8 !important; /* Dãn dòng 1.8 cho dễ viết */
-                        }
+                        /* 3. Tải Google Font (giống hệt file index.html) */
+                        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                        
+                        /* 4. Áp dụng nền giấy và chữ xám đen */
+                        body {
+                            background-color: #FBF8F0 !important; /* Nền giấy E-Ink */
+                            color: #333333 !important; /* Chữ xám đen mềm */
+                            font-family: 'Inter', sans-serif !important; 
+                            line-height: 1.8 !important; /* Dãn dòng 1.8 cho dễ viết */
+                        }
 
-                        /* 5. Sửa màu link cho đồng bộ */
-                        a {
-                            color: #0056b3 !important;
-                            text-decoration: underline !important;
-                        }
-                    `,
+                        /* 5. Sửa màu link cho đồng bộ */
+                        a {
+                            color: #0056b3 !important;
+                            text-decoration: underline !important;
+                        }
+                    `,
                     // === HẾT MÃ MỚI ===
                     height: 400,
                     file_picker_types: 'image media',
@@ -1526,6 +1621,266 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     blogPostsList.hasAdminListener = true;
                 }
             }
+
+            // ============================================================
+            // === BỘ NÃO HỆ THỐNG SỰ KIỆN (EVENT SYSTEM) ===
+            // ============================================================
+
+            // --- 1. HÀM DÀNH CHO KHÁCH (GUEST) ---
+
+            // Hàm "vẽ" danh sách link sự kiện công khai
+            function renderPublicEventsList(eventsData) {
+                const listEl = document.getElementById('events-public-list');
+                const loadingEl = document.getElementById('events-public-loading');
+                const emptyEl = document.getElementById('events-public-empty');
+                if (!listEl || !loadingEl || !emptyEl) return;
+
+                loadingEl.classList.add('hidden');
+                listEl.innerHTML = ''; // Xóa sạch danh sách cũ
+
+                if (eventsData.length === 0) {
+                    emptyEl.classList.remove('hidden');
+                } else {
+                    emptyEl.classList.add('hidden');
+                    eventsData.forEach(event => {
+                        const linkEl = document.createElement('a');
+                        linkEl.href = '#';
+                        linkEl.className = 'block p-4 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors text-lg font-semibold text-pink-600 dark:text-pink-400';
+                        linkEl.textContent = `🎁 ${event.title}`;
+                        linkEl.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showEventPopup(event);
+                        });
+                        listEl.appendChild(linkEl);
+                    });
+                }
+            }
+
+            // Hàm hiển thị Popup "Bất Ngờ"
+            function showEventPopup(event) {
+                eventPopupTitle.textContent = event.title;
+                eventPopupGreeting.textContent = event.greeting;
+
+                // Hiển thị popup
+                eventPopupBackdrop.classList.add('show');
+                eventPopupContent.classList.add('show');
+
+                // Tắt nhạc nền
+                if (bgMusic) bgMusic.pause();
+
+                // Phát nhạc sinh nhật
+                if (birthdaySong) {
+                    birthdaySong.currentTime = 0;
+                    birthdaySong.play();
+                }
+
+                // Bắn pháo hoa
+                confetti({
+                    particleCount: 150,
+                    spread: 90,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Hàm đóng Popup "Bất Ngờ"
+            function closeEventPopup() {
+                eventPopupBackdrop.classList.remove('show');
+                eventPopupContent.classList.remove('show');
+
+                // Tắt nhạc sinh nhật
+                if (birthdaySong) birthdaySong.pause();
+                // Bật lại nhạc nền (nếu nó đang phát)
+                if (window.daPhatNhacLanDau) {
+                    if (bgMusic) bgMusic.play();
+                }
+            }
+
+            // Hàm lắng nghe các sự kiện CÔNG KHAI (cho Guest)
+            function listenForPublicEvents() {
+                // Tắt listener cũ (nếu có)
+                if (publicEventsUnsubscribe) publicEventsUnsubscribe();
+
+                // Chỉ lấy các sự kiện đang được BẬT (isEnabled == true)
+                publicEventsUnsubscribe = eventsRef
+                    .where("isEnabled", "==", true)
+                    .orderBy("createdAt", "desc")
+                    .onSnapshot(snapshot => {
+                        const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        renderPublicEventsList(eventsData);
+                    }, error => {
+                        console.error("Lỗi tải sự kiện công khai:", error);
+                        document.getElementById('events-public-loading').textContent = 'Lỗi tải sự kiện.';
+                    });
+            }
+
+            // --- 2. HÀM DÀNH CHO QUẢN TRỊ (ADMIN) ---
+
+            // Hàm "vẽ" danh sách quản lý sự kiện (cho Admin)
+            function renderEventAdminList(eventsData) {
+                const listEl = document.getElementById('event-admin-list');
+                const loadingEl = document.getElementById('event-admin-loading');
+                if (!listEl || !loadingEl) return;
+
+                loadingEl.classList.add('hidden');
+                listEl.innerHTML = ''; // Xóa sạch
+
+                if (eventsData.length === 0) {
+                    listEl.innerHTML = '<p class="text-gray-500">Chưa có sự kiện nào. Hãy tạo mới!</p>';
+                } else {
+                    eventsData.forEach(event => {
+                        const card = document.createElement('div');
+                        card.className = 'flex items-center justify-between p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg';
+                        const checked = event.isEnabled ? 'checked' : '';
+                        card.innerHTML = `
+      <div class="flex-1">
+        <span class="font-medium text-gray-700 dark:text-gray-200">${event.title}</span>
+      </div>
+      <div class="flex items-center gap-3">
+                <input type="checkbox" data-id="${event.id}" class="event-toggle-btn form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" ${checked}>
+                <button data-id="${event.id}" class="event-edit-btn text-sm font-medium text-blue-500 hover:text-blue-700">[Sửa]</button>
+                <button data-id="${event.id}" class="event-delete-btn text-sm font-medium text-red-500 hover:text-red-700">[Xóa]</button>
+      </div>
+    `;
+                        listEl.appendChild(card);
+                    });
+                }
+            }
+
+            // Hàm khởi động toàn bộ chức năng Admin
+            function initializeEventAdmin() {
+                // Lấy các nút trong form
+                const titleInput = document.getElementById('event-admin-title');
+                const greetingInput = document.getElementById('event-admin-greeting');
+                const saveBtn = document.getElementById('event-admin-save-btn');
+                const cancelBtn = document.getElementById('event-admin-cancel-btn');
+                const editIdInput = document.getElementById('event-admin-edit-id');
+                const listEl = document.getElementById('event-admin-list');
+
+                // 1. Lắng nghe toàn bộ danh sách (cho Admin)
+                // Tắt listener cũ (nếu có)
+                if (adminEventsUnsubscribe) adminEventsUnsubscribe();
+                adminEventsUnsubscribe = eventsRef
+                    .orderBy("createdAt", "desc")
+                    .onSnapshot(snapshot => {
+                        const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        renderEventAdminList(eventsData);
+                    }, error => {
+                        console.error("Lỗi tải danh sách sự kiện admin:", error);
+                        document.getElementById('event-admin-loading').textContent = 'Lỗi tải danh sách.';
+                    });
+
+                // 2. Xử lý nút LƯU / CẬP NHẬT
+                saveBtn.onclick = async () => {
+                    const title = titleInput.value.trim();
+                    const greeting = greetingInput.value.trim();
+                    const editId = editIdInput.value;
+
+                    if (!title || !greeting) {
+                        alert('Ba phải gõ Tên và Lời chúc!');
+                        return;
+                    }
+
+                    saveBtn.disabled = true;
+                    try {
+                        if (editId) {
+                            // Chế độ CẬP NHẬT
+                            await eventsRef.doc(editId).update({ title, greeting, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        } else {
+                            // Chế độ TẠO MỚI
+                            await eventsRef.add({
+                                title,
+                                greeting,
+                                isEnabled: false, // Mặc định là TẮT
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                        // Xóa sạch form
+                        cancelBtn.click();
+                    } catch (e) {
+                        console.error("Lỗi lưu sự kiện:", e);
+                        alert('Lỗi: ' + e.message);
+                    } finally {
+                        saveBtn.disabled = false;
+                    }
+                };
+
+                // 3. Xử lý nút HỦY (để reset form)
+                cancelBtn.onclick = () => {
+                    titleInput.value = '';
+                    greetingInput.value = '';
+                    editIdInput.value = '';
+                    saveBtn.textContent = 'Lưu Sự kiện Mới';
+                    cancelBtn.classList.add('hidden');
+                };
+
+                // 4. Xử lý Sửa/Xóa/Bật-Tắt (Event Delegation)
+                listEl.onclick = async (e) => {
+                    const target = e.target;
+                    const id = target.dataset.id;
+                    if (!id) return;
+
+                    const eventRef = eventsRef.doc(id);
+
+                    // Bấm nút BẬT/TẮT
+                    if (target.classList.contains('event-toggle-btn')) {
+                        const isEnabled = target.checked;
+                        try {
+                            await eventRef.update({ isEnabled: isEnabled });
+                        } catch (e) {
+                            console.error("Lỗi bật/tắt:", e);
+                            target.checked = !isEnabled; // Trả lại
+                        }
+                    }
+
+                    // Bấm nút XÓA
+                    if (target.classList.contains('event-delete-btn')) {
+                        if (confirm('Ba có chắc muốn XÓA sự kiện này không?')) {
+                            try {
+                                await eventRef.delete();
+                            } catch (e) {
+                                console.error("Lỗi xóa:", e);
+                                alert('Lỗi: ' + e.message);
+                            }
+                        }
+                    }
+
+                    // Bấm nút SỬA
+                    if (target.classList.contains('event-edit-btn')) {
+                        try {
+                            const doc = await eventRef.get();
+                            if (doc.exists) {
+                                const data = doc.data();
+                                titleInput.value = data.title;
+                                greetingInput.value = data.greeting;
+                                editIdInput.value = id;
+                                saveBtn.textContent = 'Cập nhật Sự kiện';
+                                cancelBtn.classList.remove('hidden');
+                                titleInput.focus(); // Đưa con trỏ lên
+                            }
+                        } catch (e) {
+                            console.error("Lỗi tải để sửa:", e);
+                        }
+                    }
+                };
+            }
+
+            // Hàm DỌN DẸP listener (tránh chạy 2-3 lần)
+            function cleanupEventAdminListeners() {
+                if (adminEventsUnsubscribe) {
+                    adminEventsUnsubscribe();
+                    adminEventsUnsubscribe = null;
+                }
+                // Tắt các listener cũ
+                const saveBtn = document.getElementById('event-admin-save-btn');
+                if (saveBtn) saveBtn.onclick = null;
+                const listEl = document.getElementById('event-admin-list');
+                if (listEl) listEl.onclick = null;
+                // (Các nút khác tự reset khi hàm initialize chạy lại)
+            }
+
+            // ============================================================
+            // === HẾT BỘ NÃO SỰ KIỆN ===
+            // ============================================================
 
             /* ============================================================
             === BỘ NÃO BADMINTON SCHEDULER (BẢN NÂNG CẤP AUTONUMERIC) ===
@@ -2247,6 +2602,23 @@ ${iconHTML}
             }
         });
     </script>
+    <div id="event-popup-backdrop" class="event-popup-backdrop"></div>
+        <div id="event-popup-content" class="event-popup-content">
+                <div class="p-8 tool-card glass-effect text-center relative max-w-lg">
+                                    <button id="event-popup-close-btn" class="event-popup-close-btn">&times;</button>
+                       
+                                    <audio id="birthday-song" src="assets/birthday-song.mp3" loop></audio>
+
+                                    <h2 id="event-popup-title"
+                class="text-4xl font-bold mb-4 text-pink-600 dark:text-pink-400"></h2>
+                        <p id="event-popup-greeting"
+                class="text-lg text-gray-800 dark:text-gray-300 mb-6 whitespace-pre-line"></p>
+
+                        <img
+                src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2Y5dWU4c3l1OWZleGYyN2RlNm1zNmYzaGNna2E3d2ZrNHN4c3J2bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l41Ys1fQky5raqvMQ/giphy.gif"
+                                alt="Chúc mừng" class="mx-auto rounded-lg shadow-lg">
+                    </div>
+            </div>
 </body>
 
 </html>
