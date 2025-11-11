@@ -83,7 +83,8 @@ text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool=
                 </a>
                 <a href="#" id="nav-my-diary"
                     class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
-                    data-tool="events-public"><svg xmlns="http://www.w3.org/2000/svg"
+                    data-tool="events-public">
+                    <svg xmlns="http://www.w3.org/2000/svg"
                         class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -93,13 +94,7 @@ text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white" data-tool=
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M9 10.5V12m0 0a1.5 1.5 0 0 0 3 0V10.5m-3 0h3m-3 0a1.5 1.5 0 1 0-3 0m3 0a1.5 1.5 0 1 1 3 0m0 0a1.5 1.5 0 1 0 3 0" />
                     </svg>
-                    <span class="font-medium">Góc Bất Ngờ</span></a>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 mr-3 transition-all duration-200 text-amber-500 group-hover:text-white"
-                    viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                        d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 005.5 16c1.255 0 2.443-.29 3.5-.804V4.804zM11 4.804A7.968 7.968 0 0114.5 4c1.255 0 2.443.29 3.5.804v10A7.969 7.969 0 0114.5 16c-1.255 0-2.443-.29-3.5-.804V4.804z" />
-                </svg>
+                    <span class="font-medium">Góc Bất Ngờ</span>
                 </a>
                 <a href="#" id="nav-my-research"
                     class="nav-link group hidden flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-amber-500 hover:text-white"
@@ -443,11 +438,11 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
 
                     <div class="space-y-4 max-w-md">
                         <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
-                                                    <label for="toggle-events-public"
-                                class="font-medium text-gray-700 dark:text-gray-200">Hiện "Góc Bất Ngờ"</label>
-                                                    <input type="checkbox" id="toggle-events-public"                    
-                                        class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
-                                                </div>
+                            <label for="toggle-events-public" class="font-medium text-gray-700 dark:text-gray-200">Hiện
+                                "Góc Bất Ngờ"</label>
+                            <input type="checkbox" id="toggle-events-public"
+                                class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
+                        </div>
 
                         <div class="flex items-center justify-between p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg">
                             <label for="toggle-research" class="font-medium text-gray-700 dark:text-gray-200">Hiện
@@ -463,53 +458,43 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                                 class="form-checkbox h-6 w-6 text-amber-500 rounded focus:ring-amber-500" />
                         </div>
                     </div>
-
-                                                                   
                     <hr class="my-8 border-gray-300/50 dark:border-gray-600/50">
 
-                                            <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Quản lý
+                    <h2 class="text-2xl font-bold mb-2 text-amber-600 dark:text-gray-50">Quản lý
                         Sự kiện</h2>
-                                            <p class="text-gray-800 dark:text-gray-300 mb-6">Tạo, sửa, xóa, và bật/tắt
+                    <p class="text-gray-800 dark:text-gray-300 mb-6">Tạo, sửa, xóa, và bật/tắt
                         các thiệp chúc mừng.</p>
 
-                                                                    <div
-                        class="space-y-4 p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg mb-6">
-                                                    <div>
-                                                            <label for="event-admin-title"
-                                class="block font-medium mb-1 dark:text-gray-300">Tên Sự kiện:</label>
-                                                            <input type="text" id="event-admin-title"
-                                placeholder="Ví dụ: SN Cậu Út"                                    
+                    <div class="space-y-4 p-4 bg-white/30 dark:bg-gray-800/30 rounded-lg mb-6">
+                        <div>
+                            <label for="event-admin-title" class="block font-medium mb-1 dark:text-gray-300">Tên Sự
+                                kiện:</label>
+                            <input type="text" id="event-admin-title" placeholder="Ví dụ: SN Cậu Út"
                                 class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
-                                                        </div>
-                                                    <div>
-                                                            <label for="event-admin-greeting"
-                                class="block font-medium mb-1 dark:text-gray-300">Lời chúc:</label>
-                                                            <textarea id="event-admin-greeting" rows="4"
-                                placeholder="Chúc Cậu Út luôn..."                                    
+                        </div>
+                        <div>
+                            <label for="event-admin-greeting" class="block font-medium mb-1 dark:text-gray-300">Lời
+                                chúc:</label>
+                            <textarea id="event-admin-greeting" rows="4" placeholder="Chúc Cậu Út luôn..."
                                 class="w-full p-2 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-300/50 dark:border-gray-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"></textarea>
-                                                        </div>
-                                                    <div class="flex gap-4">
-                                                            <button id="event-admin-save-btn"                          
-                                         
+                        </div>
+                        <div class="flex gap-4">
+                            <button id="event-admin-save-btn"
                                 class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-lg hover:shadow-green-500/50">Lưu
                                 Sự kiện Mới</button>
-                                                            <button id="event-admin-cancel-btn"                        
-                                           
+                            <button id="event-admin-cancel-btn"
                                 class="hidden bg-gray-200/50 dark:bg-gray-700/50 hover:bg-gray-300/70 dark:hover:bg-gray-600/70 text-gray-700 dark:text-gray-300 font-bold py-2 px-6 rounded-lg transition duration-300">Hủy
                                 Sửa</button>
-                                                        </div>
-                                                    <input type="hidden" id="event-admin-edit-id">
-                                                </div>
+                        </div>
+                        <input type="hidden" id="event-admin-edit-id">
+                    </div>
 
-                                                                    <h3
-                        class="text-xl font-bold mb-4 text-amber-600 dark:text-gray-50">Danh sách Sự kiện</h3>
-                                            <div id="event-admin-list" class="space-y-3">
-                                                    <p id="event-admin-loading" class="text-gray-500">Đang tải danh
+                    <h3 class="text-xl font-bold mb-4 text-amber-600 dark:text-gray-50">Danh sách Sự kiện</h3>
+                    <div id="event-admin-list" class="space-y-3">
+                        <p id="event-admin-loading" class="text-gray-500">Đang tải danh
                             sách...</p>
-                                                </div>
-                                                               
+                    </div>
                 </div>
-                               
             </div>
     </div>
     </div>
@@ -805,9 +790,10 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     const defaultTool = 'remove-bg'; // Trang an toàn
 
                     // 1. Tạo 1 danh sách các trang BỊ CẤM (tức là đang ẨN)
+                    // 1. Tạo 1 danh sách các trang BỊ CẤM (tức là đang ẨN)
                     let forbiddenTools = ['admin-panel']; // 'admin-panel' luôn cấm
-                    if (!globalTabSettings.show_diary) {
-                        forbiddenTools.push('my-diary');
+                    if (!globalTabSettings.show_events_public) { // <-- FIX LỖI 3A: Tên trường mới
+                        forbiddenTools.push('events-public'); // <-- FIX LỖI 3B: Tên tool mới
                     }
                     if (!globalTabSettings.show_research) {
                         forbiddenTools.push('my-research');
@@ -832,22 +818,23 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
             // === THÊM HÀM MỚI NÀY ===
             function initializeAdminPanelToggles() {
                 // Lấy 3 cái nút gạt
-                const toggleDiary = document.getElementById('toggle-diary');
                 const toggleResearch = document.getElementById('toggle-research');
                 const toggleBadminton = document.getElementById('toggle-badminton');
                 // === THÊM BIẾN MỚI ===
-                const toggleEventsPublic = document.getElementById('toggle-diary'); // ID của nút gạt cũ
+                const toggleEventsPublic = document.getElementById('toggle-events-public'); // <--- SỬA THÀNH ID ĐÚNG
 
-                // (Thoát nếu lỡ gọi hàm mà chưa ở đúng tab)
-                if (!toggleDiary) return;
+
+                // (Thoát nếu không tìm thấy 1 trong các nút quan trọng)
+                if (!toggleEventsPublic || !toggleResearch || !toggleBadminton) return; // <--- FIX LỖI 1: Kiểm tra 3 biến
 
                 console.log("Khởi tạo Admin Panel Toggles...");
 
                 // 1. Đặt trạng thái 'checked' theo cài đặt đã tải
-                toggleDiary.checked = globalTabSettings.show_diary;
+
+                toggleEventsPublic.checked = globalTabSettings.show_events_public; // <--- FIX LỖI 2A
                 toggleResearch.checked = globalTabSettings.show_research;
                 toggleBadminton.checked = globalTabSettings.show_badminton;
-                if (toggleEventsPublic) toggleEventsPublic.checked = globalTabSettings.show_events_public;
+
 
 
 
@@ -1680,12 +1667,14 @@ shadow-lg hover:shadow-amber-500/40" disabled>Chuyển đổi & Tải xuống</b
                     spread: 90,
                     origin: { y: 0.6 }
                 });
+                document.body.style.overflow = 'hidden';
             }
 
             // Hàm đóng Popup "Bất Ngờ"
             function closeEventPopup() {
                 eventPopupBackdrop.classList.remove('show');
                 eventPopupContent.classList.remove('show');
+                document.body.style.overflow = ''; // Hoặc 'auto', dùng rỗng để reset về mặc định
 
                 // Tắt nhạc sinh nhật
                 if (birthdaySong) birthdaySong.pause();
@@ -2603,22 +2592,19 @@ ${iconHTML}
         });
     </script>
     <div id="event-popup-backdrop" class="event-popup-backdrop"></div>
-        <div id="event-popup-content" class="event-popup-content">
-                <div class="p-8 tool-card glass-effect text-center relative max-w-lg">
-                                    <button id="event-popup-close-btn" class="event-popup-close-btn">&times;</button>
-                       
-                                    <audio id="birthday-song" src="assets/birthday-song.mp3" loop></audio>
+    <div id="event-popup-content" class="event-popup-content">
+        <div class="p-8 tool-card glass-effect text-center relative max-w-lg">
+            <button id="event-popup-close-btn" class="event-popup-close-btn">&times;</button>
 
-                                    <h2 id="event-popup-title"
-                class="text-4xl font-bold mb-4 text-pink-600 dark:text-pink-400"></h2>
-                        <p id="event-popup-greeting"
-                class="text-lg text-gray-800 dark:text-gray-300 mb-6 whitespace-pre-line"></p>
+            <audio id="birthday-song" src="assets/birthday-song.mp3" loop></audio>
 
-                        <img
-                src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2Y5dWU4c3l1OWZleGYyN2RlNm1zNmYzaGNna2E3d2ZrNHN4c3J2bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l41Ys1fQky5raqvMQ/giphy.gif"
-                                alt="Chúc mừng" class="mx-auto rounded-lg shadow-lg">
-                    </div>
-            </div>
+            <h2 id="event-popup-title" class="text-4xl font-bold mb-4 text-pink-600 dark:text-pink-400"></h2>
+            <p id="event-popup-greeting" class="text-lg text-gray-800 dark:text-gray-300 mb-6 whitespace-pre-line"></p>
+
+            <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2Y5dWU4c3l1OWZleGYyN2RlNm1zNmYzaGNna2E3d2ZrNHN4c3J2bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l41Ys1fQky5raqvMQ/giphy.gif"
+                alt="Chúc mừng" class="mx-auto rounded-lg shadow-lg">
+        </div>
+    </div>
 </body>
 
 </html>
